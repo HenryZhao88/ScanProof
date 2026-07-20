@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+/* ScanProof is a test bench, not a viewer. The room is dark because the only
+   thing that should be bright is the film.
+
+   The status triad was checked with the dataviz palette validator: ΔE 11.5
+   under deuteranopia across all pairs (target >= 8), 20.4 normal-vision, all
+   >= 3:1 against the panel surface. Its lightness deliberately spans the
+   categorical band — for a status palette lightness encodes severity, and that
+   spread is exactly what buys the colour-vision separation. Status colour
+   never appears without its word. */
+
+@theme {
+  --color-ink: #0b0f14;
+  --color-panel: #131a22;
+  --color-panel-2: #18212b;
+  --color-rule: #233040;
+  --color-rule-soft: #1b2530;
+
+  --color-bone: #e6ecf2;
+  --color-mute: #8496a6;
+  --color-faint: #5a6b7a;
+
+  --color-pass: #3dd9a0;
+  --color-review: #e0a32a;
+  --color-block: #e5484d;
+  --color-instrument: #6ea8ff;
+
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-bone);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Every number on this page is a measurement. Tabular figures so columns of
+   probabilities line up digit for digit. */
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+/* The portion of a sub-score that was deducted, and the BLOCK band where hue
+   is unavailable (print, forced colours). */
+.hatch {
+  background-image: repeating-linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--color-bone) 14%, transparent) 0 1px,
+    transparent 1px 5px
+  );
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-instrument);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-rule);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.36s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+@keyframes trace {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+.pulse-soft {
+  animation: pulse-soft 1.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
