@@ -3,11 +3,14 @@ import { api } from "../api";
 import { ErrorState, Panel, Readout, Skeleton, VERDICT_COLOR, VERDICT_GLYPH } from "../components/ui";
 import { ReliabilityDiagram } from "../components/charts/ReliabilityDiagram";
 import { RiskCoverage } from "../components/charts/RiskCoverage";
-import type { Audit } from "../types";
+import type { Audit, ShiftStudy } from "../types";
+import { DeploymentTest } from "../components/DeploymentTest";
 
 export function AuditView() {
   const [audit, setAudit] = useState<Audit | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [shift, setShift] = useState<ShiftStudy | null>(null);
+  const [shiftError, setShiftError] = useState<string | null>(null);
 
   const load = () => {
     setError(null);
@@ -16,7 +19,15 @@ export function AuditView() {
       .then(setAudit)
       .catch((e) => setError(e instanceof Error ? e.message : String(e)));
   };
+  const loadShift = () => {
+    setShiftError(null);
+    api
+      .shift()
+      .then(setShift)
+      .catch((e) => setShiftError(e instanceof Error ? e.message : String(e)));
+  };
   useEffect(load, []);
+  useEffect(loadShift, []);
 
   if (error) {
     return (
@@ -61,8 +72,18 @@ export function AuditView() {
         </p>
       </section>
 
-      {/* ---- headline: what reliability adds that confidence cannot ---- */}
-      <MixedStream audit={audit} />
+      {/* ---- headline: the domain-shift study ---- */}
+      {shift ? (
+        <DeploymentTest study={shift} />
+      ) : shiftError ? (
+        <ErrorState
+          title="Domain-shift study unavailable"
+          detail={shiftError}
+          onRetry={loadShift}
+        />
+      ) : (
+        <Skeleton className="h-[420px]" />
+      )}
 
       {/* ---- the honest in-distribution comparison ------------------- */}
       <Panel
@@ -430,112 +451,6 @@ export function AuditView() {
         {audit.disclaimer}
       </p>
     </div>
-  );
-}
-
-/**
- * The headline. Confidence is structurally blind to a wrong-modality input —
- * a two-class softmax always sums to 1, so an ultrasound still gets a confident
- * chest-film label. The two rows below are the same measurement applied to two
- * populations, which is what makes the gap readable at a glance.
- */
-function MixedStream({ audit }: { audit: Audit }) {
-  const ms = audit.mixed_stream;
-  const rows: { label: string; sub: string; v: Record<string, { n: number; share: number }> }[] = [
-    {
-      label: "Chest films",
-      sub: `${ms.n_in_distribution} images the model was trained for`,
-      v: ms.in_distribution_verdicts,
-    },
-    {
-      label: "Breast ultrasound",
-      sub: `${ms.n_out_of_distribution} images of the wrong modality entirely`,
-      v: ms.ood_verdicts,
-    },
-  ];
-
-  return (
-    <Panel
-      eyebrow="Headline result · the gatekeeping test"
-      title="What reliability catches that confidence structurally cannot"
-    >
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
-        <div>
-          <div className="space-y-5">
-            {rows.map((r) => (
-              <div key={r.label}>
-                <div className="flex items-baseline justify-between gap-3">
-                  <span className="font-display text-sm font-medium text-bone">{r.label}</span>
-                  <span className="text-[0.68rem] text-faint">{r.sub}</span>
-                </div>
-                <div className="mt-2 flex h-9 w-full gap-[2px]">
-                  {(["PASS", "REVIEW", "BLOCK"] as const).map((b) => {
-                    const share = r.v[b].share;
-                    if (share <= 0) return null;
-                    return (
-                      <div
-                        key={b}
-                        className={`relative flex items-center justify-center overflow-hidden ${
-                          b === "BLOCK" ? "hatch" : ""
-                        }`}
-                        style={{
-                          width: `${Math.max(share * 100, 1.2)}%`,
-                          background: `color-mix(in oklab, ${VERDICT_COLOR[b]} ${
-                            b === "BLOCK" ? 45 : 70
-                          }%, transparent)`,
-                          borderRadius: 2,
-                        }}
-                        title={`${b}: ${r.v[b].n} (${(share * 100).toFixed(1)}%)`}
-                      >
-                        {share > 0.09 && (
-                          <span className="num whitespace-nowrap text-[0.62rem] font-semibold text-ink">
-                            {(share * 100).toFixed(1)}%
-                          </span>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="num mt-1.5 flex flex-wrap gap-x-4 text-[0.65rem]">
-                  {(["PASS", "REVIEW", "BLOCK"] as const).map((b) => (
-                    <span key={b} style={{ color: VERDICT_COLOR[b] }}>
-                      {VERDICT_GLYPH[b]} {b}{" "}
-                      <span className="text-faint">
-                        {r.v[b].n} · {(r.v[b].share * 100).toFixed(1)}%
-                      </span>
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-          <p className="mt-5 border-t border-rule-soft pt-3 text-[0.7rem] leading-relaxed text-faint">
-            {ms.note}
-          </p>
-        </div>
-
-        <div className="space-y-5 lg:border-l lg:border-rule-soft lg:pl-6">
-          <Readout
-            label="Mean confidence on ultrasound"
-            value={(ms.ood_confidence.mean * 100).toFixed(1)}
-            unit="%"
-            size="xl"
-            color="var(--color-block)"
-            sub={`${(ms.ood_confidence.frac_above_0_90 * 100).toFixed(0)}% of them are classified at 90% confidence or higher, peaking at ${(ms.ood_confidence.max * 100).toFixed(1)}%. The classifier has no way to say "this is not a chest X-ray" — a two-class softmax always sums to 1.`}
-          />
-          <div className="border-t border-rule-soft pt-4">
-            <Readout
-              label="Ultrasound reaching PASS"
-              value={(ms.ood_verdicts.PASS.share * 100).toFixed(1)}
-              unit="%"
-              size="xl"
-              color="var(--color-pass)"
-              sub={`${ms.ood_verdicts.BLOCK.n} of ${ms.n_out_of_distribution} are blocked outright. This is the gap the reliability layer exists to close.`}
-            />
-          </div>
-        </div>
-      </div>
-    </Panel>
   );
 }
 

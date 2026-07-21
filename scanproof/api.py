@@ -53,6 +53,7 @@ class State:
     load_error: str | None = None
     manifest: dict[str, Any] = {}
     audit: dict[str, Any] | None = None
+    shift: dict[str, Any] | None = None
 
     @classmethod
     def demo_case(cls, case_id: str) -> dict:
@@ -75,6 +76,10 @@ def _load_state() -> None:
     if audit_path.exists():
         State.audit = json.loads(audit_path.read_text())
 
+    shift_path = ARTIFACT_DIR / "shift_study.json"
+    if shift_path.exists():
+        State.shift = json.loads(shift_path.read_text())
+
     try:
         t0 = time.time()
         State.analyzer = Analyzer()
@@ -95,6 +100,7 @@ def health() -> dict:
         "load_error": State.load_error,
         "demo_cases": len(State.manifest),
         "audit_available": State.audit is not None,
+        "shift_study_available": State.shift is not None,
         "disclaimer": DISCLAIMER,
     }
 
@@ -225,6 +231,16 @@ def audit() -> dict:
             503, "No audit artifact found. Run `python -m scanproof.evaluate` to generate it."
         )
     return State.audit
+
+
+@api.get("/shift")
+def shift() -> dict:
+    """The domain-shift study: pediatric vs adult chest radiographs."""
+    if State.shift is None:
+        raise HTTPException(
+            503, "No shift study found. Run `python -m scanproof.shift` to generate it."
+        )
+    return State.shift
 
 
 @asynccontextmanager

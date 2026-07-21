@@ -219,6 +219,83 @@ export interface Audit {
   disclaimer: string;
 }
 
+export interface MeanCI {
+  mean: number;
+  ci_low: number;
+  ci_high: number;
+}
+
+export interface ShiftArm {
+  name: string;
+  label: string;
+  description: string;
+  n: number;
+  model_confidence: MeanCI;
+  confidence_ge_090: number;
+  reliability_score: MeanCI;
+  verdicts: Record<Verdict, { n: number; share: number }>;
+  mean_subscores: Record<string, number>;
+  mean_ood_percentile: number;
+  mean_flips_of_21: number;
+  flip_rate: number;
+  mean_ensemble_std: number;
+  accuracy?: MeanCI;
+  auroc?: number;
+  positive_rate?: number;
+  accuracy_by_band?: Record<Verdict, { n: number; accuracy: number | null }>;
+}
+
+export interface ShiftStudy {
+  generated_by: string;
+  generated_at_utc: string;
+  question: string;
+  answer: {
+    confidence_detection_auroc: number;
+    scanproof_detection_auroc: number;
+    pediatric_pass_rate: number;
+    adult_pass_rate: number;
+    pediatric_confidence: number;
+    adult_confidence: number;
+    pediatric_accuracy: number;
+    adult_accuracy: number;
+  };
+  arms: ShiftArm[];
+  resolution_control: {
+    purpose: string;
+    accuracy_delta: number;
+    confidence_delta: number;
+    pass_rate_delta: number;
+    ood_percentile_delta: number;
+    verdict: string;
+  };
+  detection: {
+    task: string;
+    reference_arm: string;
+    reference_n: number;
+    shifted_arm: string;
+    shifted_n: number;
+    signals: { signal: string; auroc: number; is_composite: boolean }[];
+  };
+  two_regime: {
+    note: string;
+    best_in_distribution_aurc: number;
+    best_shift_auroc: number;
+    rows: {
+      signal: string;
+      in_distribution_aurc: number;
+      shift_detection_auroc: number;
+      is_composite: boolean;
+      good_in_distribution: boolean;
+      good_under_shift: boolean;
+      good_in_both: boolean;
+    }[];
+    signals_good_in_both: string[];
+  };
+  shift_set: Record<string, string | number>;
+  thresholds: { pass: number; review: number; source: string; note: string };
+  disclaimer: string;
+}
+
 export interface ClassificationMetrics {
   n: number;
   accuracy: number;

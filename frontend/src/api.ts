@@ -1,4 +1,4 @@
-import type { AnalysisResponse, Audit, DemoCase, Health } from "./types";
+import type { AnalysisResponse, Audit, DemoCase, Health, ShiftStudy } from "./types";
 
 /** Everything is same-origin: the Vite dev server proxies /api to the FastAPI
  *  process, and the production build is served by that same process. No
@@ -23,6 +23,7 @@ export const api = {
   health: () => get<Health>("/api/health"),
   demoCases: () => get<{ cases: DemoCase[]; disclaimer: string }>("/api/demo-cases"),
   audit: () => get<Audit>("/api/audit"),
+  shift: () => get<ShiftStudy>("/api/shift"),
 
   analyzeDemo: async (id: string): Promise<AnalysisResponse> => {
     const res = await fetch(`/api/analyze/demo/${encodeURIComponent(id)}`, { method: "POST" });

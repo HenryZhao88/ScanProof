@@ -39,10 +39,15 @@ def dataset_metadata(flag: str = DATASET) -> dict:
     }
 
 
-def load_split(split: str, flag: str = DATASET) -> tuple[np.ndarray, np.ndarray]:
-    """Return ``(images_uint8 [N,H,W], labels_int64 [N])`` at SOURCE_SIZE.
+def load_split(
+    split: str, flag: str = DATASET, size: int | None = None
+) -> tuple[np.ndarray, np.ndarray]:
+    """Return ``(images_uint8 [N,H,W], labels [N] or [N,C])`` at ``size``.
 
     Downloads on first call. Subsequent calls read the cached ``.npz``.
+    ``size`` defaults to SOURCE_SIZE; the domain-shift study passes 128 because
+    MedMNIST+ ships ChestMNIST at 224 as a 3.7 GB archive, and 128 is a native
+    rendering from the same source pipeline rather than an upscale.
     """
     if split not in SPLITS:
         raise ValueError(f"split must be one of {SPLITS}, got {split!r}")
@@ -51,7 +56,7 @@ def load_split(split: str, flag: str = DATASET) -> tuple[np.ndarray, np.ndarray]
     from medmnist import INFO
 
     cls = getattr(medmnist, INFO[flag]["python_class"])
-    ds = cls(split=split, download=True, root=str(DATA_DIR), size=SOURCE_SIZE)
+    ds = cls(split=split, download=True, root=str(DATA_DIR), size=size or SOURCE_SIZE)
 
     imgs = np.asarray(ds.imgs)
     if imgs.ndim == 4 and imgs.shape[-1] == 1:  # [N,H,W,1] -> [N,H,W]
@@ -59,8 +64,98 @@ def load_split(split: str, flag: str = DATASET) -> tuple[np.ndarray, np.ndarray]
     elif imgs.ndim == 4:  # RGB probe dataset -> luminance
         imgs = imgs.mean(axis=-1).round().astype(np.uint8)
 
-    labels = np.asarray(ds.labels).reshape(-1).astype(np.int64)
+    # Single-label sets come back as [N,1] and are flattened; ChestMNIST is
+    # multi-label [N,14] and must keep its second axis.
+    labels = np.asarray(ds.labels).astype(np.int64)
+    if labels.ndim == 2 and labels.shape[1] == 1:
+        labels = labels.reshape(-1)
     return imgs.astype(np.uint8), labels
+
+
+#: MedMNIST ships ChestMNIST at 128 as a 1.4 GB archive vs 3.7 GB at 224. Both
+#: are native renderings produced by the same MedMNIST pipeline from the source
+#: images, so 128 is a resolution choice, not an upscale. `shift.py` puts the
+#: pediatric set through the identical 128 -> SOURCE_SIZE path as a control.
+SHIFT_SIZE = 128
+#: index of "pneumonia" among ChestMNIST's 14 findings
+CHEST_PNEUMONIA_IDX = 6
+
+
+def load_domain_shift_set(
+    seed: int = 11, max_per_class: int | None = None
+) -> tuple[np.ndarray, np.ndarray, dict]:
+    """Adult chest radiographs from a different institution, framed as the same
+    binary task the model was trained on.
+
+    Source: ChestMNIST (NIH ChestX-ray14, adult, NIH Clinical Center, USA),
+    CC BY 4.0. The training data is PneumoniaMNIST (pediatric, 1-5 years old,
+    Guangzhou Women and Children's Medical Center, China). Same modality, same
+    view, same question — different population, scanner and institution. This
+    is the shift that actually happens when a model is deployed.
+
+    Positives are films labelled ``pneumonia``. Negatives are films with **no
+    finding at all** (all 14 labels zero), which is the closest analogue to
+    PneumoniaMNIST's ``normal`` class; using "some other pathology" as the
+    negative would be a different task. Classes are balanced by subsampling the
+    larger side with a fixed seed, so the set is deterministic.
+
+    Caveat carried into the artifact: ChestX-ray14 labels are NLP-mined from
+    radiology reports and are known to be noisy, so accuracy on this set is a
+    soft number. The headline claims do not depend on it — they are about the
+    model's own confidence and ScanProof's response, which need no labels.
+    """
+    imgs, labels = load_split("test", flag="chestmnist", size=SHIFT_SIZE)
+    if labels.ndim != 2:
+        raise ValueError("expected multi-label ChestMNIST labels")
+
+    positive = labels[:, CHEST_PNEUMONIA_IDX] == 1
+    no_finding = labels.sum(axis=1) == 0
+
+    rng = np.random.default_rng(seed)
+    pos_idx = np.flatnonzero(positive)
+    neg_idx = np.flatnonzero(no_finding)
+
+    n = min(len(pos_idx), len(neg_idx))
+    if max_per_class is not None:
+        n = min(n, max_per_class)
+    pos_idx = rng.permutation(pos_idx)[:n]
+    neg_idx = rng.permutation(neg_idx)[:n]
+
+    idx = np.sort(np.concatenate([pos_idx, neg_idx]))
+    y = positive[idx].astype(np.int64)
+    x = resize_uint8(imgs[idx], SOURCE_SIZE)
+
+    meta = {
+        "source": "ChestMNIST test split (NIH ChestX-ray14), CC BY 4.0",
+        "population": "adult, NIH Clinical Center (USA)",
+        "training_population": "pediatric 1-5y, Guangzhou Women and Children's Medical Center (China)",
+        "positive_rule": "ChestX-ray14 'pneumonia' label = 1",
+        "negative_rule": "all 14 ChestX-ray14 findings = 0 ('no finding')",
+        "native_size": SHIFT_SIZE,
+        "resampled_to": SOURCE_SIZE,
+        "n_per_class": int(n),
+        "n_total": int(len(idx)),
+        "pool_pneumonia": int(positive.sum()),
+        "pool_no_finding": int(no_finding.sum()),
+        "seed": seed,
+        "label_caveat": (
+            "ChestX-ray14 labels are NLP-mined from free-text reports and carry known "
+            "noise. Accuracy on this arm is indicative, not a clean benchmark."
+        ),
+    }
+    return x, y, meta
+
+
+def load_resolution_control() -> tuple[np.ndarray, np.ndarray]:
+    """The pediatric test split put through the *identical* resampling path as
+    the shift set (native 128 -> SOURCE_SIZE).
+
+    Without this arm, any difference measured on the shift set could be an
+    artifact of resolution rather than of population. With it, the two are
+    treated identically and the comparison isolates domain.
+    """
+    imgs, labels = load_split("test", size=SHIFT_SIZE)
+    return resize_uint8(imgs, SOURCE_SIZE), labels
 
 
 def load_ood_probes(n: int = 6) -> np.ndarray:
@@ -86,7 +181,13 @@ def to_unit_tensor(imgs: np.ndarray) -> torch.Tensor:
     """
     if imgs.ndim == 2:
         imgs = imgs[None]
-    x = torch.from_numpy(np.ascontiguousarray(imgs)).float().div_(255.0).unsqueeze(1)
+    arr = np.ascontiguousarray(imgs)
+    if not arr.flags.writeable:
+        # arrays read straight out of an .npz are read-only; from_numpy would
+        # share that buffer and warn. The copy is uint8 and immediately widened
+        # to float anyway, so it costs nothing meaningful.
+        arr = arr.copy()
+    x = torch.from_numpy(arr).float().div_(255.0).unsqueeze(1)
     if x.shape[-1] != MODEL_SIZE:
         x = torch.nn.functional.interpolate(
             x, size=(MODEL_SIZE, MODEL_SIZE), mode="bilinear", align_corners=False, antialias=True

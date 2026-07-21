@@ -82,8 +82,9 @@ plain arrays, which is why the gate and arithmetic tests run in milliseconds.
 
 | Asset | Source | License | Accessed |
 |---|---|---|---|
-| **PneumoniaMNIST** (5,856 pediatric chest X-rays, binary) | [medmnist.com](https://medmnist.com/) · [Zenodo 10519652](https://zenodo.org/records/10519652) | CC BY 4.0 | 2026-07-29 |
-| **BreastMNIST** (780 breast ultrasound images — OOD probes only) | same | CC BY 4.0 | 2026-07-29 |
+| **PneumoniaMNIST** (5,856 pediatric chest X-rays, binary) — train/val/test | [medmnist.com](https://medmnist.com/) · [Zenodo 10519652](https://zenodo.org/records/10519652) | CC BY 4.0 | 2026-07-29 |
+| **ChestMNIST** (NIH ChestX-ray14, adult) — domain-shift arm only | same | CC BY 4.0 | 2026-07-29 |
+| **BreastMNIST** (780 breast ultrasound images) — OOD arm only | same | CC BY 4.0 | 2026-07-29 |
 | **ResNet-18, DenseNet-121** ImageNet weights | torchvision `IMAGENET1K_V1` | BSD-3-Clause | 2026-07-29 |
 
 Both datasets are fetched reproducibly through the official `medmnist` package API, which
@@ -92,7 +93,8 @@ de-identified, pre-processed and published by the dataset authors; no private, i
 or ambiguously-licensed medical data is used anywhere in this repository.
 
 PneumoniaMNIST derives from Kermany et al., *"Identifying medical diagnoses and treatable
-diseases by image-based deep learning"*, **Cell** 176(2), 2018.
+diseases by image-based deep learning"*, **Cell** 176(2), 2018. ChestMNIST derives from Wang et
+al., *"ChestX-ray8: Hospital-scale chest X-ray database and benchmarks…"*, **CVPR** 2017.
 
 > Yang, J., Shi, R., Wei, D., Liu, Z., Zhao, L., Ke, B., Pfister, H., Ni, B.
 > "MedMNIST v2 — A large-scale lightweight benchmark for 2D and 3D biomedical image
@@ -107,6 +109,46 @@ descriptions, not copied.
 therefore genuinely shifted: the ensemble scores ~98% on validation and materially lower on
 test. That shift is not a defect — it is what makes this a useful reliability benchmark,
 because there are real errors for the signals to catch.
+
+## The central experiment: the deployment test
+
+Everything above is context for one question. `make shift` answers it.
+
+A model is fine-tuned on **pediatric** chest films from one hospital in Guangzhou. It is then
+run on **adult** chest films from the NIH Clinical Center — same modality, same view, same
+question, different patients and different scanners. This is not a contrived input. It is the
+single most common way a deployed imaging model fails, and it is the case confidence cannot
+see: a two-class softmax is normalised over the two classes it knows, so it has no way to
+represent *"this is not my kind of input."*
+
+Four arms, ordered by distance from the training distribution:
+
+| Arm | Data | Purpose |
+|---|---|---|
+| `in_distribution` | PneumoniaMNIST test, native 224 | the population the model was fine-tuned on |
+| `resolution_control` | the same films, 128 → 224 | **confound control** — identical resampling to the adult arm |
+| `domain_shift` | ChestMNIST, pneumonia vs no-finding, balanced | adult films, different institution |
+| `wrong_modality` | BreastMNIST | breast ultrasound; the extreme end |
+
+**The confound control is load-bearing.** ChestMNIST is only available at 224 as a 3.7 GB
+archive, so the adult arm is built from the native 128 rendering and resampled to 224. Arm 2
+puts the *pediatric* films through that exact path. If arms 1 and 2 disagreed, the study would
+be measuring image processing rather than population, and the result would be worthless. They
+are compared explicitly, in the artifact and on screen.
+
+Two headline metrics come out of it:
+
+1. **Shift detection AUROC.** Treat "is this input from a population the model was not trained
+   on?" as a detection problem and score each candidate signal with one scalar. A signal that
+   carries no shift information lands at 0.5.
+2. **The two-regime table.** A deployed system gets *one* number to decide whether to trust a
+   prediction, and two different things can go wrong — an ordinary hard case (regime A,
+   selective-prediction AURC, lower better) and an input from the wrong distribution (regime B,
+   detection AUROC, higher better). Every signal is scored in both. The question is not which
+   signal wins a regime; it is whether any single signal is acceptable in **both**.
+
+Nothing in this study re-tunes a threshold. The PASS/REVIEW cut points were frozen by
+`make audit` on the pediatric validation split before it ran.
 
 ## Reliability components
 
