@@ -313,6 +313,72 @@ def ood_report(analyzer: Analyzer, results: list[ReliabilityResult]) -> dict:
     }
 
 
+def mixed_stream_report(
+    analyzer: Analyzer, test_results: list[ReliabilityResult], test_labels: np.ndarray
+) -> dict:
+    """The deployment question: a stream that also contains images the model was
+    never meant to see.
+
+    On in-distribution data alone, calibrated confidence is already a strong
+    error ranker and the composite score does not beat it (we report that
+    plainly). But confidence is structurally blind to a wrong-modality input:
+    a two-class softmax always sums to 1, so an ultrasound still gets a
+    confident chest-film label. This measures the case where that matters.
+
+    Any retained out-of-distribution image counts as an error, because every
+    PNEUMONIA/NORMAL answer on a non-chest-film is wrong by construction.
+    """
+    probe_imgs, _ = load_split("test", flag=OOD_PROBE_DATASET)
+    print(f"measuring OOD stream ({len(probe_imgs)} images)…", flush=True)
+    probe_m = analyzer.measure_batch(probe_imgs, progress=_progress("ood"))
+    probe_results = [assess(m.bundle(analyzer.member_names), analyzer.config) for m in probe_m]
+
+    in_correct = np.array(
+        [r.predicted_index == int(y) for r, y in zip(test_results, test_labels)], dtype=bool
+    )
+    correct = np.concatenate([in_correct, np.zeros(len(probe_results), dtype=bool)])
+    scores = np.array([r.reliability_score for r in test_results + probe_results])
+    conf = np.array([r.confidence for r in test_results + probe_results])
+
+    probe_conf = np.array([r.confidence for r in probe_results])
+    probe_verdicts = np.array([r.verdict for r in probe_results])
+    in_verdicts = np.array([r.verdict for r in test_results])
+
+    return {
+        "note": (
+            "624 chest films from the test split plus 156 breast ultrasound images. Any "
+            "ultrasound that is retained counts as an error: every PNEUMONIA/NORMAL answer "
+            "on a non-chest-film is wrong regardless of which one it picks."
+        ),
+        "n_in_distribution": int(len(test_results)),
+        "n_out_of_distribution": int(len(probe_results)),
+        "ood_confidence": {
+            "mean": round(float(probe_conf.mean()), 4),
+            "frac_above_0_90": round(float((probe_conf >= 0.90).mean()), 4),
+            "frac_above_0_99": round(float((probe_conf >= 0.99).mean()), 4),
+            "max": round(float(probe_conf.max()), 4),
+        },
+        "ood_verdicts": {
+            b: {
+                "n": int((probe_verdicts == b).sum()),
+                "share": round(float((probe_verdicts == b).mean()), 4),
+            }
+            for b in BANDS
+        },
+        "in_distribution_verdicts": {
+            b: {
+                "n": int((in_verdicts == b).sum()),
+                "share": round(float((in_verdicts == b).mean()), 4),
+            }
+            for b in BANDS
+        },
+        "selective": {
+            "by_reliability_score": _selective_curve(scores, correct),
+            "by_confidence_only": _selective_curve(conf, correct),
+        },
+    }
+
+
 def case_rows(results: list[ReliabilityResult], labels: np.ndarray) -> list[dict]:
     rows = []
     for i, (r, y) in enumerate(zip(results, labels)):
@@ -425,12 +491,16 @@ def main() -> None:
         },
         "selective_prediction": {
             "note": (
-                "Both curves rank the same 624 test predictions and retain the top fraction. "
-                "AURC is the mean error rate across all coverage levels — lower is better."
+                "Both curves rank the same 624 in-distribution test predictions and retain the "
+                "top fraction. AURC is the mean error rate across all coverage levels — lower "
+                "is better. On this split calibrated confidence is already a strong error "
+                "ranker and the composite score does not improve on it; see the mixed-stream "
+                "result for the failure mode confidence cannot see at all."
             ),
             "by_reliability_score": _selective_curve(scores, correct),
             "by_confidence_only": _selective_curve(conf, correct),
         },
+        "mixed_stream": mixed_stream_report(analyzer, test_results, y),
         "robustness": robustness_report(test_results, y),
         "ood": ood_report(analyzer, test_results),
         "disclaimer": (
@@ -451,8 +521,13 @@ def main() -> None:
     for row in summary["reliability_bands"]["test"]:
         print(f"  {row['band']:<6} n={row['n']:<4} coverage={row['coverage']:.3f}  "
               f"accuracy={row['accuracy']}")
-    print(f"AURC  reliability {sp['by_reliability_score']['aurc']}  vs  "
+    print(f"AURC in-distribution   reliability {sp['by_reliability_score']['aurc']}  vs  "
           f"confidence-only {sp['by_confidence_only']['aurc']}")
+    ms = summary["mixed_stream"]
+    print(f"AURC mixed stream      reliability {ms['selective']['by_reliability_score']['aurc']}"
+          f"  vs  confidence-only {ms['selective']['by_confidence_only']['aurc']}")
+    print(f"OOD images at >=0.90 confidence: {ms['ood_confidence']['frac_above_0_90'] * 100:.1f}%"
+          f"  |  reaching PASS: {ms['ood_verdicts']['PASS']['share'] * 100:.1f}%")
     print(f"OOD detection AUROC {summary['ood']['detection_auroc']}")
     print(f"\nwrote {ARTIFACT_DIR / 'audit_summary.json'}")
 

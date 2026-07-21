@@ -1,0 +1,1305 @@
+{
+  "generated_by": "python -m scanproof.evaluate",
+  "generated_at_utc": "2026-07-30T01:36:05Z",
+  "dataset": {
+    "flag": "pneumoniamnist",
+    "python_class": "PneumoniaMNIST",
+    "description": "The PneumoniaMNIST is based on a prior dataset of 5,856 pediatric chest X-Ray images. The task is binary-class classification of pneumonia against normal. We split the source training set with a ratio of 9:1 into training and validation set and use its source validation set as the test set. The source images are gray-scale, and their sizes are (384\u22122,916)\u00d7(127\u22122,713). We center-crop the images and resize them into 1\u00d728\u00d728.",
+    "license": "CC BY 4.0",
+    "n_samples": {
+      "train": 4708,
+      "val": 524,
+      "test": 624
+    },
+    "labels": {
+      "0": "normal",
+      "1": "pneumonia"
+    },
+    "source_url": "https://zenodo.org/records/10519652/files/pneumoniamnist_224.npz?download=1",
+    "md5": "d6a3c71de1b945ea11211b03746c1fe1"
+  },
+  "model": {
+    "members": [
+      {
+        "name": "m0-resnet18",
+        "arch": "resnet18",
+        "seed": 0,
+        "augment": "light",
+        "temperature": 1.3383
+      },
+      {
+        "name": "m1-resnet18s",
+        "arch": "resnet18",
+        "seed": 1,
+        "augment": "strong",
+        "temperature": 1.1358
+      },
+      {
+        "name": "m2-densenet121",
+        "arch": "densenet121",
+        "seed": 2,
+        "augment": "light",
+        "temperature": 1.2447
+      }
+    ],
+    "feature_member": "m0-resnet18",
+    "device": "mps",
+    "thresholds": {
+      "pass": 97.09,
+      "review": 84.04,
+      "ood_hard_percentile": 0.995,
+      "source": "selected on the validation split by python -m scanproof.evaluate"
+    },
+    "weights": {
+      "confidence": 0.2,
+      "stability": 0.4,
+      "agreement": 0.25,
+      "typicality": 0.15
+    }
+  },
+  "perturbation_battery": [
+    {
+      "key": "brightness",
+      "label": "Brightness",
+      "description": "Additive exposure shift",
+      "severities": [
+        {
+          "severity": 1,
+          "magnitude": "+12%"
+        },
+        {
+          "severity": 2,
+          "magnitude": "+24%"
+        },
+        {
+          "severity": 3,
+          "magnitude": "+36%"
+        }
+      ]
+    },
+    {
+      "key": "contrast",
+      "label": "Contrast",
+      "description": "Contrast reduction about the mean",
+      "severities": [
+        {
+          "severity": 1,
+          "magnitude": "-15%"
+        },
+        {
+          "severity": 2,
+          "magnitude": "-28%"
+        },
+        {
+          "severity": 3,
+          "magnitude": "-40%"
+        }
+      ]
+    },
+    {
+      "key": "gamma",
+      "label": "Gamma / windowing",
+      "description": "Display transfer-curve change",
+      "severities": [
+        {
+          "severity": 1,
+          "magnitude": "\u03b3 1.25"
+        },
+        {
+          "severity": 2,
+          "magnitude": "\u03b3 1.55"
+        },
+        {
+          "severity": 3,
+          "magnitude": "\u03b3 1.90"
+        }
+      ]
+    },
+    {
+      "key": "noise",
+      "label": "Detector noise",
+      "description": "Additive Gaussian sensor noise",
+      "severities": [
+        {
+          "severity": 1,
+          "magnitude": "\u03c3 0.02"
+        },
+        {
+          "severity": 2,
+          "magnitude": "\u03c3 0.045"
+        },
+        {
+          "severity": 3,
+          "magnitude": "\u03c3 0.08"
+        }
+      ]
+    },
+    {
+      "key": "blur",
+      "label": "Blur",
+      "description": "Gaussian focus / motion softness",
+      "severities": [
+        {
+          "severity": 1,
+          "magnitude": "\u03c3 0.8px"
+        },
+        {
+          "severity": 2,
+          "magnitude": "\u03c3 1.6px"
+        },
+        {
+          "severity": 3,
+          "magnitude": "\u03c3 2.6px"
+        }
+      ]
+    },
+    {
+      "key": "rotation",
+      "label": "Rotation",
+      "description": "Small patient/detector rotation",
+      "severities": [
+        {
+          "severity": 1,
+          "magnitude": "3\u00b0"
+        },
+        {
+          "severity": 2,
+          "magnitude": "6\u00b0"
+        },
+        {
+          "severity": 3,
+          "magnitude": "10\u00b0"
+        }
+      ]
+    },
+    {
+      "key": "resample",
+      "label": "Resolution loss",
+      "description": "Down/up-sampling round trip",
+      "severities": [
+        {
+          "severity": 1,
+          "magnitude": "0.70x"
+        },
+        {
+          "severity": 2,
+          "magnitude": "0.50x"
+        },
+        {
+          "severity": 3,
+          "magnitude": "0.35x"
+        }
+      ]
+    }
+  ],
+  "splits": {
+    "threshold_selection": {
+      "split": "val",
+      "n": 524
+    },
+    "reported": {
+      "split": "test",
+      "n": 624
+    }
+  },
+  "classification": {
+    "test": {
+      "n": 624,
+      "accuracy": 0.9423,
+      "balanced_accuracy": 0.9248,
+      "auroc": 0.992,
+      "sensitivity": 0.9949,
+      "specificity": 0.8547,
+      "confusion": {
+        "tp": 388,
+        "tn": 200,
+        "fp": 34,
+        "fn": 2
+      }
+    },
+    "validation": {
+      "n": 524,
+      "accuracy": 0.9885,
+      "balanced_accuracy": 0.9875,
+      "auroc": 0.9989,
+      "sensitivity": 0.9897,
+      "specificity": 0.9852,
+      "confusion": {
+        "tp": 385,
+        "tn": 133,
+        "fp": 2,
+        "fn": 4
+      }
+    },
+    "class_balance_test": {
+      "NORMAL": 234,
+      "PNEUMONIA": 390
+    }
+  },
+  "calibration": {
+    "note": "Temperature scaling is fit per member on the validation split. It cannot change any prediction \u2014 only the reported confidence.",
+    "ece_raw": 0.0453,
+    "ece_calibrated": 0.0407,
+    "brier_raw": 0.0541,
+    "brier_calibrated": 0.0537,
+    "nll_raw": 0.2215,
+    "nll_calibrated": 0.2009,
+    "reliability_diagram": {
+      "raw": [
+        {
+          "lower": 0.0,
+          "upper": 0.06666666666666667,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.06666666666666667,
+          "upper": 0.13333333333333333,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.13333333333333333,
+          "upper": 0.2,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.26666666666666666,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.26666666666666666,
+          "upper": 0.3333333333333333,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.3333333333333333,
+          "upper": 0.4,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.4666666666666667,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.4666666666666667,
+          "upper": 0.5333333333333333,
+          "count": 3,
+          "confidence": 0.5239118138949076,
+          "accuracy": 1.0
+        },
+        {
+          "lower": 0.5333333333333333,
+          "upper": 0.6,
+          "count": 9,
+          "confidence": 0.5687763624721103,
+          "accuracy": 0.5555555555555556
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.6666666666666666,
+          "count": 19,
+          "confidence": 0.6481848704187494,
+          "accuracy": 0.8421052631578947
+        },
+        {
+          "lower": 0.6666666666666666,
+          "upper": 0.7333333333333333,
+          "count": 19,
+          "confidence": 0.6972311327331945,
+          "accuracy": 1.0
+        },
+        {
+          "lower": 0.7333333333333333,
+          "upper": 0.8,
+          "count": 15,
+          "confidence": 0.771024243036906,
+          "accuracy": 0.7333333333333333
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.8666666666666667,
+          "count": 30,
+          "confidence": 0.826806644598643,
+          "accuracy": 0.8666666666666667
+        },
+        {
+          "lower": 0.8666666666666667,
+          "upper": 0.9333333333333333,
+          "count": 24,
+          "confidence": 0.9047450522581736,
+          "accuracy": 0.875
+        },
+        {
+          "lower": 0.9333333333333333,
+          "upper": 1.0,
+          "count": 505,
+          "confidence": 0.9956104292727933,
+          "accuracy": 0.9663366336633663
+        }
+      ],
+      "calibrated": [
+        {
+          "lower": 0.0,
+          "upper": 0.06666666666666667,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.06666666666666667,
+          "upper": 0.13333333333333333,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.13333333333333333,
+          "upper": 0.2,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.26666666666666666,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.26666666666666666,
+          "upper": 0.3333333333333333,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.3333333333333333,
+          "upper": 0.4,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.4666666666666667,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.4666666666666667,
+          "upper": 0.5333333333333333,
+          "count": 4,
+          "confidence": 0.51316237449646,
+          "accuracy": 0.75
+        },
+        {
+          "lower": 0.5333333333333333,
+          "upper": 0.6,
+          "count": 10,
+          "confidence": 0.5650903105735778,
+          "accuracy": 0.6
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.6666666666666666,
+          "count": 23,
+          "confidence": 0.6432088626467664,
+          "accuracy": 0.8695652173913043
+        },
+        {
+          "lower": 0.6666666666666666,
+          "upper": 0.7333333333333333,
+          "count": 18,
+          "confidence": 0.7079998966720369,
+          "accuracy": 0.9444444444444444
+        },
+        {
+          "lower": 0.7333333333333333,
+          "upper": 0.8,
+          "count": 17,
+          "confidence": 0.7756237641853445,
+          "accuracy": 0.7058823529411765
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.8666666666666667,
+          "count": 28,
+          "confidence": 0.8263326265982219,
+          "accuracy": 0.8571428571428571
+        },
+        {
+          "lower": 0.8666666666666667,
+          "upper": 0.9333333333333333,
+          "count": 34,
+          "confidence": 0.905180140014957,
+          "accuracy": 0.9117647058823529
+        },
+        {
+          "lower": 0.9333333333333333,
+          "upper": 1.0,
+          "count": 490,
+          "confidence": 0.9946277242958498,
+          "accuracy": 0.9693877551020408
+        }
+      ]
+    }
+  },
+  "reliability_bands": {
+    "thresholds": {
+      "pass": 97.09,
+      "review": 84.04,
+      "source": "selected on the validation split by python -m scanproof.evaluate"
+    },
+    "test": [
+      {
+        "band": "PASS",
+        "n": 381,
+        "coverage": 0.6106,
+        "accuracy": 0.979,
+        "mean_reliability_score": 99.68,
+        "mean_confidence": 0.9977,
+        "errors": 8,
+        "share_of_all_errors": 0.2222,
+        "auroc": 0.9668
+      },
+      {
+        "band": "REVIEW",
+        "n": 80,
+        "coverage": 0.1282,
+        "accuracy": 0.9,
+        "mean_reliability_score": 90.85,
+        "mean_confidence": 0.9811,
+        "errors": 8,
+        "share_of_all_errors": 0.2222,
+        "auroc": 0.9776
+      },
+      {
+        "band": "BLOCK",
+        "n": 163,
+        "coverage": 0.2612,
+        "accuracy": 0.8773,
+        "mean_reliability_score": 53.84,
+        "mean_confidence": 0.8044,
+        "errors": 20,
+        "share_of_all_errors": 0.5556,
+        "auroc": 0.8798
+      }
+    ],
+    "validation": [
+      {
+        "band": "PASS",
+        "n": 366,
+        "coverage": 0.6985,
+        "accuracy": 1.0,
+        "mean_reliability_score": 99.57,
+        "mean_confidence": 0.9968,
+        "errors": 0,
+        "share_of_all_errors": 0.0,
+        "auroc": 1.0
+      },
+      {
+        "band": "REVIEW",
+        "n": 91,
+        "coverage": 0.1737,
+        "accuracy": 0.978,
+        "mean_reliability_score": 90.82,
+        "mean_confidence": 0.9878,
+        "errors": 2,
+        "share_of_all_errors": 0.3333,
+        "auroc": 0.9995
+      },
+      {
+        "band": "BLOCK",
+        "n": 67,
+        "coverage": 0.1279,
+        "accuracy": 0.9403,
+        "mean_reliability_score": 61.92,
+        "mean_confidence": 0.8406,
+        "errors": 4,
+        "share_of_all_errors": 0.6667,
+        "auroc": 0.9855
+      }
+    ]
+  },
+  "selective_prediction": {
+    "note": "Both curves rank the same 624 in-distribution test predictions and retain the top fraction. AURC is the mean error rate across all coverage levels \u2014 lower is better. On this split calibrated confidence is already a strong error ranker and the composite score does not improve on it; see the mixed-stream result for the failure mode confidence cannot see at all.",
+    "by_reliability_score": {
+      "points": [
+        {
+          "coverage": 0.0497,
+          "accuracy": 1.0,
+          "risk": 0.0,
+          "n_retained": 31
+        },
+        {
+          "coverage": 0.0994,
+          "accuracy": 1.0,
+          "risk": 0.0,
+          "n_retained": 62
+        },
+        {
+          "coverage": 0.1506,
+          "accuracy": 1.0,
+          "risk": 0.0,
+          "n_retained": 94
+        },
+        {
+          "coverage": 0.2003,
+          "accuracy": 1.0,
+          "risk": 0.0,
+          "n_retained": 125
+        },
+        {
+          "coverage": 0.25,
+          "accuracy": 1.0,
+          "risk": 0.0,
+          "n_retained": 156
+        },
+        {
+          "coverage": 0.2997,
+          "accuracy": 1.0,
+          "risk": 0.0,
+          "n_retained": 187
+        },
+        {
+          "coverage": 0.3494,
+          "accuracy": 0.9954,
+          "risk": 0.0046,
+          "n_retained": 218
+        },
+        {
+          "coverage": 0.4006,
+          "accuracy": 0.996,
+          "risk": 0.004,
+          "n_retained": 250
+        },
+        {
+          "coverage": 0.4503,
+          "accuracy": 0.9964,
+          "risk": 0.0036,
+          "n_retained": 281
+        },
+        {
+          "coverage": 0.5,
+          "accuracy": 0.9968,
+          "risk": 0.0032,
+          "n_retained": 312
+        },
+        {
+          "coverage": 0.5497,
+          "accuracy": 0.9942,
+          "risk": 0.0058,
+          "n_retained": 343
+        },
+        {
+          "coverage": 0.5994,
+          "accuracy": 0.9813,
+          "risk": 0.0187,
+          "n_retained": 374
+        },
+        {
+          "coverage": 0.6506,
+          "accuracy": 0.9729,
+          "risk": 0.0271,
+          "n_retained": 406
+        },
+        {
+          "coverage": 0.7003,
+          "accuracy": 0.968,
+          "risk": 0.032,
+          "n_retained": 437
+        },
+        {
+          "coverage": 0.75,
+          "accuracy": 0.9637,
+          "risk": 0.0363,
+          "n_retained": 468
+        },
+        {
+          "coverage": 0.7997,
+          "accuracy": 0.9579,
+          "risk": 0.0421,
+          "n_retained": 499
+        },
+        {
+          "coverage": 0.8494,
+          "accuracy": 0.9585,
+          "risk": 0.0415,
+          "n_retained": 530
+        },
+        {
+          "coverage": 0.9006,
+          "accuracy": 0.952,
+          "risk": 0.048,
+          "n_retained": 562
+        },
+        {
+          "coverage": 0.9503,
+          "accuracy": 0.9477,
+          "risk": 0.0523,
+          "n_retained": 593
+        },
+        {
+          "coverage": 1.0,
+          "accuracy": 0.9423,
+          "risk": 0.0577,
+          "n_retained": 624
+        }
+      ],
+      "aurc": 0.0175
+    },
+    "by_confidence_only": {
+      "points": [
+        {
+          "coverage": 0.0497,
+          "accuracy": 1.0,
+          "risk": 0.0,
+          "n_retained": 31
+        },
+        {
+          "coverage": 0.0994,
+          "accuracy": 1.0,
+          "risk": 0.0,
+          "n_retained": 62
+        },
+        {
+          "coverage": 0.1506,
+          "accuracy": 1.0,
+          "risk": 0.0,
+          "n_retained": 94
+        },
+        {
+          "coverage": 0.2003,
+          "accuracy": 1.0,
+          "risk": 0.0,
+          "n_retained": 125
+        },
+        {
+          "coverage": 0.25,
+          "accuracy": 1.0,
+          "risk": 0.0,
+          "n_retained": 156
+        },
+        {
+          "coverage": 0.2997,
+          "accuracy": 1.0,
+          "risk": 0.0,
+          "n_retained": 187
+        },
+        {
+          "coverage": 0.3494,
+          "accuracy": 0.9954,
+          "risk": 0.0046,
+          "n_retained": 218
+        },
+        {
+          "coverage": 0.4006,
+          "accuracy": 0.996,
+          "risk": 0.004,
+          "n_retained": 250
+        },
+        {
+          "coverage": 0.4503,
+          "accuracy": 0.9964,
+          "risk": 0.0036,
+          "n_retained": 281
+        },
+        {
+          "coverage": 0.5,
+          "accuracy": 0.9968,
+          "risk": 0.0032,
+          "n_retained": 312
+        },
+        {
+          "coverage": 0.5497,
+          "accuracy": 0.9971,
+          "risk": 0.0029,
+          "n_retained": 343
+        },
+        {
+          "coverage": 0.5994,
+          "accuracy": 0.9973,
+          "risk": 0.0027,
+          "n_retained": 374
+        },
+        {
+          "coverage": 0.6506,
+          "accuracy": 0.9951,
+          "risk": 0.0049,
+          "n_retained": 406
+        },
+        {
+          "coverage": 0.7003,
+          "accuracy": 0.9886,
+          "risk": 0.0114,
+          "n_retained": 437
+        },
+        {
+          "coverage": 0.75,
+          "accuracy": 0.9765,
+          "risk": 0.0235,
+          "n_retained": 468
+        },
+        {
+          "coverage": 0.7997,
+          "accuracy": 0.9659,
+          "risk": 0.0341,
+          "n_retained": 499
+        },
+        {
+          "coverage": 0.8494,
+          "accuracy": 0.9623,
+          "risk": 0.0377,
+          "n_retained": 530
+        },
+        {
+          "coverage": 0.9006,
+          "accuracy": 0.9573,
+          "risk": 0.0427,
+          "n_retained": 562
+        },
+        {
+          "coverage": 0.9503,
+          "accuracy": 0.9494,
+          "risk": 0.0506,
+          "n_retained": 593
+        },
+        {
+          "coverage": 1.0,
+          "accuracy": 0.9423,
+          "risk": 0.0577,
+          "n_retained": 624
+        }
+      ],
+      "aurc": 0.0126
+    }
+  },
+  "mixed_stream": {
+    "note": "624 chest films from the test split plus 156 breast ultrasound images. Any ultrasound that is retained counts as an error: every PNEUMONIA/NORMAL answer on a non-chest-film is wrong regardless of which one it picks.",
+    "n_in_distribution": 624,
+    "n_out_of_distribution": 156,
+    "ood_confidence": {
+      "mean": 0.9584,
+      "frac_above_0_90": 0.9103,
+      "frac_above_0_99": 0.109,
+      "max": 0.996
+    },
+    "ood_verdicts": {
+      "PASS": {
+        "n": 1,
+        "share": 0.0064
+      },
+      "REVIEW": {
+        "n": 4,
+        "share": 0.0256
+      },
+      "BLOCK": {
+        "n": 151,
+        "share": 0.9679
+      }
+    },
+    "in_distribution_verdicts": {
+      "PASS": {
+        "n": 381,
+        "share": 0.6106
+      },
+      "REVIEW": {
+        "n": 80,
+        "share": 0.1282
+      },
+      "BLOCK": {
+        "n": 163,
+        "share": 0.2612
+      }
+    },
+    "selective": {
+      "by_reliability_score": {
+        "points": [
+          {
+            "coverage": 0.05,
+            "accuracy": 1.0,
+            "risk": 0.0,
+            "n_retained": 39
+          },
+          {
+            "coverage": 0.1,
+            "accuracy": 1.0,
+            "risk": 0.0,
+            "n_retained": 78
+          },
+          {
+            "coverage": 0.15,
+            "accuracy": 1.0,
+            "risk": 0.0,
+            "n_retained": 117
+          },
+          {
+            "coverage": 0.2,
+            "accuracy": 1.0,
+            "risk": 0.0,
+            "n_retained": 156
+          },
+          {
+            "coverage": 0.25,
+            "accuracy": 1.0,
+            "risk": 0.0,
+            "n_retained": 195
+          },
+          {
+            "coverage": 0.3,
+            "accuracy": 0.9957,
+            "risk": 0.0043,
+            "n_retained": 234
+          },
+          {
+            "coverage": 0.35,
+            "accuracy": 0.9963,
+            "risk": 0.0037,
+            "n_retained": 273
+          },
+          {
+            "coverage": 0.4,
+            "accuracy": 0.9968,
+            "risk": 0.0032,
+            "n_retained": 312
+          },
+          {
+            "coverage": 0.45,
+            "accuracy": 0.9943,
+            "risk": 0.0057,
+            "n_retained": 351
+          },
+          {
+            "coverage": 0.5,
+            "accuracy": 0.9718,
+            "risk": 0.0282,
+            "n_retained": 390
+          },
+          {
+            "coverage": 0.55,
+            "accuracy": 0.965,
+            "risk": 0.035,
+            "n_retained": 429
+          },
+          {
+            "coverage": 0.6,
+            "accuracy": 0.9551,
+            "risk": 0.0449,
+            "n_retained": 468
+          },
+          {
+            "coverage": 0.65,
+            "accuracy": 0.8895,
+            "risk": 0.1105,
+            "n_retained": 507
+          },
+          {
+            "coverage": 0.7,
+            "accuracy": 0.8297,
+            "risk": 0.1703,
+            "n_retained": 546
+          },
+          {
+            "coverage": 0.75,
+            "accuracy": 0.7829,
+            "risk": 0.2171,
+            "n_retained": 585
+          },
+          {
+            "coverage": 0.8,
+            "accuracy": 0.7532,
+            "risk": 0.2468,
+            "n_retained": 624
+          },
+          {
+            "coverage": 0.85,
+            "accuracy": 0.7406,
+            "risk": 0.2594,
+            "n_retained": 663
+          },
+          {
+            "coverage": 0.9,
+            "accuracy": 0.745,
+            "risk": 0.255,
+            "n_retained": 702
+          },
+          {
+            "coverage": 0.95,
+            "accuracy": 0.7476,
+            "risk": 0.2524,
+            "n_retained": 741
+          },
+          {
+            "coverage": 1.0,
+            "accuracy": 0.7538,
+            "risk": 0.2462,
+            "n_retained": 780
+          }
+        ],
+        "aurc": 0.0883
+      },
+      "by_confidence_only": {
+        "points": [
+          {
+            "coverage": 0.05,
+            "accuracy": 1.0,
+            "risk": 0.0,
+            "n_retained": 39
+          },
+          {
+            "coverage": 0.1,
+            "accuracy": 1.0,
+            "risk": 0.0,
+            "n_retained": 78
+          },
+          {
+            "coverage": 0.15,
+            "accuracy": 1.0,
+            "risk": 0.0,
+            "n_retained": 117
+          },
+          {
+            "coverage": 0.2,
+            "accuracy": 1.0,
+            "risk": 0.0,
+            "n_retained": 156
+          },
+          {
+            "coverage": 0.25,
+            "accuracy": 1.0,
+            "risk": 0.0,
+            "n_retained": 195
+          },
+          {
+            "coverage": 0.3,
+            "accuracy": 0.9957,
+            "risk": 0.0043,
+            "n_retained": 234
+          },
+          {
+            "coverage": 0.35,
+            "accuracy": 0.9963,
+            "risk": 0.0037,
+            "n_retained": 273
+          },
+          {
+            "coverage": 0.4,
+            "accuracy": 0.9968,
+            "risk": 0.0032,
+            "n_retained": 312
+          },
+          {
+            "coverage": 0.45,
+            "accuracy": 0.9972,
+            "risk": 0.0028,
+            "n_retained": 351
+          },
+          {
+            "coverage": 0.5,
+            "accuracy": 0.9897,
+            "risk": 0.0103,
+            "n_retained": 390
+          },
+          {
+            "coverage": 0.55,
+            "accuracy": 0.965,
+            "risk": 0.035,
+            "n_retained": 429
+          },
+          {
+            "coverage": 0.6,
+            "accuracy": 0.9231,
+            "risk": 0.0769,
+            "n_retained": 468
+          },
+          {
+            "coverage": 0.65,
+            "accuracy": 0.8698,
+            "risk": 0.1302,
+            "n_retained": 507
+          },
+          {
+            "coverage": 0.7,
+            "accuracy": 0.8315,
+            "risk": 0.1685,
+            "n_retained": 546
+          },
+          {
+            "coverage": 0.75,
+            "accuracy": 0.7932,
+            "risk": 0.2068,
+            "n_retained": 585
+          },
+          {
+            "coverage": 0.8,
+            "accuracy": 0.7644,
+            "risk": 0.2356,
+            "n_retained": 624
+          },
+          {
+            "coverage": 0.85,
+            "accuracy": 0.7557,
+            "risk": 0.2443,
+            "n_retained": 663
+          },
+          {
+            "coverage": 0.9,
+            "accuracy": 0.7507,
+            "risk": 0.2493,
+            "n_retained": 702
+          },
+          {
+            "coverage": 0.95,
+            "accuracy": 0.753,
+            "risk": 0.247,
+            "n_retained": 741
+          },
+          {
+            "coverage": 1.0,
+            "accuracy": 0.7538,
+            "risk": 0.2462,
+            "n_retained": 780
+          }
+        ],
+        "aurc": 0.0875
+      }
+    }
+  },
+  "robustness": {
+    "clean_accuracy": 0.9423,
+    "families": [
+      {
+        "family": "brightness",
+        "family_label": "Brightness",
+        "description": "Additive exposure shift",
+        "severities": [
+          {
+            "severity": 1,
+            "magnitude": "+12%",
+            "accuracy": 0.9407,
+            "accuracy_drop": 0.0016,
+            "flip_rate": 0.008
+          },
+          {
+            "severity": 2,
+            "magnitude": "+24%",
+            "accuracy": 0.9103,
+            "accuracy_drop": 0.0321,
+            "flip_rate": 0.0417
+          },
+          {
+            "severity": 3,
+            "magnitude": "+36%",
+            "accuracy": 0.7484,
+            "accuracy_drop": 0.1939,
+            "flip_rate": 0.2003
+          }
+        ]
+      },
+      {
+        "family": "blur",
+        "family_label": "Blur",
+        "description": "Gaussian focus / motion softness",
+        "severities": [
+          {
+            "severity": 1,
+            "magnitude": "\u03c3 0.8px",
+            "accuracy": 0.9359,
+            "accuracy_drop": 0.0064,
+            "flip_rate": 0.0096
+          },
+          {
+            "severity": 2,
+            "magnitude": "\u03c3 1.6px",
+            "accuracy": 0.9087,
+            "accuracy_drop": 0.0337,
+            "flip_rate": 0.0369
+          },
+          {
+            "severity": 3,
+            "magnitude": "\u03c3 2.6px",
+            "accuracy": 0.8173,
+            "accuracy_drop": 0.125,
+            "flip_rate": 0.1314
+          }
+        ]
+      },
+      {
+        "family": "noise",
+        "family_label": "Detector noise",
+        "description": "Additive Gaussian sensor noise",
+        "severities": [
+          {
+            "severity": 1,
+            "magnitude": "\u03c3 0.02",
+            "accuracy": 0.9375,
+            "accuracy_drop": 0.0048,
+            "flip_rate": 0.0048
+          },
+          {
+            "severity": 2,
+            "magnitude": "\u03c3 0.045",
+            "accuracy": 0.9311,
+            "accuracy_drop": 0.0112,
+            "flip_rate": 0.0176
+          },
+          {
+            "severity": 3,
+            "magnitude": "\u03c3 0.08",
+            "accuracy": 0.8494,
+            "accuracy_drop": 0.0929,
+            "flip_rate": 0.0994
+          }
+        ]
+      },
+      {
+        "family": "gamma",
+        "family_label": "Gamma / windowing",
+        "description": "Display transfer-curve change",
+        "severities": [
+          {
+            "severity": 1,
+            "magnitude": "\u03b3 1.25",
+            "accuracy": 0.9471,
+            "accuracy_drop": -0.0048,
+            "flip_rate": 0.008
+          },
+          {
+            "severity": 2,
+            "magnitude": "\u03b3 1.55",
+            "accuracy": 0.9503,
+            "accuracy_drop": -0.008,
+            "flip_rate": 0.0176
+          },
+          {
+            "severity": 3,
+            "magnitude": "\u03b3 1.90",
+            "accuracy": 0.9327,
+            "accuracy_drop": 0.0096,
+            "flip_rate": 0.0449
+          }
+        ]
+      },
+      {
+        "family": "resample",
+        "family_label": "Resolution loss",
+        "description": "Down/up-sampling round trip",
+        "severities": [
+          {
+            "severity": 1,
+            "magnitude": "0.70x",
+            "accuracy": 0.9359,
+            "accuracy_drop": 0.0064,
+            "flip_rate": 0.0096
+          },
+          {
+            "severity": 2,
+            "magnitude": "0.50x",
+            "accuracy": 0.9215,
+            "accuracy_drop": 0.0208,
+            "flip_rate": 0.024
+          },
+          {
+            "severity": 3,
+            "magnitude": "0.35x",
+            "accuracy": 0.9038,
+            "accuracy_drop": 0.0385,
+            "flip_rate": 0.0417
+          }
+        ]
+      },
+      {
+        "family": "contrast",
+        "family_label": "Contrast",
+        "description": "Contrast reduction about the mean",
+        "severities": [
+          {
+            "severity": 1,
+            "magnitude": "-15%",
+            "accuracy": 0.9439,
+            "accuracy_drop": -0.0016,
+            "flip_rate": 0.0016
+          },
+          {
+            "severity": 2,
+            "magnitude": "-28%",
+            "accuracy": 0.9423,
+            "accuracy_drop": 0.0,
+            "flip_rate": 0.0064
+          },
+          {
+            "severity": 3,
+            "magnitude": "-40%",
+            "accuracy": 0.9231,
+            "accuracy_drop": 0.0192,
+            "flip_rate": 0.0256
+          }
+        ]
+      },
+      {
+        "family": "rotation",
+        "family_label": "Rotation",
+        "description": "Small patient/detector rotation",
+        "severities": [
+          {
+            "severity": 1,
+            "magnitude": "3\u00b0",
+            "accuracy": 0.9407,
+            "accuracy_drop": 0.0016,
+            "flip_rate": 0.008
+          },
+          {
+            "severity": 2,
+            "magnitude": "6\u00b0",
+            "accuracy": 0.9503,
+            "accuracy_drop": -0.008,
+            "flip_rate": 0.0144
+          },
+          {
+            "severity": 3,
+            "magnitude": "10\u00b0",
+            "accuracy": 0.9535,
+            "accuracy_drop": -0.0112,
+            "flip_rate": 0.0176
+          }
+        ]
+      }
+    ]
+  },
+  "ood": {
+    "method": "class-conditional Mahalanobis (Ledoit-Wolf tied covariance) on penultimate features",
+    "feature_member": "m0-resnet18",
+    "in_distribution": {
+      "source": "PneumoniaMNIST test split",
+      "n": 624,
+      "mean_percentile": 0.5239,
+      "frac_above_hard_gate": 0.0465
+    },
+    "out_of_distribution": {
+      "source": "breastmnist test split (breast ultrasound, CC BY 4.0)",
+      "n": 156,
+      "mean_percentile": 0.9988,
+      "frac_above_hard_gate": 0.9679
+    },
+    "detection_auroc": 0.9948,
+    "hard_gate_percentile": 0.995
+  },
+  "disclaimer": "Research prototype. Metrics describe behaviour on the PneumoniaMNIST test split only. Nothing here is a claim of clinical validity, safety or regulatory fitness."
+}

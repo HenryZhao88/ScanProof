@@ -176,6 +176,23 @@ export interface Audit {
     by_reliability_score: { points: SelectivePoint[]; aurc: number };
     by_confidence_only: { points: SelectivePoint[]; aurc: number };
   };
+  mixed_stream: {
+    note: string;
+    n_in_distribution: number;
+    n_out_of_distribution: number;
+    ood_confidence: {
+      mean: number;
+      frac_above_0_90: number;
+      frac_above_0_99: number;
+      max: number;
+    };
+    ood_verdicts: Record<Verdict, { n: number; share: number }>;
+    in_distribution_verdicts: Record<Verdict, { n: number; share: number }>;
+    selective: {
+      by_reliability_score: { points: SelectivePoint[]; aurc: number };
+      by_confidence_only: { points: SelectivePoint[]; aurc: number };
+    };
+  };
   robustness: {
     clean_accuracy: number;
     families: {

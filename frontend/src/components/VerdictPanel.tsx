@@ -155,7 +155,7 @@ function SubScoreMeter({ sub }: { sub: SubScore }) {
         <div style={{ width: `${earnedPct}%`, background: tone, borderRadius: 1 }} />
         {lost > 0.05 && (
           <div
-            className="hatch"
+            className="relative hatch"
             style={{
               width: `${100 - earnedPct}%`,
               borderRadius: 1,

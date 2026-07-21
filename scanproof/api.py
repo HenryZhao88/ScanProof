@@ -22,6 +22,7 @@ from __future__ import annotations
 import json
 import logging
 import time
+from contextlib import asynccontextmanager
 from typing import Any
 
 import numpy as np
@@ -226,12 +227,19 @@ def audit() -> dict:
     return State.audit
 
 
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    _load_state()
+    yield
+
+
 def create_app() -> FastAPI:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s %(message)s")
     app = FastAPI(
         title="ScanProof",
         version="0.1.0",
         description=DISCLAIMER,
+        lifespan=lifespan,
     )
     app.add_middleware(
         CORSMiddleware,
@@ -240,10 +248,6 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
     app.include_router(api)
-
-    @app.on_event("startup")
-    def _startup() -> None:
-        _load_state()
 
     # Serve the built SPA when it exists, so the demo is one process and one port.
     if FRONTEND_DIST.exists():

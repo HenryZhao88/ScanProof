@@ -1,0 +1,585 @@
+{
+  "pass_threshold": 97.09,
+  "review_threshold": 84.04,
+  "weights": {
+    "confidence": 0.2,
+    "stability": 0.4,
+    "agreement": 0.25,
+    "typicality": 0.15
+  },
+  "ood_hard_pct": 0.995,
+  "source": "selected on the validation split by python -m scanproof.evaluate",
+  "selection": {
+    "target_pass_accuracy": 0.99,
+    "target_met": true,
+    "block_budget": 0.12,
+    "max_pass_coverage": 0.7,
+    "min_pass_coverage": 0.25,
+    "coverage_floor_score": 97.0,
+    "val_pass_coverage": 0.6985,
+    "val_pass_accuracy": 1.0,
+    "rule": "PASS threshold = stricter of (a) the lowest score whose validation PASS band reaches target_pass_accuracy and (b) the score quantile capping PASS coverage at max_pass_coverage. REVIEW threshold = the block_budget score quantile.",
+    "sweep": [
+      {
+        "pass_threshold": 97.09,
+        "coverage": 0.6985,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 97.2,
+        "coverage": 0.6966,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 97.22,
+        "coverage": 0.6947,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 97.31,
+        "coverage": 0.6927,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 97.41,
+        "coverage": 0.6908,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 97.44,
+        "coverage": 0.6851,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 97.52,
+        "coverage": 0.6851,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 97.53,
+        "coverage": 0.6832,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 97.54,
+        "coverage": 0.6813,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 97.55,
+        "coverage": 0.6794,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 97.59,
+        "coverage": 0.6775,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 97.67,
+        "coverage": 0.6737,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 97.75,
+        "coverage": 0.6737,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 97.83,
+        "coverage": 0.6718,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 97.87,
+        "coverage": 0.6679,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.03,
+        "coverage": 0.666,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.05,
+        "coverage": 0.6622,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.09,
+        "coverage": 0.6622,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.1,
+        "coverage": 0.6584,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.31,
+        "coverage": 0.6565,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.33,
+        "coverage": 0.6527,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.42,
+        "coverage": 0.6508,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.43,
+        "coverage": 0.6508,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.48,
+        "coverage": 0.6469,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.51,
+        "coverage": 0.6469,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.52,
+        "coverage": 0.6431,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.59,
+        "coverage": 0.6393,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.68,
+        "coverage": 0.6393,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.7,
+        "coverage": 0.6355,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.74,
+        "coverage": 0.6336,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.78,
+        "coverage": 0.6317,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.79,
+        "coverage": 0.6298,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.8,
+        "coverage": 0.6298,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.82,
+        "coverage": 0.6279,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.83,
+        "coverage": 0.626,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.84,
+        "coverage": 0.624,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.88,
+        "coverage": 0.6202,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.91,
+        "coverage": 0.6164,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.92,
+        "coverage": 0.6145,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 98.97,
+        "coverage": 0.6107,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.02,
+        "coverage": 0.6069,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.04,
+        "coverage": 0.605,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.05,
+        "coverage": 0.6031,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.07,
+        "coverage": 0.6031,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.09,
+        "coverage": 0.5992,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.11,
+        "coverage": 0.5954,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.12,
+        "coverage": 0.5954,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.16,
+        "coverage": 0.5916,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.17,
+        "coverage": 0.5897,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.18,
+        "coverage": 0.5859,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.19,
+        "coverage": 0.5821,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.21,
+        "coverage": 0.5802,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.22,
+        "coverage": 0.5782,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.24,
+        "coverage": 0.5744,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.26,
+        "coverage": 0.5706,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.28,
+        "coverage": 0.5687,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.29,
+        "coverage": 0.5687,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.3,
+        "coverage": 0.563,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.31,
+        "coverage": 0.563,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.36,
+        "coverage": 0.5573,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.38,
+        "coverage": 0.5553,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.41,
+        "coverage": 0.5515,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.42,
+        "coverage": 0.5496,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.43,
+        "coverage": 0.5477,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.44,
+        "coverage": 0.5439,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.45,
+        "coverage": 0.5382,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.46,
+        "coverage": 0.5363,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.48,
+        "coverage": 0.5305,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.49,
+        "coverage": 0.5286,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.5,
+        "coverage": 0.5267,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.51,
+        "coverage": 0.521,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.52,
+        "coverage": 0.5191,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.53,
+        "coverage": 0.5134,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.54,
+        "coverage": 0.5134,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.57,
+        "coverage": 0.5095,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.59,
+        "coverage": 0.5095,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.61,
+        "coverage": 0.5057,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.62,
+        "coverage": 0.4981,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.63,
+        "coverage": 0.4943,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.64,
+        "coverage": 0.4924,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.65,
+        "coverage": 0.4866,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.66,
+        "coverage": 0.4828,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.67,
+        "coverage": 0.4809,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.68,
+        "coverage": 0.4752,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.69,
+        "coverage": 0.4714,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.71,
+        "coverage": 0.4637,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.72,
+        "coverage": 0.4618,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.73,
+        "coverage": 0.458,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.74,
+        "coverage": 0.4523,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.75,
+        "coverage": 0.4466,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.76,
+        "coverage": 0.4447,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.77,
+        "coverage": 0.4198,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.78,
+        "coverage": 0.4103,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.79,
+        "coverage": 0.4027,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.8,
+        "coverage": 0.3855,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.81,
+        "coverage": 0.3664,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.82,
+        "coverage": 0.3492,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.83,
+        "coverage": 0.3378,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.84,
+        "coverage": 0.3187,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.85,
+        "coverage": 0.3015,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.86,
+        "coverage": 0.292,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.87,
+        "coverage": 0.271,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.88,
+        "coverage": 0.2462,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.89,
+        "coverage": 0.2252,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.9,
+        "coverage": 0.1966,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.91,
+        "coverage": 0.1679,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.92,
+        "coverage": 0.1393,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.93,
+        "coverage": 0.1011,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.94,
+        "coverage": 0.063,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.95,
+        "coverage": 0.0344,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.96,
+        "coverage": 0.0191,
+        "accuracy": 1.0
+      },
+      {
+        "pass_threshold": 99.97,
+        "coverage": 0.0038,
+        "accuracy": 1.0
+      }
+    ]
+  }
+}

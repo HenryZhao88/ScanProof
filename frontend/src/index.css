@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Automatic source detection came up empty under this Vite/plugin pair — the
+   build emitted preflight and the theme but no utilities. Declaring the scan
+   root explicitly is deterministic and does not depend on that heuristic. */
+@source "./**/*.{ts,tsx}";
+
 /* ScanProof is a test bench, not a viewer. The room is dark because the only
    thing that should be bright is the film.
 
@@ -66,11 +71,24 @@ body {
 }
 
 /* The portion of a sub-score that was deducted, and the BLOCK band where hue
-   is unavailable (print, forced colours). */
-.hatch {
+   is unavailable (print, forced colours).
+
+   Applied as a ::after overlay rather than background-image: callers set the
+   fill with an inline `background`/`backgroundColor`, and the shorthand would
+   silently wipe a background-image declared here.
+
+   No `position` is set on .hatch itself — this rule is unlayered and would beat
+   Tailwind's layered `absolute`/`relative` utilities. Call sites carry their own
+   positioning class instead. */
+.hatch::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
   background-image: repeating-linear-gradient(
     135deg,
-    color-mix(in oklab, var(--color-bone) 14%, transparent) 0 1px,
+    color-mix(in oklab, var(--color-bone) 26%, transparent) 0 1px,
     transparent 1px 5px
   );
 }

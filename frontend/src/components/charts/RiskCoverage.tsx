@@ -46,7 +46,7 @@ export function RiskCoverage({
   const last = (pts: SelectivePoint[]) => pts[pts.length - 1];
 
   return (
-    <figure className="relative">
+    <figure className="relative max-w-[680px]">
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img"
         aria-label={`Risk coverage curve. ${subjectLabel} versus ${controlLabel}.`}>
         {/* recessive grid */}

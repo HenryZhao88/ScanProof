@@ -21,7 +21,7 @@ export function ReliabilityDiagram({ bins }: { bins: Bin[] }) {
   const maxCount = Math.max(...bins.map((b) => b.count), 1);
 
   return (
-    <figure className="relative">
+    <figure className="relative max-w-[460px]">
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img"
         aria-label="Reliability diagram: observed accuracy against predicted confidence.">
         {[0, 0.25, 0.5, 0.75, 1].map((t) => (

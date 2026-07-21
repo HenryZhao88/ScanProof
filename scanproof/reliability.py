@@ -257,7 +257,7 @@ def assess(bundle: SignalBundle, cfg: ReliabilityConfig | None = None) -> Reliab
         "Perturbation stability",
         stab_sub,
         w["stability"],
-        f"{n_flips}/{n_var} of the perturbed variants changed the predicted class; "
+        f"{n_flips} of {n_var} perturbed variants changed the predicted class; "
         f"mean |Δ P({pred_name})| = {mean_shift:.3f}.",
     )
 
