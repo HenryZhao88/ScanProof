@@ -1,0 +1,415 @@
+{
+  "generated_by": "python -m scanproof.shift",
+  "generated_at_utc": "2026-07-30T02:58:11Z",
+  "question": "Confidence ranks errors well inside the training distribution. Does it also tell you when the input is no longer from that distribution?",
+  "answer": {
+    "confidence_detection_auroc": 0.7479,
+    "scanproof_detection_auroc": 0.7955,
+    "pediatric_pass_rate": 0.6202,
+    "adult_pass_rate": 0.0475,
+    "pediatric_confidence": 0.9357,
+    "adult_confidence": 0.8599,
+    "pediatric_accuracy": 0.9311,
+    "adult_accuracy": 0.626
+  },
+  "arms": [
+    {
+      "name": "in_distribution",
+      "label": "Pediatric \u00b7 trained distribution",
+      "description": "PneumoniaMNIST test split at native 224. The population the ensemble was fine-tuned on.",
+      "n": 624,
+      "model_confidence": {
+        "mean": 0.945,
+        "ci_low": 0.9357,
+        "ci_high": 0.9537
+      },
+      "confidence_ge_090": 0.8189,
+      "reliability_score": {
+        "mean": 86.5736,
+        "ci_low": 84.7008,
+        "ci_high": 88.3099
+      },
+      "verdicts": {
+        "PASS": {
+          "n": 381,
+          "share": 0.6106
+        },
+        "REVIEW": {
+          "n": 80,
+          "share": 0.1282
+        },
+        "BLOCK": {
+          "n": 163,
+          "share": 0.2612
+        }
+      },
+      "mean_subscores": {
+        "confidence": 0.911,
+        "stability": 0.8666,
+        "agreement": 0.8244,
+        "typicality": 0.872
+      },
+      "mean_ood_percentile": 0.5239,
+      "mean_flips_of_21": 0.769,
+      "flip_rate": 0.0366,
+      "mean_ensemble_std": 0.0514,
+      "accuracy": {
+        "mean": 0.9423,
+        "ci_low": 0.9231,
+        "ci_high": 0.9599
+      },
+      "auroc": 0.992,
+      "positive_rate": 0.625,
+      "accuracy_by_band": {
+        "PASS": {
+          "n": 381,
+          "accuracy": 0.979
+        },
+        "REVIEW": {
+          "n": 80,
+          "accuracy": 0.9
+        },
+        "BLOCK": {
+          "n": 163,
+          "accuracy": 0.8773
+        }
+      }
+    },
+    {
+      "name": "resolution_control",
+      "label": "Pediatric \u00b7 shift-set resampling",
+      "description": "The same films, resampled 128 \u2192 224 exactly as the adult arm is. Isolates resolution from population.",
+      "n": 624,
+      "model_confidence": {
+        "mean": 0.9357,
+        "ci_low": 0.9258,
+        "ci_high": 0.9452
+      },
+      "confidence_ge_090": 0.7901,
+      "reliability_score": {
+        "mean": 85.1442,
+        "ci_low": 83.1719,
+        "ci_high": 87.0227
+      },
+      "verdicts": {
+        "PASS": {
+          "n": 387,
+          "share": 0.6202
+        },
+        "REVIEW": {
+          "n": 56,
+          "share": 0.0897
+        },
+        "BLOCK": {
+          "n": 181,
+          "share": 0.2901
+        }
+      },
+      "mean_subscores": {
+        "confidence": 0.8924,
+        "stability": 0.8525,
+        "agreement": 0.8009,
+        "typicality": 0.8782
+      },
+      "mean_ood_percentile": 0.5007,
+      "mean_flips_of_21": 0.912,
+      "flip_rate": 0.0434,
+      "mean_ensemble_std": 0.0597,
+      "accuracy": {
+        "mean": 0.9311,
+        "ci_low": 0.9103,
+        "ci_high": 0.9503
+      },
+      "auroc": 0.9922,
+      "positive_rate": 0.625,
+      "accuracy_by_band": {
+        "PASS": {
+          "n": 387,
+          "accuracy": 0.9664
+        },
+        "REVIEW": {
+          "n": 56,
+          "accuracy": 0.8929
+        },
+        "BLOCK": {
+          "n": 181,
+          "accuracy": 0.8674
+        }
+      }
+    },
+    {
+      "name": "domain_shift",
+      "label": "Adult \u00b7 different institution",
+      "description": "ChestMNIST (NIH ChestX-ray14) pneumonia vs no-finding, balanced. Same modality and question, different patients, scanners and hospital.",
+      "n": 484,
+      "model_confidence": {
+        "mean": 0.8599,
+        "ci_low": 0.8462,
+        "ci_high": 0.8723
+      },
+      "confidence_ge_090": 0.5289,
+      "reliability_score": {
+        "mean": 62.3009,
+        "ci_low": 59.7385,
+        "ci_high": 64.7099
+      },
+      "verdicts": {
+        "PASS": {
+          "n": 23,
+          "share": 0.0475
+        },
+        "REVIEW": {
+          "n": 84,
+          "share": 0.1736
+        },
+        "BLOCK": {
+          "n": 377,
+          "share": 0.7789
+        }
+      },
+      "mean_subscores": {
+        "confidence": 0.7592,
+        "stability": 0.7473,
+        "agreement": 0.6192,
+        "typicality": 0.1162
+      },
+      "mean_ood_percentile": 0.9844,
+      "mean_flips_of_21": 1.746,
+      "flip_rate": 0.0831,
+      "mean_ensemble_std": 0.1087,
+      "accuracy": {
+        "mean": 0.626,
+        "ci_low": 0.5826,
+        "ci_high": 0.6694
+      },
+      "auroc": 0.7151,
+      "positive_rate": 0.5,
+      "accuracy_by_band": {
+        "PASS": {
+          "n": 23,
+          "accuracy": 0.8261
+        },
+        "REVIEW": {
+          "n": 84,
+          "accuracy": 0.7619
+        },
+        "BLOCK": {
+          "n": 377,
+          "accuracy": 0.5836
+        }
+      }
+    },
+    {
+      "name": "wrong_modality",
+      "label": "Breast ultrasound",
+      "description": "Not a chest radiograph at all. The extreme end of the spectrum.",
+      "n": 156,
+      "model_confidence": {
+        "mean": 0.9584,
+        "ci_low": 0.9503,
+        "ci_high": 0.9657
+      },
+      "confidence_ge_090": 0.9103,
+      "reliability_score": {
+        "mean": 80.8274,
+        "ci_low": 79.6705,
+        "ci_high": 81.8215
+      },
+      "verdicts": {
+        "PASS": {
+          "n": 1,
+          "share": 0.0064
+        },
+        "REVIEW": {
+          "n": 4,
+          "share": 0.0256
+        },
+        "BLOCK": {
+          "n": 151,
+          "share": 0.9679
+        }
+      },
+      "mean_subscores": {
+        "confidence": 0.9701,
+        "stability": 0.967,
+        "agreement": 0.9027,
+        "typicality": 0.0119
+      },
+      "mean_ood_percentile": 0.9988,
+      "mean_flips_of_21": 0.006,
+      "flip_rate": 0.0003,
+      "mean_ensemble_std": 0.0247
+    }
+  ],
+  "resolution_control": {
+    "purpose": "The adult set is only available at 128 without a 3.7 GB download, so it is resampled to 224. This arm applies that same resampling to the pediatric films. If it tracks the native arm, resolution is not what the study is measuring.",
+    "accuracy_delta": -0.0112,
+    "confidence_delta": -0.0093,
+    "pass_rate_delta": 0.0096,
+    "ood_percentile_delta": -0.0232,
+    "verdict": "resolution effect is small relative to the domain effect"
+  },
+  "detection": {
+    "task": "Separate the pediatric films the model was trained on from adult films of the same modality taken at a different institution, using one scalar. Every signal is oriented so higher = more suspicious; 0.5 is chance.",
+    "reference_arm": "resolution_control",
+    "reference_n": 624,
+    "shifted_arm": "domain_shift",
+    "shifted_n": 484,
+    "signals": [
+      {
+        "signal": "Embedding percentile",
+        "auroc": 0.9592,
+        "is_composite": false,
+        "is_operational": false
+      },
+      {
+        "signal": "ScanProof verdict (operational)",
+        "auroc": 0.7961,
+        "is_composite": false,
+        "is_operational": true
+      },
+      {
+        "signal": "ScanProof reliability (100 \u2212 s)",
+        "auroc": 0.7955,
+        "is_composite": true,
+        "is_operational": false
+      },
+      {
+        "signal": "Model confidence (1 \u2212 p)",
+        "auroc": 0.7479,
+        "is_composite": false,
+        "is_operational": false
+      },
+      {
+        "signal": "Ensemble disagreement (\u03c3)",
+        "auroc": 0.7113,
+        "is_composite": false,
+        "is_operational": false
+      },
+      {
+        "signal": "Perturbation instability",
+        "auroc": 0.6941,
+        "is_composite": false,
+        "is_operational": false
+      }
+    ]
+  },
+  "two_regime": {
+    "note": "Regime A is selective-prediction AURC on the 624-image pediatric test split (lower is better). Regime B is detection AUROC separating pediatric from adult films (higher is better; 0.5 is chance).",
+    "threshold_note": "'Acceptable' means within 0.01 AURC of the best signal in regime A and within 0.05 AUROC of the best in regime B. These margins were set before the study ran. As measured, no signal clears both \u2014 reported as found rather than relaxed.",
+    "worst_case_note": "worst_case rescales each regime so the best signal is 1 and the worst is 0, then takes the lower of a signal's two scores. It answers the question a deployed system actually faces: you must commit to one number without knowing which failure mode arrives next, so the sensible choice maximises the worst case.",
+    "best_in_distribution_aurc": 0.0126,
+    "best_shift_auroc": 0.9592,
+    "rows": [
+      {
+        "signal": "Model confidence",
+        "in_distribution_aurc": 0.0126,
+        "shift_detection_auroc": 0.7479,
+        "is_composite": false,
+        "good_in_distribution": true,
+        "good_under_shift": false,
+        "good_in_both": false,
+        "normalised_in_distribution": 1.0,
+        "normalised_shift": 0.2029,
+        "worst_case": 0.2029,
+        "dominated_by": [],
+        "pareto_optimal": true
+      },
+      {
+        "signal": "Ensemble disagreement",
+        "in_distribution_aurc": 0.0188,
+        "shift_detection_auroc": 0.7113,
+        "is_composite": false,
+        "good_in_distribution": true,
+        "good_under_shift": false,
+        "good_in_both": false,
+        "normalised_in_distribution": 0.7606,
+        "normalised_shift": 0.0649,
+        "worst_case": 0.0649,
+        "dominated_by": [
+          "Model confidence",
+          "ScanProof composite"
+        ],
+        "pareto_optimal": false
+      },
+      {
+        "signal": "Perturbation instability",
+        "in_distribution_aurc": 0.0161,
+        "shift_detection_auroc": 0.6941,
+        "is_composite": false,
+        "good_in_distribution": true,
+        "good_under_shift": false,
+        "good_in_both": false,
+        "normalised_in_distribution": 0.8649,
+        "normalised_shift": 0.0,
+        "worst_case": 0.0,
+        "dominated_by": [
+          "Model confidence"
+        ],
+        "pareto_optimal": false
+      },
+      {
+        "signal": "Embedding percentile",
+        "in_distribution_aurc": 0.0385,
+        "shift_detection_auroc": 0.9592,
+        "is_composite": false,
+        "good_in_distribution": false,
+        "good_under_shift": true,
+        "good_in_both": false,
+        "normalised_in_distribution": 0.0,
+        "normalised_shift": 1.0,
+        "worst_case": 0.0,
+        "dominated_by": [],
+        "pareto_optimal": true
+      },
+      {
+        "signal": "ScanProof composite",
+        "in_distribution_aurc": 0.0175,
+        "shift_detection_auroc": 0.7955,
+        "is_composite": true,
+        "good_in_distribution": true,
+        "good_under_shift": false,
+        "good_in_both": false,
+        "normalised_in_distribution": 0.8108,
+        "normalised_shift": 0.3825,
+        "worst_case": 0.3825,
+        "dominated_by": [],
+        "pareto_optimal": true
+      }
+    ],
+    "signals_good_in_both": [],
+    "best_compromise": {
+      "signal": "ScanProof composite",
+      "worst_case": 0.3825,
+      "runner_up": "Model confidence",
+      "runner_up_worst_case": 0.2029
+    },
+    "pareto_frontier": [
+      "Model confidence",
+      "Embedding percentile",
+      "ScanProof composite"
+    ]
+  },
+  "shift_set": {
+    "source": "ChestMNIST test split (NIH ChestX-ray14), CC BY 4.0",
+    "population": "adult, NIH Clinical Center (USA)",
+    "training_population": "pediatric 1-5y, Guangzhou Women and Children's Medical Center (China)",
+    "positive_rule": "ChestX-ray14 'pneumonia' label = 1",
+    "negative_rule": "all 14 ChestX-ray14 findings = 0 ('no finding')",
+    "native_size": 128,
+    "resampled_to": 224,
+    "n_per_class": 242,
+    "n_total": 484,
+    "pool_pneumonia": 242,
+    "pool_no_finding": 11928,
+    "seed": 11,
+    "label_caveat": "ChestX-ray14 labels are NLP-mined from free-text reports and carry known noise. Accuracy on this arm is indicative, not a clean benchmark."
+  },
+  "thresholds": {
+    "pass": 97.09,
+    "review": 84.04,
+    "source": "selected on the validation split by python -m scanproof.evaluate",
+    "note": "frozen by scanproof.evaluate on the pediatric validation split before this study ran"
+  },
+  "disclaimer": "Research prototype. This is a retrospective study on public de-identified benchmark data. It is not a clinical validation and makes no claim about patient safety."
+}

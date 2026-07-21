@@ -21,23 +21,9 @@ const W = 560;
 const H = 340;
 const PAD = { top: 20, right: 22, bottom: 52, left: 62 };
 
-export interface RegimeRow {
-  signal: string;
-  in_distribution_aurc: number;
-  shift_detection_auroc: number;
-  is_composite: boolean;
-  good_in_both: boolean;
-}
+import type { RegimeRowData as RegimeRow } from "../../types";
 
-export function TwoRegime({
-  rows,
-  bestAurc,
-  bestAuroc,
-}: {
-  rows: RegimeRow[];
-  bestAurc: number;
-  bestAuroc: number;
-}) {
+export function TwoRegime({ rows }: { rows: RegimeRow[] }) {
   const [hover, setHover] = useState<{ r: RegimeRow; x: number; y: number } | null>(null);
 
   const xs = rows.map((r) => r.shift_detection_auroc);
@@ -51,8 +37,12 @@ export function TwoRegime({
   // inverted: lower AURC is better, so better sits higher
   const sy = (v: number) => PAD.top + ((v - yMin) / (yMax - yMin)) * (H - PAD.top - PAD.bottom);
 
-  const okX = sx(bestAuroc - 0.05);
-  const okY = sy(bestAurc + 0.01);
+  // The region that would strictly beat the composite on both axes. Shading it
+  // and showing it empty is the honest version of the argument: no signal
+  // dominates the composite, even though none clears both absolute bars.
+  const comp = rows.find((r) => r.is_composite) ?? rows[0];
+  const domX = sx(comp.shift_detection_auroc);
+  const domY = sy(comp.in_distribution_aurc);
 
   return (
     <figure className="relative max-w-[600px]">
@@ -62,25 +52,28 @@ export function TwoRegime({
         role="img"
         aria-label="Scatter of five trust signals. Only the ScanProof composite lands in the corner that is acceptable for both in-distribution ranking and shift detection."
       >
-        {/* the acceptable-in-both corner */}
+        {/* region that would beat the composite on both axes — deliberately empty */}
         <rect
-          x={okX}
+          x={domX}
           y={PAD.top}
-          width={W - PAD.right - okX}
-          height={okY - PAD.top}
+          width={Math.max(0, W - PAD.right - domX)}
+          height={Math.max(0, domY - PAD.top)}
           fill="var(--color-pass)"
-          fillOpacity={0.09}
+          fillOpacity={0.07}
+          stroke="var(--color-pass)"
+          strokeOpacity={0.3}
+          strokeDasharray="3 3"
         />
         <text
-          x={W - PAD.right - 8}
-          y={PAD.top + 14}
-          textAnchor="end"
+          x={(domX + W - PAD.right) / 2}
+          y={PAD.top + (domY - PAD.top) / 2 + 3}
+          textAnchor="middle"
           className="num"
           fontSize={9}
           fill="var(--color-pass)"
           fillOpacity={0.85}
         >
-          acceptable in both
+          no signal here
         </text>
 
         {/* chance line for the detection axis */}
@@ -226,12 +219,18 @@ export function TwoRegime({
           </div>
           <div
             className="mt-1.5 font-mono text-[0.62rem] uppercase tracking-[0.1em]"
-            style={{ color: hover.r.good_in_both ? "var(--color-pass)" : "var(--color-block)" }}
+            style={{ color: hover.r.pareto_optimal ? "var(--color-pass)" : "var(--color-block)" }}
           >
-            {hover.r.good_in_both ? "acceptable in both" : "fails one regime"}
+            worst-case {hover.r.worst_case.toFixed(3)} ·{" "}
+            {hover.r.pareto_optimal ? "on the frontier" : `beaten by ${hover.r.dominated_by[0]}`}
           </div>
         </Tooltip>
       )}
+      <figcaption className="mt-2 text-[0.7rem] leading-relaxed text-faint">
+        Up is a better in-distribution error ranker; right is a better shift detector. The dashed
+        box is everything that would beat the composite on <em>both</em> axes at once — it is
+        empty. Confidence and the embedding distance each win one axis and lose the other.
+      </figcaption>
     </figure>
   );
 }

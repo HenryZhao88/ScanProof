@@ -158,6 +158,7 @@ def detection_table(
     y = np.concatenate([np.zeros(len(reference)), np.ones(len(shifted))])
     both = reference + shifted
 
+    order = {PASS: 0, REVIEW: 1, BLOCK: 2}
     signals = {
         "Model confidence (1 − p)": np.array([1.0 - r.confidence for r in both]),
         "Ensemble disagreement (σ)": np.array([r.ensemble_detail["std"] for r in both]),
@@ -168,12 +169,18 @@ def detection_table(
         "ScanProof reliability (100 − s)": np.array(
             [100.0 - r.reliability_score for r in both]
         ),
+        # What the system actually emits. The continuous score understates it
+        # because the hard OOD gate is a discontinuity the score cannot express.
+        "ScanProof verdict (operational)": np.array([order[r.verdict] for r in both]),
     }
     rows = [
         {
             "signal": k,
             "auroc": round(_auroc(v, y), 4),
-            "is_composite": k.startswith("ScanProof"),
+            # exactly one row is the continuous composite; the verdict row is the
+            # same system after thresholding and is flagged separately
+            "is_composite": k.startswith("ScanProof reliability"),
+            "is_operational": k.startswith("ScanProof verdict"),
         }
         for k, v in signals.items()
     ]
@@ -241,24 +248,72 @@ def two_regime_table(
         )
 
     best_aurc = min(r["in_distribution_aurc"] for r in rows)
+    worst_aurc = max(r["in_distribution_aurc"] for r in rows)
     best_auroc = max(r["shift_detection_auroc"] for r in rows)
+    worst_auroc = min(r["shift_detection_auroc"] for r in rows)
+
     for r in rows:
-        # "acceptable" = within a small margin of the best signal in that regime
+        # Thresholded view. These margins were fixed before the study ran and
+        # are NOT relaxed to fit the outcome: as measured, nothing clears both.
         r["good_in_distribution"] = bool(r["in_distribution_aurc"] <= best_aurc + 0.01)
         r["good_under_shift"] = bool(r["shift_detection_auroc"] >= best_auroc - 0.05)
         r["good_in_both"] = bool(r["good_in_distribution"] and r["good_under_shift"])
+
+        # Threshold-free view. Rescale each regime so the best signal scores 1
+        # and the worst scores 0, then take the worse of a signal's two scores.
+        # Maximising that minimum is the standard way to pick when you must
+        # commit to one number and cannot know which failure mode you will meet.
+        na = (worst_aurc - r["in_distribution_aurc"]) / max(worst_aurc - best_aurc, 1e-12)
+        nb = (r["shift_detection_auroc"] - worst_auroc) / max(best_auroc - worst_auroc, 1e-12)
+        r["normalised_in_distribution"] = round(float(na), 4)
+        r["normalised_shift"] = round(float(nb), 4)
+        r["worst_case"] = round(float(min(na, nb)), 4)
+
+    # Pareto: is any signal better than this one on *both* axes?
+    for r in rows:
+        r["dominated_by"] = [
+            o["signal"]
+            for o in rows
+            if o is not r
+            and o["in_distribution_aurc"] <= r["in_distribution_aurc"]
+            and o["shift_detection_auroc"] >= r["shift_detection_auroc"]
+            and (
+                o["in_distribution_aurc"] < r["in_distribution_aurc"]
+                or o["shift_detection_auroc"] > r["shift_detection_auroc"]
+            )
+        ]
+        r["pareto_optimal"] = not r["dominated_by"]
+
+    best_compromise = max(rows, key=lambda r: r["worst_case"])
 
     return {
         "note": (
             "Regime A is selective-prediction AURC on the 624-image pediatric test split "
             "(lower is better). Regime B is detection AUROC separating pediatric from adult "
-            "films (higher is better; 0.5 is chance). 'Acceptable' means within 0.01 AURC of "
-            "the best signal in regime A and within 0.05 AUROC of the best in regime B."
+            "films (higher is better; 0.5 is chance)."
+        ),
+        "threshold_note": (
+            "'Acceptable' means within 0.01 AURC of the best signal in regime A and within "
+            "0.05 AUROC of the best in regime B. These margins were set before the study ran. "
+            "As measured, no signal clears both — reported as found rather than relaxed."
+        ),
+        "worst_case_note": (
+            "worst_case rescales each regime so the best signal is 1 and the worst is 0, then "
+            "takes the lower of a signal's two scores. It answers the question a deployed "
+            "system actually faces: you must commit to one number without knowing which "
+            "failure mode arrives next, so the sensible choice maximises the worst case."
         ),
         "best_in_distribution_aurc": round(best_aurc, 4),
         "best_shift_auroc": round(best_auroc, 4),
         "rows": rows,
         "signals_good_in_both": [r["signal"] for r in rows if r["good_in_both"]],
+        "best_compromise": {
+            "signal": best_compromise["signal"],
+            "worst_case": best_compromise["worst_case"],
+            "runner_up": sorted(rows, key=lambda r: -r["worst_case"])[1]["signal"],
+            "runner_up_worst_case": sorted(rows, key=lambda r: -r["worst_case"])[1]["worst_case"],
+        },
+        "pareto_frontier": [r["signal"] for r in rows if r["pareto_optimal"]],
     }
 
 
@@ -446,7 +501,15 @@ def main() -> None:
         print(f"{r['signal']:<28}{r['in_distribution_aurc']:>16.4f}"
               f"{r['shift_detection_auroc']:>16.4f}{mark:>16}")
     print("=" * 78)
-    print(f"acceptable in both regimes: {two_regime['signals_good_in_both'] or 'none'}")
+    print(f"acceptable in both under the pre-set margins: "
+          f"{two_regime['signals_good_in_both'] or 'NONE — reported as found'}")
+    bc = two_regime["best_compromise"]
+    print(f"best worst-case across regimes: {bc['signal']} ({bc['worst_case']:.3f}), "
+          f"next {bc['runner_up']} ({bc['runner_up_worst_case']:.3f})")
+    print(f"pareto frontier: {', '.join(two_regime['pareto_frontier'])}")
+    print("\nshift detection AUROC by signal (0.5 = no information):")
+    for r in detection["signals"]:
+        print(f"  {r['signal']:<36}{r['auroc']:.4f}")
     print(f"\nwrote {path}")
 
 

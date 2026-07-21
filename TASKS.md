@@ -46,8 +46,22 @@ Status legend: `[ ]` todo · `[~]` in progress · `[x]` done
 - [x] Verified end to end in the browser: demo cases, upload, error states,
       mobile layout, OOD gate
 
+## Milestone 7 — the deployment test (submission hardening) ✅
+- [x] Identify the weakest link: the OOD evidence was breast ultrasound, a strawman
+- [x] `shift.py` — four-arm study, pediatric → adult (NIH ChestX-ray14), CC BY 4.0
+- [x] **Confound control**: pediatric films through the adult arm's exact resampling path
+- [x] Two-regime table — every signal scored on in-distribution ranking AND shift detection
+- [x] Threshold-free worst-case criterion after the pre-set margins excluded every signal
+- [x] Divergence chart + Pareto scatter in the audit view
+- [x] Adult films added to the demo deck; deck reordered to follow the demo script
+- [x] `preflight.py` — live-vs-cached diff on all 13 cases, artifact sanity, narrative beats
+- [x] `DEMO.md` — five-minute script with the real numbers and likely judge questions
+- [x] 80 tests; 32 preflight checks
+
 ## Possible next steps (not done)
-- [ ] Sweep the sub-score weights against a labelled outcome instead of fixing them
+- [ ] **Learned or regime-aware weighting.** The composite detects shift at AUROC 0.796 while
+      the raw embedding percentile alone reaches 0.959 — averaging dilutes the signal that
+      carries the shift. This is the clearest remaining win.
+- [ ] A second shift axis (scanner vendor, view position) and the reverse direction
 - [ ] More ensemble members — 3 makes disagreement a noisy estimate
 - [ ] Multi-layer Mahalanobis, or an OOD detector not tied to one member's features
-- [ ] Bootstrap confidence intervals on the band accuracies (n is small per band)

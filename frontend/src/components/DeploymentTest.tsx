@@ -195,46 +195,85 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
       {/* ---- the argument for a composite score ---- */}
       <Panel
         eyebrow="Why a composite score"
-        title="No single signal is acceptable in both regimes"
+        title="No signal is good at both. The composite has the best worst case."
         aside={
           <div className="num text-xs text-faint">
-            {study.two_regime.signals_good_in_both.length} of {study.two_regime.rows.length} signals
-            pass both
+            best worst-case{" "}
+            <span className="text-pass">{study.two_regime.best_compromise.worst_case.toFixed(3)}</span>
+            {" vs "}
+            <span className="text-bone/60">
+              {study.two_regime.best_compromise.runner_up_worst_case.toFixed(3)}
+            </span>
           </div>
         }
       >
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-          <TwoRegime
-            rows={study.two_regime.rows}
-            bestAurc={study.two_regime.best_in_distribution_aurc}
-            bestAuroc={study.two_regime.best_shift_auroc}
-          />
+          <TwoRegime rows={study.two_regime.rows} />
           <div className="space-y-4">
             <p className="text-xs leading-relaxed text-mute">
-              A deployed system gets one number to decide whether to trust a prediction, and two
-              different things can go wrong. Confidence is the best signal for ordinary hard cases
-              and near-useless for shift. The embedding distance is the reverse. Neither is safe on
-              its own.
+              A deployed system gets one number, and two different things can go wrong. Confidence
+              is the best in-distribution error ranker and the second-weakest shift detector. The
+              embedding distance is the best shift detector and the worst in-distribution ranker.
+              Each is excellent at one job and poor at the other.
             </p>
+            <div
+              className="border px-4 py-3"
+              style={{
+                borderColor: "color-mix(in oklab, var(--color-review) 32%, transparent)",
+                background: "color-mix(in oklab, var(--color-review) 7%, transparent)",
+                borderRadius: 3,
+              }}
+            >
+              <div className="eyebrow" style={{ color: "var(--color-review)" }}>
+                Reported as found
+              </div>
+              <p className="mt-2 text-xs leading-relaxed text-mute">
+                Under the margins fixed before this study ran,{" "}
+                <span className="text-bone">no signal clears both regimes</span> — including ours.
+                The defensible claim is narrower: rescaling each regime so the best signal is 1 and
+                the worst is 0, the composite has the highest worst case (
+                <span className="num text-bone">
+                  {study.two_regime.best_compromise.worst_case.toFixed(3)}
+                </span>{" "}
+                vs{" "}
+                <span className="num text-bone">
+                  {study.two_regime.best_compromise.runner_up_worst_case.toFixed(3)}
+                </span>{" "}
+                for {study.two_regime.best_compromise.runner_up}), and nothing beats it on both
+                axes at once.
+              </p>
+            </div>
             <div className="space-y-2 border-t border-rule-soft pt-3">
-              {study.two_regime.rows.map((r) => (
-                <div key={r.signal} className="flex items-baseline justify-between gap-2 text-[0.7rem]">
-                  <span className={r.is_composite ? "text-bone" : "text-mute"}>{r.signal}</span>
-                  <span className="num shrink-0">
-                    <span style={{ color: r.good_in_distribution ? "var(--color-pass)" : "var(--color-faint)" }}>
-                      {r.good_in_distribution ? "✓" : "·"}
+              <div className="eyebrow mb-1">Worst case across the two regimes</div>
+              {[...study.two_regime.rows]
+                .sort((a, b) => b.worst_case - a.worst_case)
+                .map((r) => (
+                  <div key={r.signal} className="flex items-center gap-2 text-[0.7rem]">
+                    <span
+                      className={`w-40 shrink-0 truncate ${r.is_composite ? "text-bone" : "text-mute"}`}
+                    >
+                      {r.signal}
                     </span>
-                    <span className="mx-1 text-faint">in-dist</span>
-                    <span style={{ color: r.good_under_shift ? "var(--color-pass)" : "var(--color-faint)" }}>
-                      {r.good_under_shift ? "✓" : "·"}
+                    <div className="h-1.5 flex-1 bg-panel-2" style={{ borderRadius: 1 }}>
+                      <div
+                        className="h-full"
+                        style={{
+                          width: `${Math.max(r.worst_case * 100, 1)}%`,
+                          backgroundColor: r.is_composite
+                            ? "var(--color-pass)"
+                            : "color-mix(in oklab, var(--color-instrument) 55%, transparent)",
+                          borderRadius: 1,
+                        }}
+                      />
+                    </div>
+                    <span className="num w-10 shrink-0 text-right text-bone">
+                      {r.worst_case.toFixed(2)}
                     </span>
-                    <span className="ml-1 text-faint">shift</span>
-                  </span>
-                </div>
-              ))}
+                  </div>
+                ))}
             </div>
             <p className="border-t border-rule-soft pt-3 text-[0.68rem] leading-relaxed text-faint">
-              {study.two_regime.note}
+              {study.two_regime.note} {study.two_regime.worst_case_note}
             </p>
           </div>
         </div>

@@ -219,6 +219,21 @@ export interface Audit {
   disclaimer: string;
 }
 
+export interface RegimeRowData {
+  signal: string;
+  in_distribution_aurc: number;
+  shift_detection_auroc: number;
+  is_composite: boolean;
+  good_in_distribution: boolean;
+  good_under_shift: boolean;
+  good_in_both: boolean;
+  normalised_in_distribution: number;
+  normalised_shift: number;
+  worst_case: number;
+  dominated_by: string[];
+  pareto_optimal: boolean;
+}
+
 export interface MeanCI {
   mean: number;
   ci_low: number;
@@ -278,18 +293,19 @@ export interface ShiftStudy {
   };
   two_regime: {
     note: string;
+    threshold_note: string;
+    worst_case_note: string;
     best_in_distribution_aurc: number;
     best_shift_auroc: number;
-    rows: {
-      signal: string;
-      in_distribution_aurc: number;
-      shift_detection_auroc: number;
-      is_composite: boolean;
-      good_in_distribution: boolean;
-      good_under_shift: boolean;
-      good_in_both: boolean;
-    }[];
+    rows: RegimeRowData[];
     signals_good_in_both: string[];
+    best_compromise: {
+      signal: string;
+      worst_case: number;
+      runner_up: string;
+      runner_up_worst_case: number;
+    };
+    pareto_frontier: string[];
   };
   shift_set: Record<string, string | number>;
   thresholds: { pass: number; review: number; source: string; note: string };

@@ -46,17 +46,26 @@
 
 - "This is an adult chest X-ray from the NIH Clinical Center. Our model was fine-tuned on
   *pediatric* films from a hospital in Guangzhou. Same modality, same view, same question."
-- The classifier gives it a confident answer. ScanProof withholds it, and the evidence ledger
-  names the reason: the embedding sits at an extreme percentile of the training distribution.
+- **99.9% confidence.** Then point at the four sub-score meters: confidence 20/20, stability
+  40/40, checkpoint agreement 24.9/25 — three of four signals say this is fine.
+- **Embedding typicality: 1.9 / 15.** "Only one signal notices, and it's the one that asks
+  whether the model has seen anything like this before. 98.8th percentile of the training
+  distribution. Verdict: REVIEW, withheld."
+
+> "Nothing about the image is broken. It's a perfectly good chest X-ray. It's just not *our*
+> chest X-ray."
 
 **Switch to the Audit tab. Headline panel: "the deployment test".**
 
 This is the moment to slow down. Point at the divergence chart:
 
-- **Red line — model confidence — is flat** across all four populations.
-- **Green line — ScanProof PASS rate — falls off a cliff.**
-- "Left to right is distance from the training data. The model's confidence does not move.
-  Its accuracy does. That gap is the entire problem."
+- **Red line — model confidence — is flat.** 93.6% on pediatric films → 86.0% on adult films.
+  It *rises* again to 95.8% on breast ultrasound, which is not even a chest X-ray.
+- **Green line — ScanProof PASS rate — falls off a cliff.** 62.0% → **4.8%** → 0.6%.
+- The number in between: **accuracy falls 93.1% → 62.6%.**
+
+> "Thirty points of accuracy gone. Seven points of confidence. That gap is the entire problem,
+> and it is why a confidence threshold cannot be your safety net."
 
 Then the **confound control** panel directly below:
 
@@ -66,23 +75,30 @@ Then the **confound control** panel directly below:
 
 ## 3:00 — 4:00 · Why a composite score, not just one signal
 
-**Scroll to "No single signal is acceptable in both regimes".**
+**Scroll to "No signal is good at both. The composite has the best worst case."**
 
-The scatter is the argument:
+The scatter is the argument. A deployed system gets one number, and two different things can
+go wrong:
 
-- **Model confidence** — top-left. Best in-distribution error ranker. At chance for shift.
-- **Embedding percentile** — bottom-right. Excellent at shift. Poor in-distribution.
-- **ScanProof composite** — the only point in the shaded corner.
+- **Model confidence** — top-left. Best in-distribution error ranker (AURC 0.0126). Second
+  *weakest* shift detector (0.748).
+- **Embedding percentile** — bottom-right. Best shift detector (0.959). Worst in-distribution
+  ranker (0.0385).
+- **ScanProof composite** — the dashed box to its upper-right is everything that would beat it
+  on *both* axes. It is empty.
 
-> "A deployed system gets one number. Two different things can go wrong. Confidence handles
-> one of them and is blind to the other. That is the argument for a composite, and it is the
-> reason we didn't just ship the best single signal."
+State the negative result plainly — it is more persuasive than hiding it:
 
-Mention the honest negative result on the way past:
+> "Under margins we fixed before running this, **no signal clears both regimes, including
+> ours.** We print that on the page. What we can defend is narrower: rescale each axis so the
+> best signal is 1 and the worst is 0, and the composite has the best worst case — 0.383
+> against 0.203 for confidence. Nothing beats it on both axes at once."
 
-> "On in-distribution data alone, confidence beats our composite at ranking errors — 0.0126
-> against 0.0175 AURC. That's in the audit, labelled as a negative result. We're not claiming
-> to beat confidence at the thing confidence is already good at."
+And name the cost before a judge finds it:
+
+> "Averaging four signals dilutes the one that carries the shift. The raw embedding percentile
+> detects the adult films at 0.959; our composite only reaches 0.796. A learned, regime-aware
+> weighting would probably beat us. That's the clearest next step and it's in the README."
 
 ## 4:00 — 4:40 · It is honest about its own limits
 

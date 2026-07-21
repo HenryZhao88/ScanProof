@@ -23,14 +23,21 @@ label flips to NORMAL under Brightness +24%"*, not *"low reliability"*.
 
 ```sh
 make setup       # .venv (Python 3.12) + python deps + npm install
-make data        # download PneumoniaMNIST + OOD probes  (~250 MB, once)
+make data        # PneumoniaMNIST + OOD probes            (~250 MB, once)
+make shift-data  # adult ChestMNIST arm                   (~1.4 GB, once)
 make train       # fine-tune 3 members, calibrate, fit OOD stats  (~15 min on Apple Silicon)
-make audit       # select thresholds on val, evaluate on test, write artifacts/
+make audit       # select thresholds on val, evaluate on test
+make shift       # the domain-shift study                 (~3 min)
 make demo        # build the demo case deck
+make build       # frontend
+make preflight   # verify the whole demo path before recording
 make serve       # http://127.0.0.1:8000
 ```
 
-`make reproduce` runs all of the above in order.
+`make reproduce` runs all of the above in order. **`make preflight` is the one to run before a
+demo** — it re-analyses every shipped case live, diffs the result against the committed cache,
+refuses placeholder artifacts, and checks the narrative beats still land on their verdicts.
+`DEMO.md` is the five-minute script.
 
 For frontend work, `make dev` runs the API on `:8000` and Vite on `:5173` with a proxy.
 Requires Python 3.10–3.13 (PyTorch), Node 18+, and [`uv`](https://docs.astral.sh/uv/).
@@ -72,6 +79,8 @@ Each module is independently testable and has one job:
 | `reliability.py` | Signals → sub-scores → score → verdict → evidence. No I/O, no torch. |
 | `pipeline.py` | Batches the forward passes; `Measurement` → `ReliabilityResult`. |
 | `evaluate.py` | Threshold selection on val, metrics on test, writes `artifacts/`. |
+| `shift.py` | The domain-shift study: four arms, confound control, two-regime table. |
+| `preflight.py` | Demo readiness: live-vs-cached diff, artifact sanity, narrative beats. |
 | `demo.py` | Selects archetype cases from the audit, writes `demo_cases/`. |
 | `api.py` | HTTP surface. Degrades to cached results if weights are absent. |
 
@@ -150,6 +159,50 @@ Two headline metrics come out of it:
 Nothing in this study re-tunes a threshold. The PASS/REVIEW cut points were frozen by
 `make audit` on the pediatric validation split before it ran.
 
+### What it found
+
+| Arm | n | Accuracy | Mean confidence | Embedding pct | PASS rate |
+|---|---:|---:|---:|---:|---:|
+| Pediatric, native | 624 | 94.2% | 94.5% | 52.4 | 61.1% |
+| Pediatric, resampled *(control)* | 624 | 93.1% | 93.6% | 50.1 | 62.0% |
+| **Adult, different institution** | 484 | **62.6%** | **86.0%** | **98.4** | **4.8%** |
+| Breast ultrasound | 156 | — | 95.8% | 99.9 | 0.6% |
+
+**Accuracy falls 30.5 points. Confidence falls 7.6.** The PASS rate falls from 62.0% to 4.8%.
+The control arm moves the PASS rate by +0.96 points and accuracy by −1.1, so resampling is not
+what produced the effect.
+
+Confidence does not merely fail to drop — on breast ultrasound it *rises* to 95.8%, higher than
+on the adult films it was at least the right modality for.
+
+### The two-regime result, reported as found
+
+| Signal | In-distribution AURC ↓ | Shift detection AUROC ↑ | Worst case ↑ |
+|---|---:|---:|---:|
+| Model confidence | **0.0126** | 0.7479 | 0.203 |
+| Perturbation instability | 0.0161 | 0.6941 | 0.000 |
+| ScanProof composite | 0.0175 | 0.7955 | **0.383** |
+| Ensemble disagreement | 0.0188 | 0.7113 | 0.065 |
+| Embedding percentile | 0.0385 | **0.9592** | 0.000 |
+
+Margins for "acceptable in both" were fixed before the study ran (within 0.01 AURC and 0.05
+AUROC of the best signal in each regime). **As measured, no signal clears both — including
+ours.** That is printed on the audit page rather than smoothed over, and the margins were not
+relaxed afterwards to manufacture a pass.
+
+The claim the evidence does support is narrower and threshold-free. Rescale each regime so the
+best signal scores 1 and the worst scores 0, then take the lower of a signal's two scores — the
+question a deployed system actually faces, since it must commit to one number without knowing
+which failure mode arrives next. On that criterion the composite leads at **0.383** against
+0.203 for confidence, and the region that would beat it on both axes at once is empty.
+
+Two honest caveats sit alongside it. The composite is a *worse* shift detector than the raw
+embedding percentile (0.7955 vs 0.9592) — averaging four signals dilutes the one that carries
+the shift. And ChestX-ray14 labels are NLP-mined from free-text reports and carry known noise,
+so the 62.6% accuracy figure is indicative rather than a clean benchmark. Neither undercuts the
+headline, which is about the model's own confidence and ScanProof's response and needs no
+labels at all.
+
 ## Reliability components
 
 Four sub-scores, each in `[0,1]`, combined by fixed weights (`config.WEIGHTS`):
@@ -217,7 +270,9 @@ make audit    # python -m scanproof.evaluate
 | `artifacts/calibration.json` | yes | per-member val accuracy/AUROC, fitted temperature, ECE before and after, training history |
 | `artifacts/reliability_config.json` | yes | chosen thresholds, the rule, and the validation sweep that justified them |
 | `artifacts/audit_summary.json` | yes | everything the Audit view renders |
+| `artifacts/shift_study.json` | yes | the four-arm domain-shift study and the two-regime table |
 | `artifacts/audit_cases.json` | no | 624 per-case rows; regenerate with `make audit` |
+| `artifacts/shift_cases.json` | no | per-case rows for the adult arm; regenerate with `make shift` |
 | `demo_cases/manifest.json` + PNGs | yes | the demo deck and its cached results |
 
 The audit reports: accuracy / AUROC / sensitivity / specificity, ECE-Brier-NLL before and
@@ -255,15 +310,23 @@ Stated plainly, because a reliability tool that oversells itself is self-defeati
 5. **Single-layer Mahalanobis.** Weaker than multi-layer or ensembled OOD detectors, and it
    inherits whatever biases sit in `m0-resnet18`'s feature space. Chosen because it needs no
    OOD data at fit time and runs in one forward pass.
-6. **Weights are a judgement call.** The 0.20/0.40/0.25/0.15 split reflects a view that
-   instability is the strongest signal available without labels. It is not learned, and
-   sweeping it against a labelled outcome would be the obvious next step.
-7. **Three checkpoints is a small ensemble.** Disagreement is a noisy estimate; more members
+6. **Weights are a judgement call, and the shift study exposes the cost.** The
+   0.20/0.40/0.25/0.15 split was fixed a priori. Averaging four signals dilutes the one that
+   carries a distribution shift: the composite detects the adult arm at AUROC 0.7955 while the
+   raw embedding percentile alone reaches 0.9592. A learned or regime-aware weighting would
+   very likely beat this, and that is the clearest next step.
+7. **The adult arm's labels are noisy.** ChestX-ray14 labels are NLP-mined from free-text
+   reports. The 62.6% accuracy figure is indicative, not a clean benchmark. The claims that
+   matter do not rest on it.
+8. **One shift axis, one direction.** Pediatric → adult, one source hospital → one other. It
+   says nothing about scanner vendor, view position, or the reverse direction.
+9. **Three checkpoints is a small ensemble.** Disagreement is a noisy estimate; more members
    would sharpen it at linear cost.
-8. **Thresholds come from 524 validation images.** The selected values carry real sampling
-   variance.
-9. **No temporal or site-level validation**, no comparison against reader performance, no
-   prospective evaluation. None of the standard evidence a clinical claim would require.
+10. **Thresholds come from 524 validation images.** The selected values carry real sampling
+    variance, and the adult arm is 484 images — the bootstrap CIs in `shift_study.json` are the
+    honest width of these estimates.
+11. **No temporal or site-level validation**, no comparison against reader performance, no
+    prospective evaluation. None of the standard evidence a clinical claim would require.
 
 ## Repository layout
 
