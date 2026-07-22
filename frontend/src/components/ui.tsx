@@ -15,10 +15,12 @@ export const VERDICT_GLYPH: Record<Verdict, string> = {
   BLOCK: "✕",
 };
 
+/** Precise, non-clinical readings of each verdict. PASS is the absence of a
+ *  reason to withhold, not evidence that the prediction is right. */
 export const VERDICT_MEANING: Record<Verdict, string> = {
-  PASS: "Prediction held under every test we ran",
-  REVIEW: "Prediction moved under tests a reader would call equivalent",
-  BLOCK: "Prediction is not stable enough to report",
+  PASS: "No check found a reason to withhold this prediction",
+  REVIEW: "A check failed — route this to a human before relying on it",
+  BLOCK: "Checks failed badly enough that this output should not be used",
 };
 
 export function Panel({
@@ -57,14 +59,19 @@ export function Panel({
   );
 }
 
-export function VerdictChip({ verdict, size = "sm" }: { verdict: Verdict; size?: "sm" | "lg" }) {
+export function VerdictChip({
+  verdict,
+  size = "sm",
+}: {
+  verdict: Verdict;
+  size?: "sm" | "lg" | "hero";
+}) {
   const c = VERDICT_COLOR[verdict];
-  const big = size === "lg";
+  const pad =
+    size === "hero" ? "px-4 py-2 text-2xl" : size === "lg" ? "px-3 py-1.5 text-sm" : "px-2 py-1 text-[0.65rem]";
   return (
     <span
-      className={`inline-flex items-center gap-1.5 font-mono font-semibold uppercase tracking-[0.14em] ${
-        big ? "px-3 py-1.5 text-sm" : "px-2 py-1 text-[0.65rem]"
-      }`}
+      className={`inline-flex items-center gap-2.5 font-mono font-semibold uppercase tracking-[0.14em] ${pad}`}
       style={{
         color: c,
         background: `color-mix(in oklab, ${c} 14%, transparent)`,

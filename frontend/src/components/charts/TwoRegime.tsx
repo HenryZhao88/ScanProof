@@ -65,13 +65,13 @@ export function TwoRegime({ rows }: { rows: RegimeRow[] }) {
           strokeDasharray="3 3"
         />
         <text
-          x={(domX + W - PAD.right) / 2}
+          x={W - PAD.right - 7}
           y={PAD.top + (domY - PAD.top) / 2 + 3}
-          textAnchor="middle"
+          textAnchor="end"
           className="num"
           fontSize={9}
           fill="var(--color-pass)"
-          fillOpacity={0.85}
+          fillOpacity={0.9}
         >
           no signal here
         </text>

@@ -35,13 +35,15 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
     <>
       <Panel
         eyebrow="Headline result · the deployment test"
-        title="The model is just as confident on patients it has never seen. Its accuracy is not."
+        title="The classifier stays confident on inputs it was never trained for. One check notices."
       >
         <p className="mb-5 max-w-3xl text-xs leading-relaxed text-mute">
-          The ensemble was fine-tuned on pediatric chest films from one hospital in Guangzhou. Here
-          it is run on adult chest films from the NIH Clinical Center — same modality, same view,
-          same question, different patients and different scanners. This is not a contrived input;
-          it is the single most common way a deployed imaging model fails.
+          The ensemble was fine-tuned on <strong className="text-bone">pediatric</strong> chest
+          films (ages 1–5) from one hospital in Guangzhou. Here it is run on{" "}
+          <strong className="text-bone">adult</strong> frontal chest films from the NIH Clinical
+          Center. Both are frontal chest radiographs; the patients, the institution and the country
+          all differ. The three numbers on the right need no ground-truth labels — they are
+          properties of the input and the model.
         </p>
 
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_300px]">
@@ -49,19 +51,18 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
 
           <div className="space-y-5">
             <Readout
-              label="Confidence, pediatric → adult"
+              label="Model confidence, pediatric → adult"
               value={`${(a.pediatric_confidence * 100).toFixed(1)} → ${(a.adult_confidence * 100).toFixed(1)}`}
               unit="%"
               color="var(--color-block)"
-              sub="The model barely notices. A two-class softmax is normalised over the two classes it knows, so it has no way to represent “this is not my kind of input”."
+              sub="Barely moves. A two-class softmax is normalised over the two classes it knows, so it cannot represent “this is not my kind of input”."
             />
             <div className="border-t border-rule-soft pt-4">
               <Readout
-                label="Accuracy, pediatric → adult"
-                value={`${(a.pediatric_accuracy * 100).toFixed(1)} → ${(a.adult_accuracy * 100).toFixed(1)}`}
-                unit="%"
-                color="var(--color-block)"
-                sub="Same films, same task. The drop is what confidence failed to warn about."
+                label="Embedding percentile, pediatric → adult"
+                value={`${(ped.mean_ood_percentile * 100).toFixed(1)} → ${(adult.mean_ood_percentile * 100).toFixed(1)}`}
+                color="var(--color-instrument)"
+                sub="The typicality check does notice — this is the signal that carried the result. Distance from the training manifold, measured from the image alone."
               />
             </div>
             <div className="border-t border-rule-soft pt-4">
@@ -70,10 +71,37 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
                 value={`${(a.pediatric_pass_rate * 100).toFixed(1)} → ${(a.adult_pass_rate * 100).toFixed(1)}`}
                 unit="%"
                 color="var(--color-pass)"
-                sub="Withheld on evidence, with no access to a label and no knowledge that the population changed."
+                sub="What the guardrail does about it — withheld with no access to a label and no knowledge that the population changed."
               />
             </div>
           </div>
+        </div>
+
+        <div
+          className="mt-5 border px-4 py-3"
+          style={{
+            borderColor: "color-mix(in oklab, var(--color-review) 30%, transparent)",
+            background: "color-mix(in oklab, var(--color-review) 6%, transparent)",
+            borderRadius: 3,
+          }}
+        >
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <span className="eyebrow" style={{ color: "var(--color-review)" }}>
+              Accuracy on this arm — read with care
+            </span>
+            <span className="num text-sm text-bone">
+              {(a.pediatric_accuracy * 100).toFixed(1)}% → {(a.adult_accuracy * 100).toFixed(1)}%
+            </span>
+          </div>
+          <p className="mt-2 max-w-4xl text-[0.7rem] leading-relaxed text-mute">
+            <strong className="text-bone">This is not a like-for-like comparison and we are not
+            claiming it is.</strong>{" "}
+            PneumoniaMNIST targets expert-graded pediatric pneumonia; ChestX-ray14 targets an
+            NLP-mined mention of pneumonia in an adult report, and its negative class is “no finding
+            mentioned”, not “confirmed normal”. The drop therefore mixes population shift,
+            label-definition shift and label noise. It is shown for completeness — nothing above
+            depends on it.
+          </p>
         </div>
       </Panel>
 
@@ -92,9 +120,8 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
       >
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
           <p className="max-w-2xl text-xs leading-relaxed text-mute">
-            {ctrl.purpose} The pediatric films are shown twice below — once at native resolution,
-            once through the adult set's exact resampling path. If those two rows disagreed, the
-            study would be measuring image processing rather than population.
+            {ctrl.purpose} If the two pediatric rows below disagreed, this study would be
+            measuring image processing rather than a change of input population.
           </p>
           <dl className="space-y-2 text-[0.72rem]">
             {(
@@ -194,8 +221,8 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
 
       {/* ---- the argument for a composite score ---- */}
       <Panel
-        eyebrow="Why a composite score"
-        title="No signal is good at both. The composite has the best worst case."
+        eyebrow="Why four checks, not one"
+        title="No single signal is good at both failure modes"
         aside={
           <div className="num text-xs text-faint">
             best worst-case{" "}
@@ -281,7 +308,10 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
 
       {/* ---- what fires, and does the verdict still mean anything ---- */}
       <div className="grid gap-4 lg:grid-cols-2">
-        <Panel eyebrow="Signal attribution" title="Which sub-score notices the shift">
+        <Panel
+          eyebrow="Signal attribution"
+          title="The typicality check carried this result — on its own"
+        >
           <div className="space-y-4">
             {(["confidence", "stability", "agreement", "typicality"] as const).map((k) => {
               const p = ped.mean_subscores[k];
@@ -327,9 +357,17 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
             })}
           </div>
           <p className="mt-4 border-t border-rule-soft pt-3 text-[0.7rem] leading-relaxed text-faint">
-            Faint bar is the pediatric mean, solid bar the adult mean. The signals that move are the
-            ones carrying the shift; the ones that hold are why a weighted score still leaves room
-            for ordinary hard cases.
+            Faint bar is the pediatric mean, solid bar the adult mean. Typicality collapses; the
+            other three barely move. <span className="text-mute">Be clear about what this does and
+            does not show:</span> on <em>this</em> failure mode the embedding check did essentially
+            all the work, and a system built only from confidence, stability and agreement would
+            have missed it.
+          </p>
+          <p className="mt-2 text-[0.7rem] leading-relaxed text-faint">
+            The other checks earn their keep on failure modes this arm does not contain — see
+            “Confident but fragile” (stability fails, typicality is fine) and “Checkpoints
+            disagree” (agreement fails) in the case deck. That is the argument for running four
+            tests rather than picking a favourite.
           </p>
         </Panel>
 

@@ -62,12 +62,13 @@ export function AuditView() {
         <div className="eyebrow">Aggregate audit</div>
         <h1 className="mt-2 max-w-3xl font-display text-xl font-semibold tracking-tight text-bone">
           Every number below was computed by{" "}
-          <span className="num text-instrument">{audit.generated_by}</span> over the{" "}
-          {c.n}-image held-out test split.
+          <span className="num text-instrument">scanproof.evaluate</span> and{" "}
+          <span className="num text-instrument">scanproof.shift</span> over held-out data.
         </h1>
         <p className="mt-2.5 max-w-3xl text-xs leading-relaxed text-mute">
-          Thresholds were chosen on the {audit.splits.threshold_selection.n}-image validation split
-          and frozen before this split was touched, so nothing here is tuned on what it reports.
+          Thresholds were chosen on the {audit.splits.threshold_selection.n}-image pediatric
+          validation split and frozen before the {c.n}-image test split or any shift arm was
+          touched, so nothing here is tuned on what it reports. Artifacts are committed to the repo.
           Generated {audit.generated_at_utc} on {audit.model.device}.
         </p>
       </section>

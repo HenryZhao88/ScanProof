@@ -84,25 +84,29 @@ CHEST_PNEUMONIA_IDX = 6
 def load_domain_shift_set(
     seed: int = 11, max_per_class: int | None = None
 ) -> tuple[np.ndarray, np.ndarray, dict]:
-    """Adult chest radiographs from a different institution, framed as the same
-    binary task the model was trained on.
+    """Adult frontal chest radiographs from a different source collection.
 
-    Source: ChestMNIST (NIH ChestX-ray14, adult, NIH Clinical Center, USA),
-    CC BY 4.0. The training data is PneumoniaMNIST (pediatric, 1-5 years old,
-    Guangzhou Women and Children's Medical Center, China). Same modality, same
-    view, same question — different population, scanner and institution. This
-    is the shift that actually happens when a model is deployed.
+    Source: ChestMNIST (NIH ChestX-ray14, NIH Clinical Center, USA), CC BY 4.0.
+    The training data is PneumoniaMNIST (pediatric 1-5y, Guangzhou Women and
+    Children's Medical Center, China), CC BY 4.0. Both are frontal chest
+    radiographs; the patients, the institution and the country all differ.
 
-    Positives are films labelled ``pneumonia``. Negatives are films with **no
-    finding at all** (all 14 labels zero), which is the closest analogue to
-    PneumoniaMNIST's ``normal`` class; using "some other pathology" as the
-    negative would be a different task. Classes are balanced by subsampling the
-    larger side with a fixed seed, so the set is deterministic.
+    **The two label targets are not the same, and this set is not a like-for-
+    like accuracy benchmark.** PneumoniaMNIST labels are expert-graded
+    pediatric pneumonia (Kermany et al., Cell 2018). ChestX-ray14 labels are
+    NLP-mined from free-text adult radiology reports — the authors describe
+    them as "loosely labeled" — and its negative class here is "no mention of
+    any of the 14 findings", which is weaker than a confirmed-normal film.
 
-    Caveat carried into the artifact: ChestX-ray14 labels are NLP-mined from
-    radiology reports and are known to be noisy, so accuracy on this set is a
-    soft number. The headline claims do not depend on it — they are about the
-    model's own confidence and ScanProof's response, which need no labels.
+    Consequently any accuracy measured on this arm conflates three things:
+    population shift, label-definition shift, and label noise. It is reported
+    with that caveat attached and it is *not* what the study rests on. The
+    load-bearing measurements need no labels at all: how confident the model
+    is, and how far the input sits from the training manifold.
+
+    Positives are films whose ``pneumonia`` label is 1. Negatives are films
+    with all 14 findings 0. Classes are balanced by subsampling the larger side
+    with a fixed seed, so the set is deterministic.
     """
     imgs, labels = load_split("test", flag="chestmnist", size=SHIFT_SIZE)
     if labels.ndim != 2:
@@ -129,8 +133,10 @@ def load_domain_shift_set(
         "source": "ChestMNIST test split (NIH ChestX-ray14), CC BY 4.0",
         "population": "adult, NIH Clinical Center (USA)",
         "training_population": "pediatric 1-5y, Guangzhou Women and Children's Medical Center (China)",
-        "positive_rule": "ChestX-ray14 'pneumonia' label = 1",
-        "negative_rule": "all 14 ChestX-ray14 findings = 0 ('no finding')",
+        "shared": "both are frontal chest radiographs",
+        "differs": "patients, institution, country, and the label definition itself",
+        "positive_rule": "ChestX-ray14 'pneumonia' label = 1 (NLP-mined from the report)",
+        "negative_rule": "all 14 ChestX-ray14 findings = 0 (no finding *mentioned*)",
         "native_size": SHIFT_SIZE,
         "resampled_to": SOURCE_SIZE,
         "n_per_class": int(n),
@@ -138,9 +144,17 @@ def load_domain_shift_set(
         "pool_pneumonia": int(positive.sum()),
         "pool_no_finding": int(no_finding.sum()),
         "seed": seed,
-        "label_caveat": (
-            "ChestX-ray14 labels are NLP-mined from free-text reports and carry known "
-            "noise. Accuracy on this arm is indicative, not a clean benchmark."
+        "target_mismatch": (
+            "NOT a like-for-like accuracy benchmark. PneumoniaMNIST targets expert-graded "
+            "pediatric pneumonia (Kermany et al., Cell 2018); ChestX-ray14 targets an "
+            "NLP-mined mention of pneumonia in an adult report, which its authors call "
+            "'loosely labeled'. Its negative class is 'nothing mentioned', not 'confirmed "
+            "normal'. Accuracy here conflates population shift, label-definition shift and "
+            "label noise, and is reported for completeness only."
+        ),
+        "label_free_claim": (
+            "The load-bearing measurements on this arm use no labels: the model's own "
+            "confidence, the embedding percentile, and the resulting verdict."
         ),
     }
     return x, y, meta

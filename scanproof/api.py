@@ -38,9 +38,10 @@ log = logging.getLogger("scanproof")
 
 MAX_UPLOAD_BYTES = 12 * 1024 * 1024
 DISCLAIMER = (
-    "Research prototype — not for diagnosis. ScanProof evaluates whether a model's "
-    "prediction is stable under controlled tests. It does not establish clinical "
-    "correctness or safety."
+    "Research prototype — not for diagnosis, not a medical device, no clinical validation. "
+    "ScanProof runs four independent checks on a chest X-ray classifier's prediction and "
+    "withholds it when they disagree. PASS is not a claim that a prediction is correct or "
+    "clinically safe."
 )
 
 

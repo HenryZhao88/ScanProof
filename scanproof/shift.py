@@ -27,7 +27,19 @@ the training distribution:
 Arm 2 exists to kill the obvious confound. The shift set is only available at
 128 without downloading a 3.7 GB archive, so arm 2 puts the *pediatric* films
 through the identical 128 -> 224 path. If arms 1 and 2 agree, resolution is not
-driving the result and arm 3 isolates population.
+driving the result and arm 3 isolates the change in input population.
+
+What this arm can and cannot measure
+------------------------------------
+PneumoniaMNIST and ChestX-ray14 do NOT share a label definition: the first is
+expert-graded pediatric pneumonia, the second an NLP-mined mention of
+pneumonia in an adult report with a "nothing mentioned" negative class. So the
+accuracy figure on arm 3 conflates population shift, label-definition shift and
+label noise. It is reported for completeness and is not what the study rests on.
+
+The load-bearing measurements are label-free: the model's own confidence, the
+embedding percentile, and the verdict that follows from them. Those are
+properties of the input and the model, and need no ground truth.
 
 Headline metric
 ---------------
@@ -360,8 +372,10 @@ def main() -> None:
         ),
         summarise_arm(
             "domain_shift",
-            "Adult · different institution",
-            "ChestMNIST (NIH ChestX-ray14) pneumonia vs no-finding, balanced. Same modality and question, different patients, scanners and hospital.",
+            "Adult · different source collection",
+            "ChestMNIST (NIH ChestX-ray14), balanced. Frontal chest radiographs like the "
+            "training data, but different patients, institution and country — and a different "
+            "label definition, so its accuracy is not a like-for-like comparison.",
             shift,
             shift_labels,
         ),
@@ -420,6 +434,11 @@ def main() -> None:
         "question": (
             "Confidence ranks errors well inside the training distribution. Does it also tell "
             "you when the input is no longer from that distribution?"
+        ),
+        "accuracy_caveat": (
+            "Accuracy on the adult arm is NOT a like-for-like comparison: the two datasets do "
+            "not share a label definition. It is reported for completeness. The claims this "
+            "study rests on are label-free — confidence, embedding percentile, and verdict."
         ),
         "answer": {
             "confidence_detection_auroc": conf_row["auroc"],

@@ -18,7 +18,7 @@ export function Header({
           <span className="font-display text-[1.05rem] font-bold tracking-[-0.02em] text-bone">
             ScanProof
           </span>
-          <span className="eyebrow hidden sm:inline">Reliability bench</span>
+          <span className="eyebrow hidden md:inline">Deployment guardrail for imaging models</span>
         </div>
 
         <nav className="flex gap-1" aria-label="Views">
@@ -68,9 +68,9 @@ export function Header({
         }}
       >
         <p className="mx-auto max-w-[1560px] font-mono text-[0.66rem] leading-relaxed tracking-wide text-review">
-          Research prototype — not for diagnosis. ScanProof measures whether a model's prediction is
-          stable under controlled tests. PASS does not mean clinically safe or diagnostically
-          correct.
+          Research prototype — not for diagnosis, not a medical device, no clinical validation.
+          ScanProof tests whether a prediction should be relied on; PASS is not a claim that it is
+          correct or clinically safe.
         </p>
       </div>
     </header>

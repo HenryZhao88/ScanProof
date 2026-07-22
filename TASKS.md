@@ -58,6 +58,24 @@ Status legend: `[ ]` todo · `[~]` in progress · `[x]` done
 - [x] `DEMO.md` — five-minute script with the real numbers and likely judge questions
 - [x] 80 tests; 32 preflight checks
 
+## Milestone 8 — submission hardening (scope frozen) ✅
+- [x] **Corrected a methodological error**: PneumoniaMNIST and ChestX-ray14 do not share a
+      label target. Removed every "same question / same task" claim; the adult arm is now
+      framed as a typicality test and its accuracy is quarantined behind an explicit
+      "not a like-for-like comparison" caveat
+- [x] Reframed as a multi-signal **deployment guardrail**; verdict + four checks are the hero,
+      the 0–100 score demoted to one line
+- [x] Each check now shows its own measurement and the question it asks, worst-first
+- [x] Stated explicitly that the **typicality check carried the adult result on its own**, and
+      where the other three earn their keep
+- [x] Retitled "why a composite score" → "why four checks, not one"
+- [x] Reviewed at 1920×1080; removed redundant copy, fixed two label collisions
+- [x] `tests/test_claims.py` — 10 tests asserting every documented figure matches the
+      artifacts, plus bans on equivalence claims and clinical-safety language
+- [x] `DEVPOST.md`, `VIDEO.md` (4:35–4:45 script + 9-shot list), `docs/screenshots/`
+- [x] Deleted `DEMO.md` (superseded by VIDEO.md; had stale panel titles)
+- [x] 90 tests · 32 preflight checks · zero external network calls verified in-browser
+
 ## Possible next steps (not done)
 - [ ] **Learned or regime-aware weighting.** The composite detects shift at AUROC 0.796 while
       the raw embedding percentile alone reaches 0.959 — averaging dilutes the signal that
