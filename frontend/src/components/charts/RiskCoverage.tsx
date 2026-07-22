@@ -57,7 +57,7 @@ export function RiskCoverage({
               x2={W - PAD.right}
               y1={sy(t)}
               y2={sy(t)}
-              stroke="var(--color-rule-soft)"
+              stroke="var(--color-rule)"
               strokeWidth={1}
             />
             <text
@@ -89,7 +89,7 @@ export function RiskCoverage({
           x={(PAD.left + W - PAD.right) / 2}
           y={H - 1}
           textAnchor="middle"
-          className="eyebrow"
+          className="field"
           fontSize={8.5}
           fill="var(--color-faint)"
           letterSpacing="1.4"
@@ -101,7 +101,7 @@ export function RiskCoverage({
         <path
           d={path(control)}
           fill="none"
-          stroke="var(--color-bone)"
+          stroke="var(--color-ink)"
           strokeOpacity={0.42}
           strokeWidth={2}
           strokeDasharray="5 4"
@@ -110,7 +110,7 @@ export function RiskCoverage({
         <path
           d={path(subject)}
           fill="none"
-          stroke="var(--color-instrument)"
+          stroke="var(--color-plot)"
           strokeWidth={2}
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -123,7 +123,7 @@ export function RiskCoverage({
             x2={W - PAD.right + 8}
             y1={sy(last(subject).accuracy)}
             y2={sy(last(subject).accuracy)}
-            stroke="var(--color-instrument)"
+            stroke="var(--color-plot)"
             strokeWidth={1}
             opacity={0.5}
           />
@@ -131,7 +131,7 @@ export function RiskCoverage({
             x={W - PAD.right + 12}
             y={sy(last(subject).accuracy) + 3}
             fontSize={9.5}
-            fill="var(--color-instrument)"
+            fill="var(--color-plot)"
             className="num"
           >
             reliability
@@ -141,7 +141,7 @@ export function RiskCoverage({
             x2={W - PAD.right + 8}
             y1={sy(last(control).accuracy)}
             y2={sy(last(control).accuracy)}
-            stroke="var(--color-bone)"
+            stroke="var(--color-ink)"
             strokeOpacity={0.35}
             strokeWidth={1}
             strokeDasharray="3 3"
@@ -150,7 +150,7 @@ export function RiskCoverage({
             x={W - PAD.right + 12}
             y={sy(last(control).accuracy) + 3 + (Math.abs(last(control).accuracy - last(subject).accuracy) < 0.008 ? 12 : 0)}
             fontSize={9.5}
-            fill="var(--color-bone)"
+            fill="var(--color-ink)"
             fillOpacity={0.55}
             className="num"
           >
@@ -189,7 +189,7 @@ export function RiskCoverage({
               x2={sx(subject[hover.i].coverage)}
               y1={PAD.top}
               y2={H - PAD.bottom}
-              stroke="var(--color-bone)"
+              stroke="var(--color-ink)"
               strokeOpacity={0.25}
               strokeWidth={1}
             />
@@ -197,17 +197,17 @@ export function RiskCoverage({
               cx={sx(subject[hover.i].coverage)}
               cy={sy(subject[hover.i].accuracy)}
               r={4.5}
-              fill="var(--color-instrument)"
-              stroke="var(--color-panel)"
+              fill="var(--color-plot)"
+              stroke="var(--color-sheet)"
               strokeWidth={2}
             />
             <circle
               cx={sx(control[hover.i].coverage)}
               cy={sy(control[hover.i].accuracy)}
               r={4}
-              fill="var(--color-bone)"
+              fill="var(--color-ink)"
               fillOpacity={0.6}
-              stroke="var(--color-panel)"
+              stroke="var(--color-sheet)"
               strokeWidth={2}
             />
           </>
@@ -221,12 +221,12 @@ export function RiskCoverage({
             {subject[hover.i].n_retained} cases
           </div>
           <div className="num mt-1.5 text-[0.72rem]">
-            <span style={{ color: "var(--color-instrument)" }}>reliability</span>{" "}
-            <span className="text-bone">{(subject[hover.i].accuracy * 100).toFixed(1)}%</span>
+            <span style={{ color: "var(--color-plot)" }}>reliability</span>{" "}
+            <span className="text-ink">{(subject[hover.i].accuracy * 100).toFixed(1)}%</span>
           </div>
           <div className="num text-[0.72rem]">
-            <span className="text-bone/55">confidence</span>{" "}
-            <span className="text-bone">{(control[hover.i].accuracy * 100).toFixed(1)}%</span>
+            <span className="text-ink/55">confidence</span>{" "}
+            <span className="text-ink">{(control[hover.i].accuracy * 100).toFixed(1)}%</span>
           </div>
         </Tooltip>
       )}

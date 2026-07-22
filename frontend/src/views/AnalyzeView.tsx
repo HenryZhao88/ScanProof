@@ -119,7 +119,7 @@ export function AnalyzeView({ health }: { health: Health | null }) {
               key={analysis.title + analysis.elapsed_ms}
               className={`space-y-4 rise ${analyzing ? "opacity-50 transition-opacity" : ""}`}
             >
-              <div className="grid gap-4 xl:grid-cols-[minmax(0,380px)_minmax(0,1fr)]">
+              <div className="grid items-start gap-4 xl:grid-cols-[minmax(0,380px)_minmax(0,1fr)]">
                 <Specimen analysis={analysis} />
                 <VerdictPanel result={analysis.result} />
               </div>

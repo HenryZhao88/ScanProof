@@ -1,6 +1,6 @@
 import { DivergenceChart, type ArmPoint } from "./charts/DivergenceChart";
 import { TwoRegime } from "./charts/TwoRegime";
-import { Panel, Readout, VERDICT_COLOR, VERDICT_GLYPH } from "./ui";
+import { Panel, Readout, VERDICT_COLOR, VERDICT_GLYPH, VERDICT_INK } from "./ui";
 import type { ShiftStudy, Verdict } from "../types";
 
 const SHORT: Record<string, string> = {
@@ -34,13 +34,14 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
   return (
     <>
       <Panel
+        seq="01"
         eyebrow="Headline result · the deployment test"
         title="The classifier stays confident on inputs it was never trained for. One check notices."
       >
-        <p className="mb-5 max-w-3xl text-xs leading-relaxed text-mute">
-          The ensemble was fine-tuned on <strong className="text-bone">pediatric</strong> chest
+        <p className="mb-5 max-w-3xl text-xs leading-relaxed text-graphite">
+          The ensemble was fine-tuned on <strong className="text-ink">pediatric</strong> chest
           films (ages 1–5) from one hospital in Guangzhou. Here it is run on{" "}
-          <strong className="text-bone">adult</strong> frontal chest films from the NIH Clinical
+          <strong className="text-ink">adult</strong> frontal chest films from the NIH Clinical
           Center. Both are frontal chest radiographs; the patients, the institution and the country
           all differ. The three numbers on the right need no ground-truth labels — they are
           properties of the input and the model.
@@ -57,15 +58,15 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
               color="var(--color-block)"
               sub="Barely moves. A two-class softmax is normalised over the two classes it knows, so it cannot represent “this is not my kind of input”."
             />
-            <div className="border-t border-rule-soft pt-4">
+            <div className="border-t border-rule pt-4">
               <Readout
                 label="Embedding percentile, pediatric → adult"
                 value={`${(ped.mean_ood_percentile * 100).toFixed(1)} → ${(adult.mean_ood_percentile * 100).toFixed(1)}`}
-                color="var(--color-instrument)"
+                color="var(--color-plot)"
                 sub="The typicality check does notice — this is the signal that carried the result. Distance from the training manifold, measured from the image alone."
               />
             </div>
-            <div className="border-t border-rule-soft pt-4">
+            <div className="border-t border-rule pt-4">
               <Readout
                 label="ScanProof PASS rate"
                 value={`${(a.pediatric_pass_rate * 100).toFixed(1)} → ${(a.adult_pass_rate * 100).toFixed(1)}`}
@@ -86,15 +87,15 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
           }}
         >
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <span className="eyebrow" style={{ color: "var(--color-review)" }}>
+            <span className="field" style={{ color: "var(--color-review)" }}>
               Accuracy on this arm — read with care
             </span>
-            <span className="num text-sm text-bone">
+            <span className="num text-sm text-ink">
               {(a.pediatric_accuracy * 100).toFixed(1)}% → {(a.adult_accuracy * 100).toFixed(1)}%
             </span>
           </div>
-          <p className="mt-2 max-w-4xl text-[0.7rem] leading-relaxed text-mute">
-            <strong className="text-bone">This is not a like-for-like comparison and we are not
+          <p className="mt-2 max-w-4xl text-[0.7rem] leading-relaxed text-graphite">
+            <strong className="text-ink">This is not a like-for-like comparison and we are not
             claiming it is.</strong>{" "}
             PneumoniaMNIST targets expert-graded pediatric pneumonia; ChestX-ray14 targets an
             NLP-mined mention of pneumonia in an adult report, and its negative class is “no finding
@@ -107,6 +108,7 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
 
       {/* ---- the confound control, stated before anyone has to ask ---- */}
       <Panel
+        seq="02"
         eyebrow="Confound control"
         title="Is this just a resolution artifact?"
         aside={
@@ -119,7 +121,7 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
         }
       >
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
-          <p className="max-w-2xl text-xs leading-relaxed text-mute">
+          <p className="max-w-2xl text-xs leading-relaxed text-graphite">
             {ctrl.purpose} If the two pediatric rows below disagreed, this study would be
             measuring image processing rather than a change of input population.
           </p>
@@ -133,7 +135,7 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
               ] as [string, number, boolean][]
             ).map(([label, delta]) => (
               <div key={label} className="flex items-baseline justify-between gap-3">
-                <dt className="text-mute">{label} Δ (native → resampled)</dt>
+                <dt className="text-graphite">{label} Δ (native → resampled)</dt>
                 <dd
                   className="num shrink-0"
                   style={{
@@ -149,10 +151,10 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
           </dl>
         </div>
 
-        <div className="mt-5 overflow-x-auto border-t border-rule-soft pt-4">
+        <div className="mt-5 overflow-x-auto border-t border-rule pt-4">
           <table className="w-full min-w-[720px] text-left text-xs">
             <thead>
-              <tr className="eyebrow border-b border-rule">
+              <tr className="field border-b border-rule">
                 <th className="py-2 pr-4 font-normal">Arm</th>
                 <th className="py-2 pr-4 text-right font-normal">n</th>
                 <th className="py-2 pr-4 text-right font-normal">Accuracy</th>
@@ -164,17 +166,17 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
             </thead>
             <tbody>
               {study.arms.map((arm) => (
-                <tr key={arm.name} className="border-b border-rule-soft">
+                <tr key={arm.name} className="border-b border-rule">
                   <td className="py-3 pr-4">
-                    <div className="font-display text-[0.75rem] font-medium text-bone">
+                    <div className="font-display text-[0.75rem] font-medium text-ink">
                       {arm.label}
                     </div>
                     <div className="max-w-[300px] text-[0.63rem] leading-snug text-faint">
                       {arm.description}
                     </div>
                   </td>
-                  <td className="num py-3 pr-4 text-right text-mute">{arm.n}</td>
-                  <td className="num py-3 pr-4 text-right text-bone">
+                  <td className="num py-3 pr-4 text-right text-graphite">{arm.n}</td>
+                  <td className="num py-3 pr-4 text-right text-ink">
                     {arm.accuracy ? `${(arm.accuracy.mean * 100).toFixed(1)}%` : "—"}
                     {arm.accuracy && (
                       <div className="text-[0.6rem] text-faint">
@@ -182,13 +184,13 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
                       </div>
                     )}
                   </td>
-                  <td className="num py-3 pr-4 text-right text-bone">
+                  <td className="num py-3 pr-4 text-right text-ink">
                     {(arm.model_confidence.mean * 100).toFixed(1)}%
                   </td>
-                  <td className="num py-3 pr-4 text-right text-mute">
+                  <td className="num py-3 pr-4 text-right text-graphite">
                     {(arm.mean_ood_percentile * 100).toFixed(1)}
                   </td>
-                  <td className="num py-3 pr-4 text-right text-mute">
+                  <td className="num py-3 pr-4 text-right text-graphite">
                     {arm.mean_flips_of_21.toFixed(1)}
                   </td>
                   <td className="py-3">
@@ -208,7 +210,7 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
                         ) : null,
                       )}
                     </div>
-                    <div className="num mt-1 text-[0.6rem]" style={{ color: VERDICT_COLOR.PASS }}>
+                    <div className="num mt-1 text-[0.6rem]" style={{ color: VERDICT_INK.PASS }}>
                       {VERDICT_GLYPH.PASS} {(arm.verdicts.PASS.share * 100).toFixed(1)}% pass
                     </div>
                   </td>
@@ -221,6 +223,7 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
 
       {/* ---- the argument for a composite score ---- */}
       <Panel
+        seq="03"
         eyebrow="Why four checks, not one"
         title="No single signal is good at both failure modes"
         aside={
@@ -228,16 +231,16 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
             best worst-case{" "}
             <span className="text-pass">{study.two_regime.best_compromise.worst_case.toFixed(3)}</span>
             {" vs "}
-            <span className="text-bone/60">
+            <span className="text-ink/60">
               {study.two_regime.best_compromise.runner_up_worst_case.toFixed(3)}
             </span>
           </div>
         }
       >
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,660px)_minmax(0,1fr)]">
           <TwoRegime rows={study.two_regime.rows} />
           <div className="space-y-4">
-            <p className="text-xs leading-relaxed text-mute">
+            <p className="text-xs leading-relaxed text-graphite">
               A deployed system gets one number, and two different things can go wrong. Confidence
               is the best in-distribution error ranker and the second-weakest shift detector. The
               embedding distance is the best shift detector and the worst in-distribution ranker.
@@ -251,55 +254,55 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
                 borderRadius: 3,
               }}
             >
-              <div className="eyebrow" style={{ color: "var(--color-review)" }}>
+              <div className="field" style={{ color: "var(--color-review)" }}>
                 Reported as found
               </div>
-              <p className="mt-2 text-xs leading-relaxed text-mute">
+              <p className="mt-2 text-xs leading-relaxed text-graphite">
                 Under the margins fixed before this study ran,{" "}
-                <span className="text-bone">no signal clears both regimes</span> — including ours.
+                <span className="text-ink">no signal clears both regimes</span> — including ours.
                 The defensible claim is narrower: rescaling each regime so the best signal is 1 and
                 the worst is 0, the composite has the highest worst case (
-                <span className="num text-bone">
+                <span className="num text-ink">
                   {study.two_regime.best_compromise.worst_case.toFixed(3)}
                 </span>{" "}
                 vs{" "}
-                <span className="num text-bone">
+                <span className="num text-ink">
                   {study.two_regime.best_compromise.runner_up_worst_case.toFixed(3)}
                 </span>{" "}
                 for {study.two_regime.best_compromise.runner_up}), and nothing beats it on both
                 axes at once.
               </p>
             </div>
-            <div className="space-y-2 border-t border-rule-soft pt-3">
-              <div className="eyebrow mb-1">Worst case across the two regimes</div>
+            <div className="space-y-2 border-t border-rule pt-3">
+              <div className="field mb-1">Worst case across the two regimes</div>
               {[...study.two_regime.rows]
                 .sort((a, b) => b.worst_case - a.worst_case)
                 .map((r) => (
                   <div key={r.signal} className="flex items-center gap-2 text-[0.7rem]">
                     <span
-                      className={`w-40 shrink-0 truncate ${r.is_composite ? "text-bone" : "text-mute"}`}
+                      className={`w-40 shrink-0 truncate ${r.is_composite ? "text-ink" : "text-graphite"}`}
                     >
                       {r.signal}
                     </span>
-                    <div className="h-1.5 flex-1 bg-panel-2" style={{ borderRadius: 1 }}>
+                    <div className="h-1.5 flex-1 bg-sheet-2" style={{ borderRadius: 1 }}>
                       <div
                         className="h-full"
                         style={{
                           width: `${Math.max(r.worst_case * 100, 1)}%`,
                           backgroundColor: r.is_composite
                             ? "var(--color-pass)"
-                            : "color-mix(in oklab, var(--color-instrument) 55%, transparent)",
+                            : "color-mix(in oklab, var(--color-plot) 55%, transparent)",
                           borderRadius: 1,
                         }}
                       />
                     </div>
-                    <span className="num w-10 shrink-0 text-right text-bone">
+                    <span className="num w-10 shrink-0 text-right text-ink">
                       {r.worst_case.toFixed(2)}
                     </span>
                   </div>
                 ))}
             </div>
-            <p className="border-t border-rule-soft pt-3 text-[0.68rem] leading-relaxed text-faint">
+            <p className="border-t border-rule pt-3 text-[0.68rem] leading-relaxed text-faint">
               {study.two_regime.note} {study.two_regime.worst_case_note}
             </p>
           </div>
@@ -309,6 +312,7 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
       {/* ---- what fires, and does the verdict still mean anything ---- */}
       <div className="grid gap-4 lg:grid-cols-2">
         <Panel
+          seq="04"
           eyebrow="Signal attribution"
           title="The typicality check carried this result — on its own"
         >
@@ -320,11 +324,11 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
               return (
                 <div key={k}>
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="font-display text-xs font-medium text-bone capitalize">{k}</span>
+                    <span className="font-display text-xs font-medium text-ink capitalize">{k}</span>
                     <span className="num text-[0.7rem]">
-                      <span className="text-mute">{p.toFixed(3)}</span>
+                      <span className="text-graphite">{p.toFixed(3)}</span>
                       <span className="mx-1.5 text-faint">→</span>
-                      <span className="text-bone">{ad.toFixed(3)}</span>
+                      <span className="text-ink">{ad.toFixed(3)}</span>
                       <span
                         className="ml-2"
                         style={{ color: drop > 0.15 ? "var(--color-block)" : "var(--color-faint)" }}
@@ -334,12 +338,12 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
                       </span>
                     </span>
                   </div>
-                  <div className="relative mt-1.5 h-2 w-full bg-panel-2" style={{ borderRadius: 1 }}>
+                  <div className="relative mt-1.5 h-2 w-full bg-sheet-2" style={{ borderRadius: 1 }}>
                     <div
                       className="absolute inset-y-0 left-0"
                       style={{
                         width: `${p * 100}%`,
-                        backgroundColor: "color-mix(in oklab, var(--color-instrument) 40%, transparent)",
+                        backgroundColor: "color-mix(in oklab, var(--color-plot) 40%, transparent)",
                         borderRadius: 1,
                       }}
                     />
@@ -347,7 +351,7 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
                       className="absolute inset-y-0 left-0"
                       style={{
                         width: `${ad * 100}%`,
-                        backgroundColor: "var(--color-instrument)",
+                        backgroundColor: "var(--color-plot)",
                         borderRadius: 1,
                       }}
                     />
@@ -356,9 +360,9 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
               );
             })}
           </div>
-          <p className="mt-4 border-t border-rule-soft pt-3 text-[0.7rem] leading-relaxed text-faint">
+          <p className="mt-4 border-t border-rule pt-3 text-[0.7rem] leading-relaxed text-faint">
             Faint bar is the pediatric mean, solid bar the adult mean. Typicality collapses; the
-            other three barely move. <span className="text-mute">Be clear about what this does and
+            other three barely move. <span className="text-graphite">Be clear about what this does and
             does not show:</span> on <em>this</em> failure mode the embedding check did essentially
             all the work, and a system built only from confidence, stability and agreement would
             have missed it.
@@ -372,6 +376,7 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
         </Panel>
 
         <Panel
+          seq="05"
           eyebrow="Selective accuracy under shift"
           title="Does the verdict still carry information off-distribution?"
         >
@@ -379,7 +384,7 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
             <>
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="eyebrow border-b border-rule">
+                  <tr className="field border-b border-rule">
                     <th className="py-2 pr-4 font-normal">Band</th>
                     <th className="py-2 pr-4 text-right font-normal">n</th>
                     <th className="py-2 text-right font-normal">Accuracy on adult films</th>
@@ -389,34 +394,34 @@ export function DeploymentTest({ study }: { study: ShiftStudy }) {
                   {(["PASS", "REVIEW", "BLOCK"] as Verdict[]).map((b) => {
                     const row = adult.accuracy_by_band![b];
                     return (
-                      <tr key={b} className="border-b border-rule-soft">
+                      <tr key={b} className="border-b border-rule">
                         <td className="py-3 pr-4">
-                          <span className="num font-semibold" style={{ color: VERDICT_COLOR[b] }}>
+                          <span className="num font-semibold" style={{ color: VERDICT_INK[b] }}>
                             {VERDICT_GLYPH[b]} {b}
                           </span>
                         </td>
-                        <td className="num py-3 pr-4 text-right text-mute">{row.n}</td>
-                        <td className="num py-3 text-right text-base text-bone">
+                        <td className="num py-3 pr-4 text-right text-graphite">{row.n}</td>
+                        <td className="num py-3 text-right text-base text-ink">
                           {row.accuracy === null ? "—" : `${(row.accuracy * 100).toFixed(1)}%`}
                         </td>
                       </tr>
                     );
                   })}
                   <tr>
-                    <td className="py-3 pr-4 font-display text-[0.75rem] text-mute">All adult</td>
-                    <td className="num py-3 pr-4 text-right text-mute">{adult.n}</td>
-                    <td className="num py-3 text-right text-base text-mute">
+                    <td className="py-3 pr-4 font-display text-[0.75rem] text-graphite">All adult</td>
+                    <td className="num py-3 pr-4 text-right text-graphite">{adult.n}</td>
+                    <td className="num py-3 text-right text-base text-graphite">
                       {(adult.accuracy!.mean * 100).toFixed(1)}%
                     </td>
                   </tr>
                 </tbody>
               </table>
-              <p className="mt-3 border-t border-rule-soft pt-3 text-[0.7rem] leading-relaxed text-faint">
+              <p className="mt-3 border-t border-rule pt-3 text-[0.7rem] leading-relaxed text-faint">
                 {String(study.shift_set.label_caveat)}
               </p>
             </>
           ) : (
-            <p className="text-xs text-mute">No labelled bands for this arm.</p>
+            <p className="text-xs text-graphite">No labelled bands for this arm.</p>
           )}
         </Panel>
       </div>

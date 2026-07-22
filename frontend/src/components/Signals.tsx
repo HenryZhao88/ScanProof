@@ -22,32 +22,32 @@ export function CheckpointVote({ result }: { result: ReliabilityResult }) {
       <div className="space-y-3">
         {members.map((m) => {
           const agrees = m.predicted_class === result.predicted_class;
-          const tone = agrees ? "var(--color-instrument)" : "var(--color-block)";
+          const tone = agrees ? "var(--color-plot)" : "var(--color-block)";
           return (
             <div key={m.name}>
               <div className="flex items-baseline justify-between gap-2">
-                <span className="num text-[0.72rem] text-mute">{m.name}</span>
+                <span className="num text-[0.72rem] text-graphite">{m.name}</span>
                 <span className="num text-[0.72rem]">
-                  <span className="text-bone">{m.prob_pneumonia.toFixed(3)}</span>
+                  <span className="text-ink">{m.prob_pneumonia.toFixed(3)}</span>
                   <span className="ml-2" style={{ color: tone }}>
                     {agrees ? "" : "✕ "}
                     {m.predicted_class}
                   </span>
                 </span>
               </div>
-              <div className="relative mt-1.5 h-2 w-full bg-panel-2" style={{ borderRadius: 1 }}>
+              <div className="relative mt-1.5 h-2 w-full bg-sheet-2" style={{ borderRadius: 1 }}>
                 <div
                   className="absolute inset-y-0 left-0"
                   style={{ width: `${m.prob_pneumonia * 100}%`, background: tone, borderRadius: 1 }}
                 />
                 {/* the decision boundary, on every bar */}
-                <div className="absolute inset-y-[-2px] left-1/2 w-px bg-bone/45" />
+                <div className="absolute inset-y-[-2px] left-1/2 w-px bg-ink/45" />
               </div>
             </div>
           );
         })}
       </div>
-      <p className="mt-3.5 border-t border-rule-soft pt-3 text-[0.7rem] leading-relaxed text-faint">
+      <p className="mt-3.5 border-t border-rule pt-3 text-[0.7rem] leading-relaxed text-faint">
         Bars show P(PNEUMONIA); the hairline is the 0.50 boundary. Members differ by architecture
         (two ResNet-18, one DenseNet-121), seed and augmentation, so disagreement reflects more than
         seed noise.
@@ -89,7 +89,7 @@ export function EmbeddingDistance({ result }: { result: ReliabilityResult }) {
             this image
           </div>
         </div>
-        <div className="relative h-3 w-full overflow-hidden bg-panel-2" style={{ borderRadius: 1 }}>
+        <div className="relative h-3 w-full overflow-hidden bg-sheet-2" style={{ borderRadius: 1 }}>
           <div
             className="absolute inset-y-0 left-0"
             style={{
@@ -124,14 +124,14 @@ export function EmbeddingDistance({ result }: { result: ReliabilityResult }) {
         </div>
       </div>
 
-      <dl className="mt-4 grid grid-cols-2 gap-3 border-t border-rule-soft pt-3">
+      <dl className="mt-4 grid grid-cols-2 gap-3 border-t border-rule pt-3">
         <div>
-          <dt className="eyebrow">Mahalanobis distance</dt>
-          <dd className="num mt-1.5 text-lg text-bone">{distance.toFixed(1)}</dd>
+          <dt className="field">Mahalanobis distance</dt>
+          <dd className="num mt-1.5 text-lg text-ink">{distance.toFixed(1)}</dd>
         </div>
         <div>
-          <dt className="eyebrow">Training images closer</dt>
-          <dd className="num mt-1.5 text-lg text-bone">{pct.toFixed(1)}%</dd>
+          <dt className="field">Training images closer</dt>
+          <dd className="num mt-1.5 text-lg text-ink">{pct.toFixed(1)}%</dd>
         </div>
       </dl>
       <p className="mt-3 text-[0.7rem] leading-relaxed text-faint">

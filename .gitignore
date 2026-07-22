@@ -34,6 +34,11 @@ frontend/dist/
 frontend/.vite/
 *.tsbuildinfo
 
+# Agent tooling dropped in by the harness, not part of this project
+.agents/
+.claude/skills/
+skills-lock.json
+
 # OS / editor
 .DS_Store
 .idea/

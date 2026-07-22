@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 import { api } from "../api";
-import { ErrorState, Panel, Readout, Skeleton, VERDICT_COLOR, VERDICT_GLYPH } from "../components/ui";
+import {
+  ErrorState,
+  Panel,
+  Readout,
+  Skeleton,
+  VERDICT_COLOR,
+  VERDICT_GLYPH,
+  VERDICT_INK,
+} from "../components/ui";
 import { ReliabilityDiagram } from "../components/charts/ReliabilityDiagram";
 import { RiskCoverage } from "../components/charts/RiskCoverage";
 import type { Audit, ShiftStudy } from "../types";
@@ -58,14 +66,14 @@ export function AuditView() {
   return (
     <div className="mx-auto max-w-[1560px] space-y-4 px-5 py-5">
       {/* ---- what this page is -------------------------------------- */}
-      <section className="border border-rule-soft bg-panel px-5 py-4" style={{ borderRadius: 3 }}>
-        <div className="eyebrow">Aggregate audit</div>
-        <h1 className="mt-2 max-w-3xl font-display text-xl font-semibold tracking-tight text-bone">
+      <section className="border border-rule bg-sheet px-5 py-4" style={{ borderRadius: 3 }}>
+        <div className="field">Aggregate audit</div>
+        <h1 className="mt-2 max-w-3xl font-display text-xl font-semibold tracking-tight text-ink">
           Every number below was computed by{" "}
-          <span className="num text-instrument">scanproof.evaluate</span> and{" "}
-          <span className="num text-instrument">scanproof.shift</span> over held-out data.
+          <span className="num text-plot">scanproof.evaluate</span> and{" "}
+          <span className="num text-plot">scanproof.shift</span> over held-out data.
         </h1>
-        <p className="mt-2.5 max-w-3xl text-xs leading-relaxed text-mute">
+        <p className="mt-2.5 max-w-3xl text-xs leading-relaxed text-graphite">
           Thresholds were chosen on the {audit.splits.threshold_selection.n}-image pediatric
           validation split and frozen before the {c.n}-image test split or any shift arm was
           touched, so nothing here is tuned on what it reports. Artifacts are committed to the repo.
@@ -88,14 +96,15 @@ export function AuditView() {
 
       {/* ---- the honest in-distribution comparison ------------------- */}
       <Panel
+        seq="06"
         eyebrow="Selective prediction · in-distribution only"
         title="On chest films alone, calibrated confidence is already a strong error ranker"
         aside={
           <div className="num text-xs text-faint">
             AURC{" "}
-            <span className="text-instrument">{sp.by_reliability_score.aurc.toFixed(4)}</span>
+            <span className="text-plot">{sp.by_reliability_score.aurc.toFixed(4)}</span>
             {" vs "}
-            <span className="text-bone/60">{sp.by_confidence_only.aurc.toFixed(4)}</span>
+            <span className="text-ink/60">{sp.by_confidence_only.aurc.toFixed(4)}</span>
           </div>
         }
       >
@@ -115,12 +124,12 @@ export function AuditView() {
                 borderRadius: 3,
               }}
             >
-              <div className="eyebrow" style={{ color: "var(--color-review)" }}>
+              <div className="field" style={{ color: "var(--color-review)" }}>
                 Negative result
               </div>
-              <p className="mt-2 text-xs leading-relaxed text-mute">
+              <p className="mt-2 text-xs leading-relaxed text-graphite">
                 Confidence-only ranking reaches a{" "}
-                <span className="num text-bone">lower</span> AURC than the composite score here (
+                <span className="num text-ink">lower</span> AURC than the composite score here (
                 <span className="num">{sp.by_confidence_only.aurc.toFixed(4)}</span> vs{" "}
                 <span className="num">{sp.by_reliability_score.aurc.toFixed(4)}</span>; lower is
                 better). Reported as measured. On a well-calibrated model over data it was trained
@@ -131,7 +140,7 @@ export function AuditView() {
             <Readout
               label="Errors withheld from PASS"
               value={`${(errorsOutsidePass * 100).toFixed(0)}%`}
-              color="var(--color-instrument)"
+              color="var(--color-plot)"
               sub={`${bands.filter((b) => b.band !== "PASS").reduce((a, b) => a + b.errors, 0)} of the ${bands.reduce((a, b) => a + b.errors, 0)} test errors, flagged without the engine ever seeing a label.`}
             />
           </div>
@@ -140,6 +149,7 @@ export function AuditView() {
 
       {/* ---- band table --------------------------------------------- */}
       <Panel
+        seq="07"
         eyebrow="Verdict bands"
         title="Accuracy and coverage per band, test split"
         aside={
@@ -152,7 +162,7 @@ export function AuditView() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[680px] text-left text-xs">
             <thead>
-              <tr className="eyebrow border-b border-rule">
+              <tr className="field border-b border-rule">
                 <th className="py-2 pr-4 font-normal">Band</th>
                 <th className="py-2 pr-4 font-normal">Coverage</th>
                 <th className="py-2 pr-4 text-right font-normal">n</th>
@@ -165,16 +175,17 @@ export function AuditView() {
             <tbody>
               {bands.map((b) => {
                 const vc = VERDICT_COLOR[b.band];
+                const vi = VERDICT_INK[b.band];
                 return (
-                  <tr key={b.band} className="border-b border-rule-soft">
+                  <tr key={b.band} className="border-b border-rule">
                     <td className="py-3 pr-4">
-                      <span className="num font-semibold" style={{ color: vc }}>
+                      <span className="num font-semibold" style={{ color: vi }}>
                         {VERDICT_GLYPH[b.band]} {b.band}
                       </span>
                     </td>
                     <td className="py-3 pr-4">
                       <div className="flex items-center gap-2">
-                        <div className="h-2 w-24 bg-panel-2" style={{ borderRadius: 1 }}>
+                        <div className="h-2 w-24 bg-sheet-2" style={{ borderRadius: 1 }}>
                           <div
                             className={`relative h-full ${b.band === "BLOCK" ? "hatch" : ""}`}
                             style={{
@@ -184,31 +195,31 @@ export function AuditView() {
                             }}
                           />
                         </div>
-                        <span className="num text-mute">{(b.coverage * 100).toFixed(1)}%</span>
+                        <span className="num text-graphite">{(b.coverage * 100).toFixed(1)}%</span>
                       </div>
                     </td>
-                    <td className="num py-3 pr-4 text-right text-mute">{b.n}</td>
-                    <td className="num py-3 pr-4 text-right text-base text-bone">
+                    <td className="num py-3 pr-4 text-right text-graphite">{b.n}</td>
+                    <td className="num py-3 pr-4 text-right text-base text-ink">
                       {b.accuracy === null ? "—" : (b.accuracy * 100).toFixed(1) + "%"}
                     </td>
-                    <td className="num py-3 pr-4 text-right text-mute">{b.errors}</td>
-                    <td className="num py-3 pr-4 text-right text-mute">
+                    <td className="num py-3 pr-4 text-right text-graphite">{b.errors}</td>
+                    <td className="num py-3 pr-4 text-right text-graphite">
                       {b.mean_reliability_score?.toFixed(1) ?? "—"}
                     </td>
-                    <td className="num py-3 text-right text-mute">
+                    <td className="num py-3 text-right text-graphite">
                       {b.mean_confidence === null ? "—" : (b.mean_confidence * 100).toFixed(1) + "%"}
                     </td>
                   </tr>
                 );
               })}
               <tr>
-                <td className="py-3 pr-4 font-display text-[0.75rem] text-mute">All cases</td>
-                <td className="num py-3 pr-4 text-mute">100.0%</td>
-                <td className="num py-3 pr-4 text-right text-mute">{c.n}</td>
-                <td className="num py-3 pr-4 text-right text-base text-mute">
+                <td className="py-3 pr-4 font-display text-[0.75rem] text-graphite">All cases</td>
+                <td className="num py-3 pr-4 text-graphite">100.0%</td>
+                <td className="num py-3 pr-4 text-right text-graphite">{c.n}</td>
+                <td className="num py-3 pr-4 text-right text-base text-graphite">
                   {(c.accuracy * 100).toFixed(1)}%
                 </td>
-                <td className="num py-3 pr-4 text-right text-mute">
+                <td className="num py-3 pr-4 text-right text-graphite">
                   {bands.reduce((a, b) => a + b.errors, 0)}
                 </td>
                 <td className="num py-3 pr-4 text-right text-faint">—</td>
@@ -217,13 +228,13 @@ export function AuditView() {
             </tbody>
           </table>
         </div>
-        <p className="mt-3 border-t border-rule-soft pt-3 text-[0.7rem] leading-relaxed text-faint">
+        <p className="mt-3 border-t border-rule pt-3 text-[0.7rem] leading-relaxed text-faint">
           The PASS band reaches{" "}
-          <span className="num text-bone">
+          <span className="num text-ink">
             {passBand?.accuracy != null ? (passBand.accuracy * 100).toFixed(1) + "%" : "—"}
           </span>{" "}
           against{" "}
-          <span className="num text-bone">{(c.accuracy * 100).toFixed(1)}%</span> over all cases.
+          <span className="num text-ink">{(c.accuracy * 100).toFixed(1)}%</span> over all cases.
           That gap is the value the reliability signals add — and it is not a guarantee: {passBand?.errors ?? 0}{" "}
           errors still reach PASS.
         </p>
@@ -231,12 +242,12 @@ export function AuditView() {
 
       {/* ---- calibration + classification --------------------------- */}
       <div className="grid gap-4 lg:grid-cols-2">
-        <Panel eyebrow="Confidence calibration" title="Before and after temperature scaling">
+        <Panel seq="08" eyebrow="Confidence calibration" title="Before and after temperature scaling">
           <div className="mb-4 grid grid-cols-3 gap-4">
             <Readout
               label="ECE"
               value={cal.ece_calibrated.toFixed(4)}
-              color="var(--color-instrument)"
+              color="var(--color-plot)"
               sub={`from ${cal.ece_raw.toFixed(4)} raw`}
             />
             <Readout
@@ -254,15 +265,15 @@ export function AuditView() {
           <p className="mt-3 text-[0.7rem] leading-relaxed text-faint">{cal.note}</p>
         </Panel>
 
-        <Panel eyebrow="Classifier performance" title="Held-out test split">
+        <Panel seq="09" eyebrow="Classifier performance" title="Held-out test split">
           <div className="grid grid-cols-2 gap-5">
             <Readout label="Accuracy" value={(c.accuracy * 100).toFixed(1)} unit="%" size="xl" />
             <Readout label="AUROC" value={c.auroc.toFixed(4)} size="xl" />
             <Readout label="Sensitivity" value={(c.sensitivity * 100).toFixed(1)} unit="%" />
             <Readout label="Specificity" value={(c.specificity * 100).toFixed(1)} unit="%" />
           </div>
-          <div className="mt-5 border-t border-rule-soft pt-4">
-            <div className="eyebrow mb-2.5">Confusion matrix</div>
+          <div className="mt-5 border-t border-rule pt-4">
+            <div className="field mb-2.5">Confusion matrix</div>
             <div className="grid max-w-[280px] grid-cols-2 gap-[2px]">
               {(
                 [
@@ -272,8 +283,8 @@ export function AuditView() {
                   ["True negative", c.confusion.tn],
                 ] as [string, number][]
               ).map(([label, n]) => (
-                <div key={label} className="bg-panel-2 px-3 py-2.5" style={{ borderRadius: 2 }}>
-                  <div className="num text-lg text-bone">{n}</div>
+                <div key={label} className="bg-sheet-2 px-3 py-2.5" style={{ borderRadius: 2 }}>
+                  <div className="num text-lg text-ink">{n}</div>
                   <div className="mt-0.5 text-[0.62rem] text-faint">{label}</div>
                 </div>
               ))}
@@ -290,6 +301,7 @@ export function AuditView() {
 
       {/* ---- robustness --------------------------------------------- */}
       <Panel
+        seq="10"
         eyebrow="Perturbation battery"
         title="Ensemble accuracy under each test, across all 624 test images"
         aside={
@@ -301,7 +313,7 @@ export function AuditView() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[720px] text-left text-xs">
             <thead>
-              <tr className="eyebrow border-b border-rule">
+              <tr className="field border-b border-rule">
                 <th className="py-2 pr-4 font-normal">Test family</th>
                 {[1, 2, 3].map((s) => (
                   <th key={s} colSpan={2} className="py-2 pr-4 text-center font-normal">
@@ -309,7 +321,7 @@ export function AuditView() {
                   </th>
                 ))}
               </tr>
-              <tr className="eyebrow border-b border-rule-soft">
+              <tr className="field border-b border-rule">
                 <th className="py-1.5 pr-4 font-normal" />
                 {[1, 2, 3].map((s) => (
                   <>
@@ -325,9 +337,9 @@ export function AuditView() {
             </thead>
             <tbody>
               {audit.robustness.families.map((f) => (
-                <tr key={f.family} className="border-b border-rule-soft">
+                <tr key={f.family} className="border-b border-rule">
                   <td className="py-2.5 pr-4">
-                    <div className="font-display text-[0.75rem] font-medium text-bone">
+                    <div className="font-display text-[0.75rem] font-medium text-ink">
                       {f.family_label}
                     </div>
                     <div className="text-[0.65rem] text-faint">{f.description}</div>
@@ -335,7 +347,7 @@ export function AuditView() {
                   {f.severities.map((s) => (
                     <>
                       <td key={`a${s.severity}`} className="num py-2.5 pr-2 text-right">
-                        <span className="text-bone">{(s.accuracy * 100).toFixed(1)}</span>
+                        <span className="text-ink">{(s.accuracy * 100).toFixed(1)}</span>
                         <span className="ml-1 text-[0.62rem] text-faint">
                           {s.accuracy_drop > 0.0005
                             ? `−${(s.accuracy_drop * 100).toFixed(1)}`
@@ -363,7 +375,7 @@ export function AuditView() {
             </tbody>
           </table>
         </div>
-        <p className="mt-3 border-t border-rule-soft pt-3 text-[0.7rem] leading-relaxed text-faint">
+        <p className="mt-3 border-t border-rule pt-3 text-[0.7rem] leading-relaxed text-faint">
           "flips" is the share of images whose predicted label changed under that test alone.
           Sorted by worst-severity flip rate — the families at the top are the ones this classifier
           is least robust to.
@@ -372,12 +384,12 @@ export function AuditView() {
 
       {/* ---- OOD + provenance --------------------------------------- */}
       <div className="grid gap-4 lg:grid-cols-2">
-        <Panel eyebrow="Out-of-distribution detection" title="Chest films vs. a different modality">
+        <Panel seq="11" eyebrow="Out-of-distribution detection" title="Chest films vs. a different modality">
           <div className="grid grid-cols-2 gap-5">
             <Readout
               label="Detection AUROC"
               value={audit.ood.detection_auroc.toFixed(4)}
-              color="var(--color-instrument)"
+              color="var(--color-plot)"
               size="xl"
             />
             <Readout
@@ -387,17 +399,17 @@ export function AuditView() {
               size="xl"
             />
           </div>
-          <dl className="mt-5 space-y-2.5 border-t border-rule-soft pt-4 text-[0.72rem]">
+          <dl className="mt-5 space-y-2.5 border-t border-rule pt-4 text-[0.72rem]">
             <div className="flex justify-between gap-3">
-              <dt className="text-mute">{audit.ood.in_distribution.source}</dt>
-              <dd className="num shrink-0 text-bone">
+              <dt className="text-graphite">{audit.ood.in_distribution.source}</dt>
+              <dd className="num shrink-0 text-ink">
                 mean pct {(audit.ood.in_distribution.mean_percentile * 100).toFixed(1)} · gated{" "}
                 {(audit.ood.in_distribution.frac_above_hard_gate * 100).toFixed(1)}%
               </dd>
             </div>
             <div className="flex justify-between gap-3">
-              <dt className="text-mute">{audit.ood.out_of_distribution.source}</dt>
-              <dd className="num shrink-0 text-bone">
+              <dt className="text-graphite">{audit.ood.out_of_distribution.source}</dt>
+              <dd className="num shrink-0 text-ink">
                 mean pct {(audit.ood.out_of_distribution.mean_percentile * 100).toFixed(1)} · gated{" "}
                 {(audit.ood.out_of_distribution.frac_above_hard_gate * 100).toFixed(1)}%
               </dd>
@@ -406,10 +418,10 @@ export function AuditView() {
           <p className="mt-3 text-[0.7rem] leading-relaxed text-faint">{audit.ood.method}.</p>
         </Panel>
 
-        <Panel eyebrow="Provenance" title="Data, models and scoring">
+        <Panel seq="12" eyebrow="Provenance" title="Data, models and scoring">
           <dl className="space-y-3 text-[0.72rem]">
             <Field label="Dataset">
-              <span className="text-bone">{audit.dataset.python_class}</span> · {audit.dataset.license}
+              <span className="text-ink">{audit.dataset.python_class}</span> · {audit.dataset.license}
               <div className="num mt-1 break-all text-[0.65rem] text-faint">
                 {audit.dataset.source_url}
               </div>
@@ -425,7 +437,7 @@ export function AuditView() {
               <div className="space-y-1">
                 {audit.model.members.map((m) => (
                   <div key={m.name} className="num text-[0.68rem]">
-                    <span className="text-bone">{m.name}</span>
+                    <span className="text-ink">{m.name}</span>
                     <span className="text-faint">
                       {" "}
                       · {m.arch} · seed {m.seed} · aug {m.augment} · T {m.temperature}
@@ -442,7 +454,7 @@ export function AuditView() {
               </span>
             </Field>
             <Field label="Thresholds">
-              <span className="text-mute">{audit.model.thresholds.source}</span>
+              <span className="text-graphite">{audit.model.thresholds.source}</span>
             </Field>
           </dl>
         </Panel>
@@ -458,8 +470,8 @@ export function AuditView() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex gap-3">
-      <dt className="eyebrow w-20 shrink-0 pt-[2px]">{label}</dt>
-      <dd className="min-w-0 flex-1 text-mute">{children}</dd>
+      <dt className="field w-20 shrink-0 pt-[2px]">{label}</dt>
+      <dd className="min-w-0 flex-1 text-graphite">{children}</dd>
     </div>
   );
 }

@@ -1,32 +1,36 @@
 import type { ReliabilityResult, SubScore } from "../types";
-import { VERDICT_COLOR, VERDICT_GLYPH, VERDICT_MEANING, VerdictChip } from "./ui";
+import { VERDICT_INK, VERDICT_MEANING, VerdictStamp } from "./ui";
 
 /**
- * The split readout. What the classifier reports sits beside what the guardrail
- * decided, because the whole claim is that these are different questions.
+ * The disposition block of the certificate.
  *
- * The hero on the right is the **decision** and the **four checks**, not the
- * 0-100 number. The number is a weighted convenience for ranking; the thing a
- * reviewer acts on is which check failed and why. Earlier revisions made the
- * score the largest element on screen, which argued — wrongly — that ScanProof
- * is a better confidence score. It is not. It is four independent tests.
+ * Reading order is deliberate: what was submitted (the classifier's claim),
+ * then the stamp, then the four checks that produced it. The 0-100 score is a
+ * ranking convenience and is set as one line of small print — making it the
+ * hero would argue that ScanProof is a better confidence score, which it is
+ * not. It is four independent tests.
  */
 
 type Status = "ok" | "warn" | "fail";
 
-const STATUS_TONE: Record<Status, string> = {
+const STATUS_INK: Record<Status, string> = {
+  ok: "var(--color-pass-ink)",
+  warn: "var(--color-review-ink)",
+  fail: "var(--color-block-ink)",
+};
+const STATUS_FILL: Record<Status, string> = {
   ok: "var(--color-pass)",
   warn: "var(--color-review)",
   fail: "var(--color-block)",
 };
 const STATUS_GLYPH: Record<Status, string> = { ok: "✓", warn: "!", fail: "✕" };
+const STATUS_WORD: Record<Status, string> = { ok: "clear", warn: "caution", fail: "failed" };
 const STATUS_RANK: Record<Status, number> = { fail: 0, warn: 1, ok: 2 };
 
 function statusOf(value: number): Status {
   return value >= 0.85 ? "ok" : value >= 0.55 ? "warn" : "fail";
 }
 
-/** What each check actually asks, in one clause. */
 const ASKS: Record<string, string> = {
   typicality: "Has the model seen inputs like this?",
   stability: "Does the answer survive harmless changes?",
@@ -39,13 +43,11 @@ function measurementOf(key: string, r: ReliabilityResult): string {
   const p = r.perturbation_summary;
   switch (key) {
     case "typicality":
-      return `${(r.ood.percentile * 100).toFixed(1)}th percentile of the training distribution`;
+      return `${(r.ood.percentile * 100).toFixed(1)}th percentile of training distribution`;
     case "stability":
       return `${p.n_flips} of ${p.n_variants} perturbations changed the label`;
-    case "agreement": {
-      const e = r.ensemble;
-      return `${e.unanimous ? "all 3" : "split vote"} · σ ${e.std.toFixed(3)} across checkpoints`;
-    }
+    case "agreement":
+      return `${r.ensemble.unanimous ? "all 3 agree" : "split vote"} · σ ${r.ensemble.std.toFixed(3)}`;
     case "confidence":
       return `${(r.confidence * 100).toFixed(1)}% calibrated for ${r.predicted_class}`;
     default:
@@ -54,88 +56,80 @@ function measurementOf(key: string, r: ReliabilityResult): string {
 }
 
 export function VerdictPanel({ result }: { result: ReliabilityResult }) {
-  const c = VERDICT_COLOR[result.verdict];
-
   const checks = result.subscores
     .map((s) => ({ sub: s, status: statusOf(s.value) }))
     .sort((a, b) => STATUS_RANK[a.status] - STATUS_RANK[b.status]);
-  const nPassed = checks.filter((x) => x.status === "ok").length;
+  const nClear = checks.filter((x) => x.status === "ok").length;
 
   return (
-    <div className="border border-rule-soft bg-panel" style={{ borderRadius: 3 }}>
-      <div className="grid grid-cols-1 sm:grid-cols-2">
-        {/* --- what the classifier reports --- */}
-        <div className="border-b border-rule-soft p-5 sm:border-r sm:border-b-0">
-          <div className="eyebrow">The classifier says</div>
-          <div className="mt-3 font-display text-3xl font-semibold tracking-tight text-bone">
-            {result.predicted_class}
-          </div>
-          <div className="num mt-3 flex items-baseline gap-2">
-            <span className="text-2xl leading-none text-bone">
-              {(result.confidence * 100).toFixed(1)}
-              <span className="text-sm text-faint">%</span>
+    <div className="border border-rule bg-sheet">
+      {/* --- disposition ------------------------------------------------- */}
+      <div className="grid grid-cols-1 items-center gap-6 border-b-2 border-rule-hard px-6 py-5 lg:grid-cols-[minmax(0,1fr)_auto]">
+        <div>
+          <div className="field">Submitted for inspection · classifier output</div>
+          <div className="mt-2 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+            <span className="font-display text-[2.1rem] font-bold leading-none tracking-[-0.03em] text-ink">
+              {result.predicted_class}
             </span>
-            <span className="text-[0.7rem] text-faint">calibrated confidence</span>
+            <span className="num text-[1.35rem] leading-none text-graphite">
+              {(result.confidence * 100).toFixed(1)}
+              <span className="text-[0.62em] text-faint">% confidence</span>
+            </span>
           </div>
-          <p className="mt-4 max-w-xs text-[0.7rem] leading-relaxed text-faint">
+          <p className="mt-3 max-w-md text-[0.75rem] leading-relaxed text-graphite">
             Temperature-scaled on a held-out split. Confidence measures distance from the decision
             boundary — nothing else.
           </p>
         </div>
 
-        {/* --- what the guardrail decided --- */}
-        <div className="p-5" style={{ background: `color-mix(in oklab, ${c} 7%, transparent)` }}>
-          <div className="eyebrow">ScanProof says</div>
-          <div className="mt-3">
-            <VerdictChip verdict={result.verdict} size="hero" />
-          </div>
-          <p className="mt-3 text-xs leading-relaxed text-mute">
+        <div className="flex flex-col items-start gap-3 lg:items-end">
+          <VerdictStamp verdict={result.verdict} />
+          <p
+            className="max-w-[15rem] text-[0.75rem] leading-snug lg:text-right"
+            style={{ color: VERDICT_INK[result.verdict] }}
+          >
             {VERDICT_MEANING[result.verdict]}.
           </p>
-          <div className="num mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-rule-soft pt-3 text-[0.7rem] text-faint">
-            <span>
-              <span style={{ color: nPassed === 4 ? "var(--color-pass)" : "var(--color-review)" }}>
-                {nPassed}
-              </span>{" "}
-              of 4 checks clear
-            </span>
-            <span>·</span>
-            <span>score {result.reliability_score.toFixed(1)}/100</span>
-            {result.gates.length > 0 && (
-              <>
-                <span>·</span>
-                <span style={{ color: c }}>{result.gates.length} gate applied</span>
-              </>
-            )}
-          </div>
         </div>
       </div>
 
-      {/* --- the four checks: the evidence a reviewer acts on --- */}
-      <div className="border-t border-rule-soft px-5 py-4">
-        <div className="eyebrow mb-3">Four independent checks · worst first</div>
-        <div className="grid grid-cols-1 gap-x-6 gap-y-3 lg:grid-cols-2">
-          {checks.map(({ sub, status }) => (
-            <Check key={sub.key} sub={sub} status={status} result={result} />
-          ))}
+      {/* --- the four checks --------------------------------------------- */}
+      <div className="px-6 pt-4 pb-1">
+        <div className="flex items-baseline justify-between gap-4 pb-1">
+          <div className="field">Inspection battery · four independent checks</div>
+          <div className="num text-[0.6875rem] text-faint">
+            <span style={{ color: nClear === 4 ? "var(--color-pass-ink)" : "var(--color-review-ink)" }}>
+              {nClear}
+            </span>
+            /4 clear
+            <span className="mx-2 text-rule">|</span>
+            index {result.reliability_score.toFixed(1)}
+          </div>
         </div>
+
+        <ol>
+          {checks.map(({ sub, status }, i) => (
+            <Check key={sub.key} n={i + 1} sub={sub} status={status} result={result} />
+          ))}
+        </ol>
       </div>
 
       {result.gates.length > 0 && (
-        <div className="border-t border-rule-soft px-5 py-4">
-          <div className="eyebrow mb-2.5">Hard gates applied</div>
+        <div className="border-t border-rule bg-sheet-2 px-6 py-4">
+          <div className="field mb-2">Hard gates applied</div>
           <ul className="space-y-1.5">
             {result.gates.map((g, i) => (
-              <li key={i} className="flex gap-2 text-xs leading-relaxed text-mute">
-                <span className="num shrink-0" style={{ color: c }} aria-hidden>
-                  ▸
-                </span>
-                <span>{g}</span>
+              <li
+                key={i}
+                className="text-[0.78rem] leading-relaxed"
+                style={{ color: VERDICT_INK[result.verdict] }}
+              >
+                {g}
               </li>
             ))}
           </ul>
-          <p className="mt-2.5 text-[0.7rem] leading-relaxed text-faint">
-            A gate overrides the weighted score outright. Some failures should not be averaged away
+          <p className="mt-2.5 text-[0.72rem] leading-relaxed text-faint">
+            A gate overrides the weighted index outright. Some failures should not be averaged away
             by good numbers elsewhere.
           </p>
         </div>
@@ -144,51 +138,58 @@ export function VerdictPanel({ result }: { result: ReliabilityResult }) {
   );
 }
 
+/**
+ * One line of the inspection battery, set as a form row: sequence number,
+ * name, the measurement, disposition, and a tolerance bar. Rows are ordered
+ * worst-first so the eye lands on the failure.
+ */
 function Check({
+  n,
   sub,
   status,
   result,
 }: {
+  n: number;
   sub: SubScore;
   status: Status;
   result: ReliabilityResult;
 }) {
-  const tone = STATUS_TONE[status];
+  const ink = STATUS_INK[status];
   const pct = (sub.points / sub.max_points) * 100;
 
   return (
-    <div className="flex gap-3">
-      <span
-        className="num mt-[2px] flex h-4 w-4 shrink-0 items-center justify-center text-[0.65rem] font-semibold"
-        style={{
-          color: tone,
-          background: `color-mix(in oklab, ${tone} 15%, transparent)`,
-          borderRadius: 2,
-        }}
-        aria-hidden
-      >
-        {STATUS_GLYPH[status]}
-      </span>
-      <div className="min-w-0 flex-1">
-        <div className="flex items-baseline justify-between gap-2">
-          <span className="font-display text-[0.82rem] font-medium text-bone">{sub.label}</span>
-          <span className="num shrink-0 text-[0.65rem] text-faint">
-            {sub.points.toFixed(1)}/{sub.max_points.toFixed(0)}
+    <li className="grid grid-cols-[1.5rem_minmax(0,1fr)_auto] items-center gap-x-4 border-b border-rule py-3 last:border-b-0">
+      <span className="seq self-start pt-[3px]">{String(n).padStart(2, "0")}</span>
+
+      <div className="min-w-0">
+        {/* The measurement sits beside the name, not under it: it is the point
+            of the row, and adjacency keeps the line from stranding. */}
+        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
+          <span className="font-display text-[0.875rem] font-semibold text-ink">{sub.label}</span>
+          <span className="num text-[0.78rem]" style={{ color: ink }}>
+            {measurementOf(sub.key, result)}
           </span>
         </div>
-        <div className="num mt-1 text-[0.72rem]" style={{ color: tone }}>
-          {measurementOf(sub.key, result)}
-        </div>
-        <div className="mt-1.5 h-[3px] w-full bg-panel-2" style={{ borderRadius: 1 }}>
-          <div
-            className="h-full"
-            style={{ width: `${pct}%`, backgroundColor: tone, borderRadius: 1 }}
-          />
-        </div>
-        <div className="mt-1 text-[0.65rem] leading-snug text-faint">{ASKS[sub.key]}</div>
+        <div className="mt-0.5 text-[0.7rem] text-faint">{ASKS[sub.key]}</div>
       </div>
-    </div>
+
+      <div className="flex items-center gap-4 justify-self-end">
+        <div className="hidden h-[8px] w-40 border border-rule bg-sheet-2 md:block" aria-hidden>
+          <div className="h-full" style={{ width: `${pct}%`, background: STATUS_FILL[status] }} />
+        </div>
+        <span className="num w-[3.5rem] shrink-0 text-right text-[0.7rem] text-faint">
+          {sub.points.toFixed(1)}/{sub.max_points.toFixed(0)}
+        </span>
+        <span
+          className="num w-[4.25rem] shrink-0 text-right text-[0.6875rem] font-semibold uppercase tracking-[0.06em]"
+          style={{ color: ink }}
+        >
+          <span aria-hidden="true" className="mr-1">
+            {STATUS_GLYPH[status]}
+          </span>
+          {STATUS_WORD[status]}
+        </span>
+      </div>
+    </li>
   );
 }
-
-export { VERDICT_GLYPH };

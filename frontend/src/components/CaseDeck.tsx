@@ -1,7 +1,11 @@
 import { useRef, useState } from "react";
 import type { DemoCase } from "../types";
-import { Skeleton, VERDICT_COLOR, VERDICT_GLYPH } from "./ui";
+import { Skeleton, VERDICT_INK, VERDICT_GLYPH } from "./ui";
 
+/**
+ * The case index. Set as a document index — numbered entries, hairline rules,
+ * disposition in the margin — rather than a sidebar of cards.
+ */
 export function CaseDeck({
   cases,
   loading,
@@ -23,78 +27,69 @@ export function CaseDeck({
   const [dragging, setDragging] = useState(false);
 
   return (
-    <div className="flex h-full min-h-0 flex-col border border-rule-soft bg-panel" style={{ borderRadius: 3 }}>
-      <header className="border-b border-rule-soft px-4 py-3.5">
-        <div className="eyebrow">Case deck</div>
-        <h2 className="mt-1.5 font-display text-[0.95rem] font-medium tracking-tight text-bone">
+    <div className="flex h-full min-h-0 flex-col border border-rule bg-sheet">
+      <header className="border-b-2 border-rule-hard px-4 py-4">
+        <div className="field">Case index</div>
+        <h2 className="mt-1.5 font-display text-[1.0625rem] font-semibold tracking-[-0.011em] text-ink">
           {loading ? "Loading…" : `${cases.length} prepared cases`}
         </h2>
       </header>
 
-      <div className="min-h-0 flex-1 overflow-y-auto p-2">
+      <div className="min-h-0 flex-1 overflow-y-auto">
         {loading ? (
-          <div className="space-y-2 p-1">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton key={i} className="h-[68px] w-full" />
+          <div className="space-y-2 p-3">
+            {Array.from({ length: 7 }).map((_, i) => (
+              <Skeleton key={i} className="h-[52px] w-full" />
             ))}
           </div>
         ) : (
-          <ul className="space-y-1">
-            {cases.map((c) => {
+          <ol>
+            {cases.map((c, i) => {
               const active = c.id === selectedId;
-              const vc = VERDICT_COLOR[c.preview.verdict];
+              const ink = VERDICT_INK[c.preview.verdict];
               return (
                 <li key={c.id}>
                   <button
                     onClick={() => onSelect(c)}
                     aria-current={active}
-                    className={`flex w-full cursor-pointer items-center gap-3 px-2.5 py-2.5 text-left transition-colors ${
-                      active ? "bg-panel-2" : "hover:bg-panel-2/60"
+                    className={`grid w-full cursor-pointer grid-cols-[1.5rem_2rem_minmax(0,1fr)] items-center gap-2.5 border-b border-rule px-3 py-2.5 text-left transition-colors ${
+                      active ? "bg-sheet-2" : "hover:bg-sheet-2/70"
                     }`}
-                    style={{
-                      borderRadius: 2,
-                      boxShadow: active ? `inset 2px 0 0 0 ${vc}` : undefined,
-                    }}
+                    style={active ? { boxShadow: "inset 3px 0 0 0 var(--color-ink)" } : undefined}
                   >
+                    <span className="seq">{String(i + 1).padStart(2, "0")}</span>
                     <img
                       src={c.image_url}
                       alt=""
-                      width={40}
-                      height={40}
+                      width={32}
+                      height={32}
                       loading="lazy"
-                      className="h-10 w-10 shrink-0 object-cover"
-                      style={{ borderRadius: 2, filter: "contrast(1.05)" }}
+                      className="h-8 w-8 shrink-0 bg-plate object-cover"
                     />
-                    <span className="min-w-0 flex-1">
-                      <span className="block truncate font-display text-[0.78rem] font-medium text-bone">
+                    <span className="min-w-0">
+                      <span className="block truncate font-display text-[0.8rem] font-medium text-ink">
                         {c.title}
                       </span>
-                      <span className="num mt-1 flex items-center gap-1.5 text-[0.62rem]">
-                        <span style={{ color: vc }}>
+                      <span className="num mt-0.5 flex items-center gap-1.5 text-[0.62rem] text-faint">
+                        <span style={{ color: ink }}>
                           {VERDICT_GLYPH[c.preview.verdict]} {c.preview.verdict}
                         </span>
-                        <span className="text-faint">·</span>
-                        <span className="text-faint">
-                          {c.preview.reliability_score.toFixed(0)}
-                        </span>
-                        <span className="text-faint">·</span>
-                        <span className="truncate text-faint">
-                          {(c.preview.confidence * 100).toFixed(0)}% conf
-                        </span>
+                        <span aria-hidden>·</span>
+                        <span>{(c.preview.confidence * 100).toFixed(0)}% conf</span>
+                        {busyId === c.id && (
+                          <span className="pulse-soft ml-auto h-1.5 w-1.5 rounded-full bg-plot" />
+                        )}
                       </span>
                     </span>
-                    {busyId === c.id && (
-                      <span className="pulse-soft h-1.5 w-1.5 shrink-0 rounded-full bg-instrument" />
-                    )}
                   </button>
                 </li>
               );
             })}
-          </ul>
+          </ol>
         )}
       </div>
 
-      <div className="border-t border-rule-soft p-3">
+      <div className="border-t-2 border-rule-hard p-3">
         <div
           onDragOver={(e) => {
             e.preventDefault();
@@ -107,11 +102,10 @@ export function CaseDeck({
             const f = e.dataTransfer.files?.[0];
             if (f && uploadEnabled) onUpload(f);
           }}
-          className="border border-dashed px-3 py-4 text-center transition-colors"
+          className="border border-dashed px-3 py-3.5 text-center transition-colors"
           style={{
-            borderRadius: 2,
-            borderColor: dragging ? "var(--color-instrument)" : "var(--color-rule)",
-            background: dragging ? "color-mix(in oklab, var(--color-instrument) 8%, transparent)" : undefined,
+            borderColor: dragging ? "var(--color-plot)" : "var(--color-rule)",
+            background: dragging ? "color-mix(in oklab, var(--color-plot) 6%, transparent)" : undefined,
           }}
         >
           <input
@@ -129,13 +123,13 @@ export function CaseDeck({
           <button
             onClick={() => inputRef.current?.click()}
             disabled={!uploadEnabled}
-            className="cursor-pointer font-mono text-[0.68rem] uppercase tracking-[0.12em] text-instrument disabled:cursor-not-allowed disabled:text-faint"
+            className="cursor-pointer font-display text-[0.7rem] font-semibold uppercase tracking-[0.08em] text-plot disabled:cursor-not-allowed disabled:text-faint"
           >
-            Test your own image
+            Submit your own image
           </button>
           <p className="mt-1.5 text-[0.65rem] leading-relaxed text-faint">
             {uploadEnabled
-              ? "Drop a file or browse. Processed in this process; nothing leaves the machine."
+              ? "Processed in this process. Nothing leaves the machine."
               : "Unavailable — model weights are not loaded."}
           </p>
         </div>

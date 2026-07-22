@@ -1,43 +1,62 @@
 @import "tailwindcss";
 
-/* Automatic source detection came up empty under this Vite/plugin pair — the
-   build emitted preflight and the theme but no utilities. Declaring the scan
-   root explicitly is deterministic and does not depend on that heuristic. */
 @source "./**/*.{ts,tsx}";
 
-/* ScanProof is a test bench, not a viewer. The room is dark because the only
-   thing that should be bright is the film.
+/* ============================================================================
+   ScanProof — certificate of inspection
+   ----------------------------------------------------------------------------
+   ScanProof does not view images. It issues a report on another system's
+   output. The artifact it resembles is a metrology or airworthiness
+   certificate: printed, high contrast, structured by rules and field labels,
+   with a stamped verdict.
 
-   The status triad was checked with the dataviz palette validator: ΔE 11.5
-   under deuteranopia across all pairs (target >= 8), 20.4 normal-vision, all
-   >= 3:1 against the panel surface. Its lightness deliberately spans the
-   categorical band — for a status palette lightness encodes severity, and that
-   spread is exactly what buys the colour-vision separation. Status colour
-   never appears without its word. */
+   That decides everything else. The page is paper. The radiographs are the only
+   dark objects on it, set into plates — which is exactly how films appear in a
+   printed radiology report, and the reverse of a viewer application.
+
+   Colour was computed, not chosen. The status triad clears the dataviz
+   validator on a white surface: ΔE 9.7 under deuteranopia across all pairs
+   (target >= 8), 17.4 normal-vision, inside the light lightness band. Its
+   lightness deliberately spans that band so severity survives greyscale — a
+   document has to photocopy. Two tiers: `mark` for fills, `ink` for text and
+   strokes, the latter all above 5.3:1 against the page.
+   ========================================================================== */
 
 @theme {
-  --color-ink: #0b0f14;
-  --color-panel: #131a22;
-  --color-panel-2: #18212b;
-  --color-rule: #233040;
-  --color-rule-soft: #1b2530;
+  /* surfaces */
+  --color-ground: #e9ebef;
+  --color-sheet: #ffffff;
+  --color-sheet-2: #f5f6f8;
+  --color-plate: #0b0e11;
 
-  --color-bone: #e6ecf2;
-  --color-mute: #8496a6;
-  --color-faint: #5a6b7a;
+  /* ink */
+  --color-ink: #10161c;
+  --color-graphite: #5a6672;
+  --color-faint: #8d97a2;
+  --color-rule: #d3d8de;
+  --color-rule-hard: #10161c;
 
-  --color-pass: #3dd9a0;
-  --color-review: #e0a32a;
-  --color-block: #e5484d;
-  --color-instrument: #6ea8ff;
+  /* status — fills */
+  --color-pass: #3fae7c;
+  --color-review: #c0851a;
+  --color-block: #96121e;
 
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  /* status — text and strokes */
+  --color-pass-ink: #177249;
+  --color-review-ink: #7d5406;
+  --color-block-ink: #96121e;
+
+  /* measurement chrome */
+  --color-plot: #2b5fa8;
+  --color-plot-soft: #8a939c;
+
+  --font-display: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Archivo", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 html,
@@ -47,39 +66,78 @@ body,
 }
 
 body {
-  background: var(--color-ink);
-  color: var(--color-bone);
+  background: var(--color-ground);
+  color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  font-synthesis-weight: none;
 }
 
 /* Every number on this page is a measurement. Tabular figures so columns of
-   probabilities line up digit for digit. */
+   probabilities align digit for digit. */
 .num {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;
 }
 
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  line-height: 1;
-  letter-spacing: 0.16em;
+/* A form field label, not a dashboard eyebrow. Sans rather than mono, tighter
+   tracking, sitting close above its value the way a printed form sets them. */
+.field {
+  font-family: var(--font-display);
+  font-size: 0.625rem;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--color-faint);
 }
 
-/* The portion of a sub-score that was deducted, and the BLOCK band where hue
-   is unavailable (print, forced colours).
+/* Section number in the report structure. Only used where the content really
+   is an ordered sequence: the fixed four-check battery, and report sections. */
+.seq {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--color-faint);
+  font-variant-numeric: tabular-nums;
+}
 
-   Applied as a ::after overlay rather than background-image: callers set the
-   fill with an inline `background`/`backgroundColor`, and the shorthand would
-   silently wipe a background-image declared here.
+/* ---------------------------------------------------------------- the stamp */
+/* The one bold element. A verdict on a certificate is stamped, so this is a
+   stamp: double rule, off-axis, ink only. No distress texture — a clean
+   impression reads as an instrument, a dirty one reads as a costume. */
+.stamp {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.5rem 1.4rem 0.45rem;
+  border: 2.5px solid currentColor;
+  box-shadow: inset 0 0 0 1.5px var(--color-sheet), inset 0 0 0 3.5px currentColor;
+  border-radius: 3px;
+  transform: rotate(-2.5deg);
+  user-select: none;
+}
+.stamp__word {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.75rem;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.stamp__caption {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
 
-   No `position` is set on .hatch itself — this rule is unlayered and would beat
-   Tailwind's layered `absolute`/`relative` utilities. Call sites carry their own
-   positioning class instead. */
+/* Hatching for a withheld/deducted region, and for the BLOCK band where hue is
+   unavailable — print, greyscale, forced colours. Drawn as an overlay so an
+   inline background shorthand on the caller cannot wipe it. */
 .hatch::after {
   content: "";
   position: absolute;
@@ -88,23 +146,31 @@ body {
   pointer-events: none;
   background-image: repeating-linear-gradient(
     135deg,
-    color-mix(in oklab, var(--color-bone) 26%, transparent) 0 1px,
+    color-mix(in oklab, var(--color-ink) 30%, transparent) 0 1px,
     transparent 1px 5px
   );
 }
 
+/* A radiograph is mounted, not floated. */
+.plate {
+  background: var(--color-plate);
+  padding: 0.5rem;
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--color-ink) 55%, transparent);
+}
+
 *:focus-visible {
-  outline: 2px solid var(--color-instrument);
+  outline: 2px solid var(--color-plot);
   outline-offset: 2px;
-  border-radius: 2px;
+  border-radius: 1px;
 }
 
 ::-webkit-scrollbar {
-  width: 9px;
-  height: 9px;
+  width: 10px;
+  height: 10px;
 }
 ::-webkit-scrollbar-thumb {
   background: var(--color-rule);
+  border: 3px solid var(--color-sheet);
   border-radius: 999px;
 }
 ::-webkit-scrollbar-track {
@@ -114,7 +180,7 @@ body {
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(7px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -122,7 +188,22 @@ body {
   }
 }
 .rise {
-  animation: rise 0.36s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  animation: rise 0.3s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+/* The stamp lands. One impression, no bounce. */
+@keyframes stamp-in {
+  from {
+    opacity: 0;
+    transform: rotate(-2.5deg) scale(1.14);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-2.5deg) scale(1);
+  }
+}
+.stamp-in {
+  animation: stamp-in 0.22s cubic-bezier(0.3, 0.9, 0.4, 1) both;
 }
 
 @keyframes trace {
@@ -134,10 +215,10 @@ body {
 @keyframes pulse-soft {
   0%,
   100% {
-    opacity: 0.3;
+    opacity: 0.35;
   }
   50% {
-    opacity: 0.8;
+    opacity: 0.85;
   }
 }
 .pulse-soft {

@@ -41,7 +41,7 @@ export function EvidenceLedger({ evidence }: { evidence: Evidence[] }) {
           return (
             <li
               key={i}
-              className="flex gap-3 border-b border-rule-soft py-3 last:border-b-0 last:pb-0 first:pt-0"
+              className="flex gap-3 border-b border-rule py-3 last:border-b-0 last:pb-0 first:pt-0"
             >
               <span
                 className="num mt-[3px] flex h-4 w-4 shrink-0 items-center justify-center text-[0.65rem] font-semibold"
@@ -56,13 +56,13 @@ export function EvidenceLedger({ evidence }: { evidence: Evidence[] }) {
               </span>
               <div className="min-w-0">
                 <div className="flex flex-wrap items-baseline gap-x-2">
-                  <h4 className="font-display text-[0.82rem] font-medium text-bone">{e.title}</h4>
-                  <span className="eyebrow">
+                  <h4 className="font-display text-[0.82rem] font-medium text-ink">{e.title}</h4>
+                  <span className="field">
                     <span className="sr-only">{L.word} — </span>
                     {e.source}
                   </span>
                 </div>
-                <p className="mt-1 text-xs leading-relaxed text-mute">{e.detail}</p>
+                <p className="mt-1 text-xs leading-relaxed text-graphite">{e.detail}</p>
               </div>
             </li>
           );

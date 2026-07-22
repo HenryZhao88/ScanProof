@@ -16,7 +16,7 @@ import { Panel, Tooltip } from "./ui";
  */
 
 const W = 168;
-const H = 96;
+const H = 104;
 const PAD = { top: 12, right: 12, bottom: 20, left: 30 };
 
 interface HoverState {
@@ -57,8 +57,8 @@ export function StabilitySweep({ result }: { result: ReliabilityResult }) {
       eyebrow="Signature test · stability sweep"
       title={`P(${result.predicted_class}) under ${s.n_variants} label-preserving perturbations`}
       aside={
-        <div className="num text-xs text-mute">
-          <span style={{ color: s.n_flips ? "var(--color-block)" : "var(--color-pass)" }}>
+        <div className="num text-xs text-graphite">
+          <span style={{ color: s.n_flips ? "var(--color-block-ink)" : "var(--color-pass-ink)" }}>
             {s.n_flips}
           </span>
           <span className="text-faint"> / {s.n_variants} flipped</span>
@@ -66,7 +66,7 @@ export function StabilitySweep({ result }: { result: ReliabilityResult }) {
         </div>
       }
     >
-      <p className="mb-4 max-w-3xl text-xs leading-relaxed text-mute">
+      <p className="mb-4 max-w-3xl text-xs leading-relaxed text-graphite">
         Each trace starts at the untouched film and walks through three graded severities. The
         dashed rule is the 0.50 decision boundary. None of these changes alter the finding on the
         film, so a trace that crosses the rule marks a prediction the model should not be trusted to
@@ -86,13 +86,13 @@ export function StabilitySweep({ result }: { result: ReliabilityResult }) {
           return (
             <figure key={key} className="min-w-0">
               <figcaption className="flex items-baseline justify-between gap-1 px-1">
-                <span className="truncate font-display text-[0.7rem] font-medium text-bone">
+                <span className="truncate font-display text-[0.7rem] font-medium text-ink">
                   {fam.label}
                 </span>
                 {flips > 0 && (
                   <span
                     className="num shrink-0 text-[0.6rem] font-semibold"
-                    style={{ color: "var(--color-block)" }}
+                    style={{ color: "var(--color-block-ink)" }}
                   >
                     {flips}✕
                   </span>
@@ -113,7 +113,9 @@ export function StabilitySweep({ result }: { result: ReliabilityResult }) {
                   y={PAD.top}
                   width={W - PAD.left - PAD.right}
                   height={H - PAD.top - PAD.bottom}
-                  fill="var(--color-panel-2)"
+                  fill="var(--color-sheet)"
+                  stroke="var(--color-rule)"
+                  strokeWidth={1}
                 />
                 {/* the region below the boundary is where the answer changes */}
                 <rect
@@ -121,17 +123,17 @@ export function StabilitySweep({ result }: { result: ReliabilityResult }) {
                   y={sy(0.5)}
                   width={W - PAD.left - PAD.right}
                   height={sy(0) - sy(0.5)}
-                  fill="color-mix(in oklab, var(--color-block) 9%, transparent)"
+                  fill="color-mix(in oklab, var(--color-block) 11%, transparent)"
                 />
                 <line
                   x1={PAD.left}
                   x2={W - PAD.right}
                   y1={sy(0.5)}
                   y2={sy(0.5)}
-                  stroke="var(--color-block)"
+                  stroke="var(--color-block-ink)"
                   strokeWidth={1}
-                  strokeDasharray="3 3"
-                  opacity={0.75}
+                  strokeDasharray="3 2.5"
+                  opacity={0.9}
                 />
                 {[0, 0.5, 1].map((t) => (
                   <text
@@ -163,8 +165,8 @@ export function StabilitySweep({ result }: { result: ReliabilityResult }) {
                 <path
                   d={d}
                   fill="none"
-                  stroke="var(--color-instrument)"
-                  strokeWidth={2}
+                  stroke="var(--color-plot)"
+                  strokeWidth={2.2}
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   style={{
@@ -201,8 +203,8 @@ export function StabilitySweep({ result }: { result: ReliabilityResult }) {
                       cx={sx(pt.sev)}
                       cy={sy(pt.p)}
                       r={pt.row?.flipped ? 3.6 : 2.6}
-                      fill={pt.row?.flipped ? "var(--color-block)" : "var(--color-instrument)"}
-                      stroke="var(--color-panel-2)"
+                      fill={pt.row?.flipped ? "var(--color-block-ink)" : "var(--color-plot)"}
+                      stroke="var(--color-sheet)"
                       strokeWidth={2}
                       paintOrder="stroke"
                     />
@@ -215,20 +217,20 @@ export function StabilitySweep({ result }: { result: ReliabilityResult }) {
 
         {hover && (
           <Tooltip x={hover.x} y={hover.y}>
-            <div className="font-display text-[0.7rem] font-medium text-bone">
+            <div className="font-display text-[0.7rem] font-medium text-ink">
               {hover.clean ? "Untouched film" : `${hover.family} ${hover.row?.magnitude}`}
             </div>
-            <div className="num mt-1.5 text-[0.7rem] text-mute">
+            <div className="num mt-1.5 text-[0.7rem] text-graphite">
               P({result.predicted_class}){" "}
-              <span className="text-bone">
+              <span className="text-ink">
                 {(hover.clean ? clean : hover.row!.prob_predicted).toFixed(3)}
               </span>
             </div>
             {!hover.clean && (
               <>
-                <div className="num text-[0.7rem] text-mute">
+                <div className="num text-[0.7rem] text-graphite">
                   Δ{" "}
-                  <span className="text-bone">
+                  <span className="text-ink">
                     {hover.row!.delta > 0 ? "+" : ""}
                     {hover.row!.delta.toFixed(3)}
                   </span>
@@ -247,14 +249,14 @@ export function StabilitySweep({ result }: { result: ReliabilityResult }) {
         )}
       </div>
 
-      <details className="mt-4 border-t border-rule-soft pt-3">
-        <summary className="eyebrow cursor-pointer select-none hover:text-mute">
+      <details className="mt-4 border-t border-rule pt-3">
+        <summary className="field cursor-pointer select-none hover:text-graphite">
           All {s.n_variants} measurements as a table
         </summary>
         <div className="mt-3 max-h-72 overflow-auto">
           <table className="w-full text-left text-xs">
-            <thead className="sticky top-0 bg-panel">
-              <tr className="eyebrow border-b border-rule-soft">
+            <thead className="sticky top-0 bg-sheet">
+              <tr className="field border-b border-rule">
                 <th className="py-2 pr-3 font-normal">Test</th>
                 <th className="py-2 pr-3 font-normal">Magnitude</th>
                 <th className="py-2 pr-3 text-right font-normal">P(pred)</th>
@@ -264,13 +266,13 @@ export function StabilitySweep({ result }: { result: ReliabilityResult }) {
             </thead>
             <tbody>
               {result.perturbation_table.map((r, i) => (
-                <tr key={i} className="border-b border-rule-soft/50">
-                  <td className="py-1.5 pr-3 text-mute">{r.family_label}</td>
+                <tr key={i} className="border-b border-rule/50">
+                  <td className="py-1.5 pr-3 text-graphite">{r.family_label}</td>
                   <td className="num py-1.5 pr-3 text-faint">{r.magnitude}</td>
-                  <td className="num py-1.5 pr-3 text-right text-bone">
+                  <td className="num py-1.5 pr-3 text-right text-ink">
                     {r.prob_predicted.toFixed(3)}
                   </td>
-                  <td className="num py-1.5 pr-3 text-right text-mute">
+                  <td className="num py-1.5 pr-3 text-right text-graphite">
                     {r.delta > 0 ? "+" : ""}
                     {r.delta.toFixed(3)}
                   </td>

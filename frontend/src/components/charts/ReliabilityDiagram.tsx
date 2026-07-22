@@ -31,7 +31,7 @@ export function ReliabilityDiagram({ bins }: { bins: Bin[] }) {
               x2={W - PAD.right}
               y1={sy(t)}
               y2={sy(t)}
-              stroke="var(--color-rule-soft)"
+              stroke="var(--color-rule)"
             />
             <text
               x={PAD.left - 6}
@@ -52,7 +52,7 @@ export function ReliabilityDiagram({ bins }: { bins: Bin[] }) {
           y1={sy(0)}
           x2={sx(1)}
           y2={sy(1)}
-          stroke="var(--color-bone)"
+          stroke="var(--color-ink)"
           strokeOpacity={0.3}
           strokeWidth={1.5}
           strokeDasharray="4 4"
@@ -74,7 +74,7 @@ export function ReliabilityDiagram({ bins }: { bins: Bin[] }) {
                 y={y}
                 width={w}
                 height={sy(0) - y}
-                fill="var(--color-instrument)"
+                fill="var(--color-plot)"
                 fillOpacity={weight}
                 rx={2}
                 ry={2}
@@ -91,7 +91,7 @@ export function ReliabilityDiagram({ bins }: { bins: Bin[] }) {
                 onMouseLeave={() => setHover(null)}
               />
               {b.confidence !== null && (
-                <circle cx={sx(b.confidence)} cy={sy(b.accuracy)} r={2.5} fill="var(--color-bone)" />
+                <circle cx={sx(b.confidence)} cy={sy(b.accuracy)} r={2.5} fill="var(--color-ink)" />
               )}
             </g>
           );
@@ -101,7 +101,7 @@ export function ReliabilityDiagram({ bins }: { bins: Bin[] }) {
           x={(PAD.left + W - PAD.right) / 2}
           y={H - 2}
           textAnchor="middle"
-          className="eyebrow"
+          className="field"
           fontSize={8}
           fill="var(--color-faint)"
           letterSpacing="1.3"
@@ -115,10 +115,10 @@ export function ReliabilityDiagram({ bins }: { bins: Bin[] }) {
           <div className="num text-[0.7rem] text-faint">
             bin {hover.b.lower.toFixed(2)}–{hover.b.upper.toFixed(2)} · {hover.b.count} cases
           </div>
-          <div className="num mt-1 text-[0.72rem] text-bone">
+          <div className="num mt-1 text-[0.72rem] text-ink">
             accuracy {(hover.b.accuracy! * 100).toFixed(1)}%
           </div>
-          <div className="num text-[0.72rem] text-mute">
+          <div className="num text-[0.72rem] text-graphite">
             mean confidence {(hover.b.confidence! * 100).toFixed(1)}%
           </div>
         </Tooltip>

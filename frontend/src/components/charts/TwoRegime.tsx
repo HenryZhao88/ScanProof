@@ -82,7 +82,7 @@ export function TwoRegime({ rows }: { rows: RegimeRow[] }) {
           x2={sx(0.5)}
           y1={PAD.top}
           y2={H - PAD.bottom}
-          stroke="var(--color-bone)"
+          stroke="var(--color-ink)"
           strokeOpacity={0.22}
           strokeDasharray="4 4"
         />
@@ -139,7 +139,7 @@ export function TwoRegime({ rows }: { rows: RegimeRow[] }) {
           x={(PAD.left + W - PAD.right) / 2}
           y={H - 8}
           textAnchor="middle"
-          className="eyebrow"
+          className="field"
           fontSize={8.5}
           fill="var(--color-faint)"
           letterSpacing="1.3"
@@ -150,7 +150,7 @@ export function TwoRegime({ rows }: { rows: RegimeRow[] }) {
           x={14}
           y={(PAD.top + H - PAD.bottom) / 2}
           textAnchor="middle"
-          className="eyebrow"
+          className="field"
           fontSize={8.5}
           fill="var(--color-faint)"
           letterSpacing="1.3"
@@ -162,7 +162,7 @@ export function TwoRegime({ rows }: { rows: RegimeRow[] }) {
         {rows.map((r) => {
           const cx = sx(r.shift_detection_auroc);
           const cy = sy(r.in_distribution_aurc);
-          const tone = r.is_composite ? "var(--color-pass)" : "var(--color-instrument)";
+          const tone = r.is_composite ? "var(--color-pass)" : "var(--color-plot)";
           const flip = cx > W - PAD.right - 130;
           return (
             <g key={r.signal}>
@@ -171,7 +171,7 @@ export function TwoRegime({ rows }: { rows: RegimeRow[] }) {
                 cy={cy}
                 r={r.is_composite ? 7 : 5}
                 fill={tone}
-                stroke="var(--color-panel)"
+                stroke="var(--color-sheet)"
                 strokeWidth={2}
                 paintOrder="stroke"
                 style={{ cursor: "pointer" }}
@@ -194,7 +194,7 @@ export function TwoRegime({ rows }: { rows: RegimeRow[] }) {
                 textAnchor={flip ? "end" : "start"}
                 fontSize={9.5}
                 className="num"
-                fill={r.is_composite ? "var(--color-pass)" : "var(--color-mute)"}
+                fill={r.is_composite ? "var(--color-pass)" : "var(--color-graphite)"}
                 fontWeight={r.is_composite ? 600 : 400}
               >
                 {r.signal}
@@ -206,16 +206,16 @@ export function TwoRegime({ rows }: { rows: RegimeRow[] }) {
 
       {hover && (
         <Tooltip x={hover.x} y={hover.y}>
-          <div className="font-display text-[0.72rem] font-medium text-bone">
+          <div className="font-display text-[0.72rem] font-medium text-ink">
             {hover.r.signal}
           </div>
-          <div className="num mt-1.5 text-[0.7rem] text-mute">
+          <div className="num mt-1.5 text-[0.7rem] text-graphite">
             in-distribution AURC{" "}
-            <span className="text-bone">{hover.r.in_distribution_aurc.toFixed(4)}</span>
+            <span className="text-ink">{hover.r.in_distribution_aurc.toFixed(4)}</span>
           </div>
-          <div className="num text-[0.7rem] text-mute">
+          <div className="num text-[0.7rem] text-graphite">
             shift AUROC{" "}
-            <span className="text-bone">{hover.r.shift_detection_auroc.toFixed(4)}</span>
+            <span className="text-ink">{hover.r.shift_detection_auroc.toFixed(4)}</span>
           </div>
           <div
             className="mt-1.5 font-mono text-[0.62rem] uppercase tracking-[0.1em]"

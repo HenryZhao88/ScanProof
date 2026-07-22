@@ -42,7 +42,7 @@ export function DivergenceChart({ arms }: { arms: ArmPoint[] }) {
   const last = arms.length - 1;
 
   return (
-    <figure className="relative max-w-[760px]">
+    <figure className="relative max-w-[840px]">
       <svg
         viewBox={`0 0 ${W} ${H}`}
         className="w-full"
@@ -56,7 +56,7 @@ export function DivergenceChart({ arms }: { arms: ArmPoint[] }) {
               x2={W - PAD.right}
               y1={sy(t)}
               y2={sy(t)}
-              stroke="var(--color-rule-soft)"
+              stroke="var(--color-rule)"
             />
             <text
               x={PAD.left - 7}
@@ -90,7 +90,7 @@ export function DivergenceChart({ arms }: { arms: ArmPoint[] }) {
               x2={sx(i)}
               y1={PAD.top}
               y2={H - PAD.bottom}
-              stroke="var(--color-rule-soft)"
+              stroke="var(--color-rule)"
               strokeDasharray="2 4"
             />
             {a.short.split("\n").map((lineText, li) => (
@@ -101,7 +101,7 @@ export function DivergenceChart({ arms }: { arms: ArmPoint[] }) {
                 textAnchor="middle"
                 className="num"
                 fontSize={9}
-                fill={li === 0 ? "var(--color-mute)" : "var(--color-faint)"}
+                fill={li === 0 ? "var(--color-graphite)" : "var(--color-faint)"}
                 fontWeight={a.emphasis && li === 0 ? 600 : 400}
               >
                 {lineText}
@@ -124,7 +124,7 @@ export function DivergenceChart({ arms }: { arms: ArmPoint[] }) {
           x={(PAD.left + W - PAD.right) / 2}
           y={H - 6}
           textAnchor="middle"
-          className="eyebrow"
+          className="field"
           fontSize={8.5}
           fill="var(--color-faint)"
           letterSpacing="1.4"
@@ -157,7 +157,7 @@ export function DivergenceChart({ arms }: { arms: ArmPoint[] }) {
               cy={sy(a.confidence)}
               r={4.5}
               fill="var(--color-block)"
-              stroke="var(--color-panel)"
+              stroke="var(--color-sheet)"
               strokeWidth={2}
               paintOrder="stroke"
             />
@@ -166,7 +166,7 @@ export function DivergenceChart({ arms }: { arms: ArmPoint[] }) {
               cy={sy(a.passRate)}
               r={4.5}
               fill="var(--color-pass)"
-              stroke="var(--color-panel)"
+              stroke="var(--color-sheet)"
               strokeWidth={2}
               paintOrder="stroke"
             />
@@ -214,19 +214,19 @@ export function DivergenceChart({ arms }: { arms: ArmPoint[] }) {
 
       {hover && (
         <Tooltip x={hover.x} y={hover.y}>
-          <div className="font-display text-[0.72rem] font-medium text-bone">
+          <div className="font-display text-[0.72rem] font-medium text-ink">
             {arms[hover.i].label}
           </div>
           <div className="num mt-1.5 text-[0.7rem]">
             <span style={{ color: "var(--color-block)" }}>confidence</span>{" "}
-            <span className="text-bone">{(arms[hover.i].confidence * 100).toFixed(1)}%</span>
+            <span className="text-ink">{(arms[hover.i].confidence * 100).toFixed(1)}%</span>
           </div>
           <div className="num text-[0.7rem]">
             <span style={{ color: "var(--color-pass)" }}>PASS rate</span>{" "}
-            <span className="text-bone">{(arms[hover.i].passRate * 100).toFixed(1)}%</span>
+            <span className="text-ink">{(arms[hover.i].passRate * 100).toFixed(1)}%</span>
           </div>
           {arms[hover.i].accuracy !== null && (
-            <div className="num text-[0.7rem] text-mute">
+            <div className="num text-[0.7rem] text-graphite">
               accuracy {(arms[hover.i].accuracy! * 100).toFixed(1)}%
             </div>
           )}
