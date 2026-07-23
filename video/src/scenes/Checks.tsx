@@ -22,13 +22,13 @@ export const Checks: React.FC = () => {
   return (
     <Sheet slug="ScanProof · deployment guardrail">
       <AbsoluteFill style={{ padding: "140px 120px 130px" }}>
-        <Headline size={76} style={{ maxWidth: 1400 }}>
+        <Headline size={68} style={{ maxWidth: 1400 }}>
           Four independent checks on every prediction.
         </Headline>
 
         <div style={{ marginTop: 46, display: "flex", flexDirection: "column" }}>
           {CHECKS.map((c, i) => {
-            const at = 95 + i * 105;
+            const at = 16 + i * 34;
             return (
               <div
                 key={c.n}
@@ -96,7 +96,7 @@ export const Checks: React.FC = () => {
         >
           <div
             style={{
-              opacity: interpolate(frame, [560, 585], [0, 1], {
+              opacity: interpolate(frame, [168, 186], [0, 1], {
                 extrapolateLeft: "clamp",
                 extrapolateRight: "clamp",
                 easing: EASE,
@@ -119,7 +119,7 @@ export const Checks: React.FC = () => {
           </div>
 
           <div style={{ marginLeft: "auto" }}>
-            <Stamp verdict={adult.verdict} at={600} scale={0.82} />
+            <Stamp verdict={adult.verdict} at={186} scale={0.82} />
           </div>
         </div>
       </AbsoluteFill>

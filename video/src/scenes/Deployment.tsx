@@ -3,6 +3,7 @@ import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { C, F } from "../theme";
 import { Counter, EASE, FieldLabel, Headline, Sheet } from "../parts";
 import data from "../data.json";
+import { sceneOf } from "../timeline";
 
 const W = 1000;
 const H = 470;
@@ -25,6 +26,7 @@ const SHORT = [
  */
 export const Deployment: React.FC = () => {
   const frame = useCurrentFrame();
+  const { cue } = sceneOf("deployment");
   const arms = data.arms;
   const ped = arms[1];
   const adult = arms[2];
@@ -35,18 +37,18 @@ export const Deployment: React.FC = () => {
   const line = (get: (a: (typeof arms)[number]) => number) =>
     arms.map((a, i) => `${i ? "L" : "M"}${sx(i)},${sy(get(a))}`).join(" ");
 
-  const confDraw = interpolate(frame, [210, 270], [1, 0], {
+  const confDraw = interpolate(frame, [cue.deployConfidence + 8, cue.deployConfidence + 54], [1, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
     easing: EASE,
   });
   // Width of the reveal window for the pass-rate trace, in user units.
-  const passReveal = interpolate(frame, [700, 790], [PAD.left, W], {
+  const passReveal = interpolate(frame, [cue.deployGuardrail + 30, cue.deployGuardrail + 96], [PAD.left, W], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
     easing: EASE,
   });
-  const gapOpacity = interpolate(frame, [790, 850], [0, 0.09], {
+  const gapOpacity = interpolate(frame, [cue.deployGuardrail + 96, cue.deployGuardrail + 140], [0, 0.09], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -64,7 +66,7 @@ export const Deployment: React.FC = () => {
             fontSize: 29,
             color: C.graphite,
             maxWidth: 1300,
-            opacity: interpolate(frame, [14, 34], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
+            opacity: interpolate(frame, [10, 24], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
           }}
         >
           Same modality, same projection, completely different patients. Neither number below
@@ -159,7 +161,7 @@ export const Deployment: React.FC = () => {
               strokeDasharray="10 7"
               strokeLinecap="round"
               strokeLinejoin="round"
-              opacity={interpolate(frame, [700, 712], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })}
+              opacity={interpolate(frame, [cue.deployGuardrail + 30, cue.deployGuardrail + 40], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })}
               clipPath="url(#passClip)"
             />
             <defs>
@@ -183,7 +185,7 @@ export const Deployment: React.FC = () => {
                   stroke={C.sheet}
                   strokeWidth={3}
                   paintOrder="stroke"
-                  opacity={interpolate(frame, [210 + i * 18, 226 + i * 18], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })}
+                  opacity={interpolate(frame, [cue.deployConfidence + 8 + i * 14, cue.deployConfidence + 22 + i * 14], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })}
                 />
                 <circle
                   cx={sx(i)}
@@ -193,7 +195,7 @@ export const Deployment: React.FC = () => {
                   stroke={C.sheet}
                   strokeWidth={3}
                   paintOrder="stroke"
-                  opacity={interpolate(frame, [706 + i * 22, 722 + i * 22], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })}
+                  opacity={interpolate(frame, [cue.deployGuardrail + 34 + i * 17, cue.deployGuardrail + 50 + i * 17], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })}
                 />
               </g>
             ))}
@@ -204,7 +206,7 @@ export const Deployment: React.FC = () => {
               fontFamily={F.mono}
               fontSize={19}
               fill={C.block}
-              opacity={interpolate(frame, [270, 300], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })}
+              opacity={interpolate(frame, [cue.deployConfidence + 56, cue.deployConfidence + 74], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })}
             >
               model confidence
             </text>
@@ -214,7 +216,7 @@ export const Deployment: React.FC = () => {
               fontFamily={F.mono}
               fontSize={19}
               fill={C.passInk}
-              opacity={interpolate(frame, [790, 820], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })}
+              opacity={interpolate(frame, [cue.deployGuardrail + 96, cue.deployGuardrail + 116], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })}
             >
               ScanProof PASS rate
             </text>
@@ -223,7 +225,7 @@ export const Deployment: React.FC = () => {
           <div style={{ flex: 1, minWidth: 0, paddingTop: 8 }}>
             <Readout
               label="Model confidence"
-              at={300}
+              at={cue.deployConfidence + 40}
               from={ped.confidence * 100}
               to={adult.confidence * 100}
               suffix="%"
@@ -232,7 +234,7 @@ export const Deployment: React.FC = () => {
             />
             <Readout
               label="Embedding percentile"
-              at={620}
+              at={cue.deployGuardrail + 18}
               from={ped.ood * 100}
               to={adult.ood * 100}
               color={C.plot}
@@ -240,7 +242,7 @@ export const Deployment: React.FC = () => {
             />
             <Readout
               label="ScanProof pass rate"
-              at={830}
+              at={cue.deployGuardrail + 92}
               from={ped.pass * 100}
               to={adult.pass * 100}
               suffix="%"
@@ -272,7 +274,7 @@ const Readout: React.FC<{
         paddingBottom: 17,
         marginBottom: 17,
         borderBottom: last ? "none" : `1px solid ${C.rule}`,
-        opacity: interpolate(frame, [at - 14, at], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
+        opacity: interpolate(frame, [at - 10, at], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
       }}
     >
       <FieldLabel>{label}</FieldLabel>

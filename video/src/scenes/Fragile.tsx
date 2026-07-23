@@ -3,6 +3,7 @@ import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { C, F } from "../theme";
 import { EASE, FieldLabel, Headline, Plate, Sheet } from "../parts";
 import data from "../data.json";
+import { sceneOf } from "../timeline";
 
 type Row = {
   family: string;
@@ -49,8 +50,8 @@ const Sweep: React.FC<{ rows: Row[]; clean: number; at: number }> = ({ rows, cle
         ];
         const d = pts.map((pt, i) => `${i ? "L" : "M"}${sx(pt.sev)},${sy(pt.p)}`).join(" ");
         const flips = fam.rows.filter((r) => r.flipped).length;
-        const start = at + fi * 40;
-        const draw = interpolate(frame, [start, start + 44], [1, 0], {
+        const start = at + fi * 17;
+        const draw = interpolate(frame, [start, start + 26], [1, 0], {
           extrapolateLeft: "clamp",
           extrapolateRight: "clamp",
           easing: EASE,
@@ -144,7 +145,7 @@ const Sweep: React.FC<{ rows: Row[]; clean: number; at: number }> = ({ rows, cle
               />
 
               {pts.map((pt, i) => {
-                const reveal = interpolate(frame, [start + i * 11, start + i * 11 + 7], [0, 1], {
+                const reveal = interpolate(frame, [start + i * 6, start + i * 6 + 5], [0, 1], {
                   extrapolateLeft: "clamp",
                   extrapolateRight: "clamp",
                 });
@@ -171,6 +172,7 @@ const Sweep: React.FC<{ rows: Row[]; clean: number; at: number }> = ({ rows, cle
 
 export const Fragile: React.FC = () => {
   const frame = useCurrentFrame();
+  const { cue } = sceneOf("fragile");
   const f = data.fragile;
   const s = f.perturbation_summary;
 
@@ -212,7 +214,7 @@ export const Fragile: React.FC = () => {
                 lineHeight: 1.45,
                 color: C.graphite,
                 maxWidth: 1020,
-                opacity: interpolate(frame, [14, 32], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
+                opacity: interpolate(frame, [10, 22], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
               }}
             >
               Twenty-one label-preserving perturbations. The dashed rule is the 0.50 decision
@@ -221,7 +223,7 @@ export const Fragile: React.FC = () => {
             </div>
 
             <div style={{ marginTop: 40 }}>
-              <Sweep rows={f.perturbation_table as Row[]} clean={f.confidence} at={330} />
+              <Sweep rows={f.perturbation_table as Row[]} clean={f.confidence} at={cue.fragilePayoff + 26} />
             </div>
           </div>
         </div>
@@ -235,7 +237,7 @@ export const Fragile: React.FC = () => {
             display: "flex",
             alignItems: "baseline",
             gap: 22,
-            opacity: interpolate(frame, [780, 812], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
+            opacity: interpolate(frame, [cue.fragilePayoff + 170, cue.fragilePayoff + 190], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
           }}
         >
           <span style={{ fontFamily: F.mono, fontSize: 96, lineHeight: 1, color: C.blockInk, letterSpacing: "-0.03em" }}>

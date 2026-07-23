@@ -9,8 +9,23 @@ import {
 } from "remotion";
 import { C, F, SAFE, VERDICT_CAPTION, VERDICT_GLYPH, VERDICT_INK } from "./theme";
 
-/** Standard ease for everything that enters. */
-export const EASE = Easing.bezier(0.16, 1, 0.3, 1);
+/**
+ * Motion vocabulary.
+ *
+ * EASE has real attack — the earlier curve was a slow ease-out that made every
+ * entrance feel like a dissolve. At this pace elements need to arrive, not seep.
+ * SNAP is for numbers and stamps: overshoot, settle, done in a fifth of a second.
+ */
+export const EASE = Easing.bezier(0.2, 0.9, 0.25, 1);
+export const SNAP = Easing.bezier(0.25, 1.5, 0.4, 1);
+
+/** Enter: fade plus a short rise, in ~8 frames. */
+export const enter = (frame: number, at: number, len = 8) =>
+  interpolate(frame, [at, at + len], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+    easing: EASE,
+  });
 
 export const useFadeIn = (start: number, len = 12) => {
   const frame = useCurrentFrame();
@@ -46,6 +61,25 @@ export const Sheet: React.FC<{
         {slug}
       </div>
     ) : null}
+  </AbsoluteFill>
+);
+
+/**
+ * A dark card. Used only for the hook, the title and one mid-roll beat: cutting
+ * to near-black against a paper deck is the cheapest energy in the edit, and it
+ * marks the three moments that are assertions rather than evidence.
+ */
+export const Dark: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <AbsoluteFill
+    style={{
+      backgroundColor: C.plate,
+      fontFamily: F.display,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: SAFE,
+    }}
+  >
+    {children}
   </AbsoluteFill>
 );
 
@@ -113,10 +147,10 @@ export const Stamp: React.FC<{ verdict: string; at: number; scale?: number }> = 
 }) => {
   const frame = useCurrentFrame();
   const ink = VERDICT_INK[verdict];
-  const t = interpolate(frame, [at, at + 7], [0, 1], {
+  const t = interpolate(frame, [at, at + 6], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
-    easing: Easing.bezier(0.3, 1.4, 0.5, 1),
+    easing: SNAP,
   });
 
   return (
@@ -186,12 +220,22 @@ export const Counter: React.FC<{
   return (
     <span
       style={{
+        display: "inline-block",
         fontFamily: F.mono,
         fontVariantNumeric: "tabular-nums",
         fontSize: size,
         lineHeight: 1,
         letterSpacing: "-0.03em",
         color,
+        scale: interpolate(frame, [at - 4, at + 5], [1.22, 1], {
+          extrapolateLeft: "clamp",
+          extrapolateRight: "clamp",
+          easing: SNAP,
+        }) as unknown as string,
+        opacity: interpolate(frame, [at - 4, at], [0, 1], {
+          extrapolateLeft: "clamp",
+          extrapolateRight: "clamp",
+        }),
       }}
     >
       {v.toFixed(decimals)}

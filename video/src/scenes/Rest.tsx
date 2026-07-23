@@ -3,6 +3,7 @@ import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { C, F } from "../theme";
 import { EASE, FieldLabel, Headline, Sheet, Stamp } from "../parts";
 import data from "../data.json";
+import { sceneOf } from "../timeline";
 
 /* ------------------------------------------------------------------ control */
 
@@ -34,7 +35,7 @@ export const Control: React.FC = () => {
             lineHeight: 1.45,
             color: C.graphite,
             maxWidth: 1250,
-            opacity: interpolate(frame, [16, 38], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
+            opacity: interpolate(frame, [10, 24], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
           }}
         >
           A control arm puts the <strong style={{ color: C.ink }}>pediatric</strong> films through
@@ -44,7 +45,7 @@ export const Control: React.FC = () => {
 
         <div style={{ marginTop: 58, display: "flex", gap: 70, flexWrap: "wrap" }}>
           {deltas.map(([label, v], i) => {
-            const at = 180 + i * 34;
+            const at = 44 + i * 16;
             return (
               <div
                 key={label}
@@ -81,7 +82,7 @@ export const Control: React.FC = () => {
             fontSize: 46,
             fontWeight: 600,
             color: C.ink,
-            opacity: interpolate(frame, [430, 470], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
+            opacity: interpolate(frame, [188, 212], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
           }}
         >
           It is the population, not the pixels.
@@ -104,6 +105,7 @@ const SPAD = { top: 40, right: 40, bottom: 84, left: 96 };
  */
 export const FourChecks: React.FC = () => {
   const frame = useCurrentFrame();
+  const { cue } = sceneOf("whyFour");
   const rows = data.two_regime.rows;
 
   const xs = rows.map((r) => r.shift_detection_auroc);
@@ -141,9 +143,9 @@ export const FourChecks: React.FC = () => {
               width={SW - SPAD.right - sx(comp.shift_detection_auroc)}
               height={sy(comp.in_distribution_aurc) - SPAD.top}
               fill={C.pass}
-              fillOpacity={interpolate(frame, [480, 525], [0, 0.1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })}
+              fillOpacity={interpolate(frame, [150, 180], [0, 0.1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })}
               stroke={C.pass}
-              strokeOpacity={interpolate(frame, [480, 525], [0, 0.45], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })}
+              strokeOpacity={interpolate(frame, [150, 180], [0, 0.45], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })}
               strokeDasharray="5 4"
             />
             <text
@@ -153,7 +155,7 @@ export const FourChecks: React.FC = () => {
               fontFamily={F.mono}
               fontSize={20}
               fill={C.passInk}
-              opacity={interpolate(frame, [530, 566], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })}
+              opacity={interpolate(frame, [182, 202], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })}
             >
               no signal here
             </text>
@@ -200,7 +202,7 @@ export const FourChecks: React.FC = () => {
             </text>
 
             {rows.map((r, i) => {
-              const at = 120 + i * 46;
+              const at = 24 + i * 18;
               const cx = sx(r.shift_detection_auroc);
               const cy = sy(r.in_distribution_aurc);
               const o = interpolate(frame, [at, at + 14], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE });
@@ -240,7 +242,7 @@ export const FourChecks: React.FC = () => {
                 fontSize: 30,
                 lineHeight: 1.5,
                 color: C.graphite,
-                opacity: interpolate(frame, [160, 200], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
+                opacity: interpolate(frame, [14, 30], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
               }}
             >
               Confidence is the best in-distribution error ranker we measured. Embedding distance
@@ -253,7 +255,7 @@ export const FourChecks: React.FC = () => {
                 border: `1px solid ${C.review}`,
                 background: "rgba(192,133,26,0.07)",
                 padding: "26px 30px",
-                opacity: interpolate(frame, [700, 745], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
+                opacity: interpolate(frame, [212, 238], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
               }}
             >
               <FieldLabel color={C.reviewInk}>Reported as found</FieldLabel>
@@ -279,7 +281,7 @@ export const FourChecks: React.FC = () => {
                 fontSize: 30,
                 lineHeight: 1.5,
                 color: C.ink,
-                opacity: interpolate(frame, [950, 995], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
+                opacity: interpolate(frame, [cue.wires, cue.wires + 22], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
               }}
             >
               Different failures trip different wires. Here, typicality caught it alone. On the
@@ -312,7 +314,7 @@ export const Rigor: React.FC = () => {
 
         <div style={{ marginTop: 56 }}>
           {facts.map(([k, v], i) => {
-            const at = 90 + i * 130;
+            const at = 16 + i * 38;
             return (
               <div
                 key={k}
@@ -352,7 +354,7 @@ export const Rigor: React.FC = () => {
             fontFamily: F.mono,
             fontSize: 30,
             color: C.plot,
-            opacity: interpolate(frame, [700, 745], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
+            opacity: interpolate(frame, [196, 222], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
           }}
         >
           make reproduce && make preflight && make serve
@@ -376,7 +378,7 @@ export const Close: React.FC = () => {
             fontWeight: 700,
             letterSpacing: "-0.045em",
             color: C.ink,
-            opacity: interpolate(frame, [6, 28], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
+            opacity: interpolate(frame, [2, 12], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
           }}
         >
           ScanProof
@@ -388,7 +390,7 @@ export const Close: React.FC = () => {
             fontSize: 42,
             color: C.graphite,
             textAlign: "center",
-            opacity: interpolate(frame, [26, 52], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
+            opacity: interpolate(frame, [16, 30], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
           }}
         >
           Four checks, one decision, and the evidence behind it.
@@ -396,7 +398,7 @@ export const Close: React.FC = () => {
 
         <div style={{ marginTop: 58, display: "flex", gap: 40 }}>
           {(["PASS", "REVIEW", "BLOCK"] as const).map((v, i) => (
-            <Stamp key={v} verdict={v} at={150 + i * 22} scale={0.52} />
+            <Stamp key={v} verdict={v} at={46 + i * 13} scale={0.52} />
           ))}
         </div>
 
@@ -411,7 +413,7 @@ export const Close: React.FC = () => {
             fontSize: 24,
             lineHeight: 1.55,
             color: C.graphite,
-            opacity: interpolate(frame, [250, 290], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
+            opacity: interpolate(frame, [104, 128], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
           }}
         >
           <span style={{ fontWeight: 600, color: C.ink }}>
