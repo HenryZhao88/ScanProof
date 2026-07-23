@@ -3,6 +3,9 @@
 **Runtime 4:30.** ~560 words at ~140 wpm, plus deliberate pauses where the visuals carry.
 Timecodes match the Remotion composition in `src/`.
 
+The disclosure appears on the end card only; it is not burned into every frame. Say the
+closing line over it.
+
 Delivery notes: flat, factual, unhurried. This is an engineering result, not an ad — the numbers
 are the persuasion. Land hard on the three bolded figures and let the frame sit after each.
 Never rush the pause at 2:12.
@@ -98,7 +101,7 @@ Never rush the pause at 2:12.
 
 > ScanProof. Four checks, one decision, and the evidence behind it.
 >
-> *(beat)*
+> *(beat — the three stamps land, then the disclosure line appears)*
 >
 > Research prototype — not for diagnosis.
 

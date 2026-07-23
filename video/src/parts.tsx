@@ -6,7 +6,6 @@ import {
   interpolate,
   staticFile,
   useCurrentFrame,
-  useVideoConfig,
 } from "remotion";
 import { C, F, SAFE, VERDICT_CAPTION, VERDICT_GLYPH, VERDICT_INK } from "./theme";
 
@@ -22,7 +21,7 @@ export const useFadeIn = (start: number, len = 12) => {
   });
 };
 
-/** The page. Paper ground, persistent disclaimer, section slug. */
+/** The page. Paper ground and a section slug — nothing else is chrome. */
 export const Sheet: React.FC<{
   slug?: string;
   children: React.ReactNode;
@@ -47,28 +46,6 @@ export const Sheet: React.FC<{
         {slug}
       </div>
     ) : null}
-
-    {/* Fixed on every frame, exactly as in the product. */}
-    <div
-      style={{
-        position: "absolute",
-        bottom: 0,
-        left: 0,
-        right: 0,
-        borderTop: `1px solid ${C.rule}`,
-        backgroundColor: C.sheet2,
-        padding: "14px 0",
-        textAlign: "center",
-        fontFamily: F.display,
-        fontSize: 19,
-        color: C.graphite,
-      }}
-    >
-      <span style={{ fontWeight: 600, color: C.ink }}>
-        Research prototype — not for diagnosis.
-      </span>{" "}
-      Not a medical device. No clinical validation.
-    </div>
   </AbsoluteFill>
 );
 
@@ -223,39 +200,3 @@ export const Counter: React.FC<{
   );
 };
 
-/** A screenshot of the real product, held inside a page frame. */
-export const Shot: React.FC<{
-  src: string;
-  at: number;
-  /** 0-1 focal point to drift toward, for a slow push. */
-  zoom?: number;
-}> = ({ src, at, zoom = 1.04 }) => {
-  const frame = useCurrentFrame();
-  const { durationInFrames } = useVideoConfig();
-  return (
-    <div
-      style={{
-        border: `1px solid ${C.rule}`,
-        boxShadow: "0 18px 50px rgba(16,22,28,0.13)",
-        overflow: "hidden",
-        opacity: interpolate(frame, [at, at + 14], [0, 1], {
-          extrapolateLeft: "clamp",
-          extrapolateRight: "clamp",
-          easing: EASE,
-        }),
-      }}
-    >
-      <Img
-        src={staticFile(`shots/${src}`)}
-        style={{
-          width: "100%",
-          display: "block",
-          scale: interpolate(frame, [at, durationInFrames], [1, zoom], {
-            extrapolateLeft: "clamp",
-            extrapolateRight: "clamp",
-          }) as unknown as string,
-        }}
-      />
-    </div>
-  );
-};

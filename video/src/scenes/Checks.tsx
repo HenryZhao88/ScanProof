@@ -21,7 +21,7 @@ export const Checks: React.FC = () => {
 
   return (
     <Sheet slug="ScanProof · deployment guardrail">
-      <AbsoluteFill style={{ padding: "140px 120px 180px" }}>
+      <AbsoluteFill style={{ padding: "140px 120px 130px" }}>
         <Headline size={76} style={{ maxWidth: 1400 }}>
           Four independent checks on every prediction.
         </Headline>

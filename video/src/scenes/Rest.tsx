@@ -128,7 +128,7 @@ export const FourChecks: React.FC = () => {
 
   return (
     <Sheet slug="Why four checks, not one">
-      <AbsoluteFill style={{ padding: "140px 120px 160px" }}>
+      <AbsoluteFill style={{ padding: "140px 120px 120px" }}>
         <Headline size={62} style={{ maxWidth: 1450 }}>
           No single signal is good at both failure modes.
         </Headline>
@@ -394,10 +394,31 @@ export const Close: React.FC = () => {
           Four checks, one decision, and the evidence behind it.
         </div>
 
-        <div style={{ marginTop: 62, display: "flex", gap: 40 }}>
+        <div style={{ marginTop: 58, display: "flex", gap: 40 }}>
           {(["PASS", "REVIEW", "BLOCK"] as const).map((v, i) => (
             <Stamp key={v} verdict={v} at={150 + i * 22} scale={0.52} />
           ))}
+        </div>
+
+        <div
+          style={{
+            marginTop: 76,
+            paddingTop: 26,
+            borderTop: `1px solid ${C.rule}`,
+            maxWidth: 1080,
+            textAlign: "center",
+            fontFamily: F.display,
+            fontSize: 24,
+            lineHeight: 1.55,
+            color: C.graphite,
+            opacity: interpolate(frame, [250, 290], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
+          }}
+        >
+          <span style={{ fontWeight: 600, color: C.ink }}>
+            Research prototype — not for diagnosis.
+          </span>{" "}
+          Not a medical device, no clinical validation, no regulatory claim. Public
+          de-identified benchmark data, CC BY 4.0.
         </div>
       </AbsoluteFill>
     </Sheet>

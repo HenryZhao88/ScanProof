@@ -53,7 +53,7 @@ export const Deployment: React.FC = () => {
 
   return (
     <Sheet slug="The deployment test">
-      <AbsoluteFill style={{ padding: "140px 120px 160px" }}>
+      <AbsoluteFill style={{ padding: "140px 120px 120px" }}>
         <Headline size={64} style={{ maxWidth: 1500 }}>
           Trained on pediatric films. Run on adults from another hospital.
         </Headline>

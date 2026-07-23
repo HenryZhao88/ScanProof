@@ -176,7 +176,7 @@ export const Fragile: React.FC = () => {
 
   return (
     <Sheet slug="Confidence is not reliability">
-      <AbsoluteFill style={{ padding: "150px 120px 160px" }}>
+      <AbsoluteFill style={{ padding: "150px 120px 120px" }}>
         <div style={{ display: "flex", gap: 60, alignItems: "flex-start" }}>
           <div style={{ opacity: interpolate(frame, [0, 16], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }) }}>
             <Plate src="confident-but-fragile.png" size={300} />
