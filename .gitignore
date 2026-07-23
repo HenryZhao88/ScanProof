@@ -48,3 +48,7 @@ skills-lock.json
 # Scratch
 scratch/
 *.log
+
+# Remotion
+video/node_modules/
+video/out/
