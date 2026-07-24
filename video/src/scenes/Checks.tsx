@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { C, F } from "../theme";
-import { EASE, FieldLabel, Headline, Sheet, Stamp } from "../parts";
+import { EASE, enter, FieldLabel, Sheet, Stamp } from "../parts";
 import data from "../data.json";
 
 const CHECKS = [
@@ -20,11 +20,32 @@ export const Checks: React.FC = () => {
   const adult = data.adult;
 
   return (
-    <Sheet slug="ScanProof · deployment guardrail">
+    <Sheet slug="The guardrail">
       <AbsoluteFill style={{ padding: "140px 120px 130px" }}>
-        <Headline size={68} style={{ maxWidth: 1400 }}>
-          Four independent checks on every prediction.
-        </Headline>
+        <div style={{ opacity: enter(frame, 0, 7) }}>
+          <span
+            style={{
+              fontFamily: F.display,
+              fontSize: 68,
+              fontWeight: 700,
+              letterSpacing: "-0.035em",
+              color: C.ink,
+            }}
+          >
+            ScanProof
+          </span>
+          <span
+            style={{
+              fontFamily: F.display,
+              fontSize: 68,
+              fontWeight: 500,
+              letterSpacing: "-0.025em",
+              color: C.graphite,
+            }}
+          >
+            {" "}— four independent checks on every prediction.
+          </span>
+        </div>
 
         <div style={{ marginTop: 46, display: "flex", flexDirection: "column" }}>
           {CHECKS.map((c, i) => {

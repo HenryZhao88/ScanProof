@@ -10,7 +10,74 @@ import data from "../data.json";
  * without going static.
  */
 
-/** 01 · Hook. The film, and a number that has no business being that high. */
+/**
+ * 01 · The stake. Four short lines, each landing on a beat.
+ *
+ * This used to open on a number and then explain a softmax, which meant the
+ * viewer had no reason to care for twenty seconds. The consequence comes first
+ * now: what actually goes wrong, in the terms someone deploying a model would
+ * describe it.
+ */
+export const Stake: React.FC = () => {
+  const frame = useCurrentFrame();
+  const lines: { t: string; at: number; red?: boolean }[] = [
+    { t: "Trained at one hospital.", at: 4 },
+    { t: "Deployed at another.", at: 34 },
+    { t: "Accuracy drops.", at: 82 },
+    { t: "Confidence doesn't.", at: 110 },
+  ];
+
+  return (
+    <Dark>
+      <div style={{ width: 1500 }}>
+        {lines.map((l) => (
+          <div
+            key={l.t}
+            style={{
+              fontFamily: F.display,
+              fontSize: 96,
+              fontWeight: 700,
+              letterSpacing: "-0.04em",
+              lineHeight: 1.16,
+              color: "#ffffff",
+              opacity: enter(frame, l.at, 7),
+              translate: `0px ${interpolate(frame, [l.at, l.at + 9], [26, 0], {
+                extrapolateLeft: "clamp",
+                extrapolateRight: "clamp",
+                easing: EASE,
+              })}px`,
+            }}
+          >
+            {l.t}
+          </div>
+        ))}
+
+        <div
+          style={{
+            marginTop: 44,
+            paddingTop: 30,
+            borderTop: "2px solid rgba(255,255,255,0.18)",
+            fontFamily: F.display,
+            fontSize: 76,
+            fontWeight: 700,
+            letterSpacing: "-0.035em",
+            color: "#ff6b6b",
+            opacity: enter(frame, 150, 7),
+            translate: `0px ${interpolate(frame, [150, 160], [22, 0], {
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp",
+              easing: EASE,
+            })}px`,
+          }}
+        >
+          Nobody finds out.
+        </div>
+      </div>
+    </Dark>
+  );
+};
+
+/** 02 · The proof. The film, and a number that has no business being that high. */
 export const Hook: React.FC = () => {
   const frame = useCurrentFrame();
   const adult = data.adult;
@@ -94,15 +161,15 @@ export const Hook: React.FC = () => {
               fontWeight: 700,
               color: "#ff6b6b",
               letterSpacing: "-0.02em",
-              opacity: enter(frame, 74),
-              translate: `0px ${interpolate(frame, [74, 84], [16, 0], {
+              opacity: enter(frame, 62),
+              translate: `0px ${interpolate(frame, [62, 72], [16, 0], {
                 extrapolateLeft: "clamp",
                 extrapolateRight: "clamp",
                 easing: EASE,
               })}px`,
             }}
           >
-            It has never seen a patient like this.
+            An adult film. This model has only ever seen children.
           </div>
         </div>
       </AbsoluteFill>
@@ -110,7 +177,7 @@ export const Hook: React.FC = () => {
   );
 };
 
-/** 02 · Why confidence cannot help. Two boxes, and the missing third. */
+/** 03 · Why it cannot warn you. Two boxes, and the missing third. */
 export const Problem: React.FC = () => {
   const frame = useCurrentFrame();
   const boxes = [
@@ -134,8 +201,8 @@ export const Problem: React.FC = () => {
                 backgroundColor: C.sheet,
                 padding: "30px 54px",
                 minWidth: 380,
-                opacity: enter(frame, 26 + i * 8),
-                scale: interpolate(frame, [26 + i * 8, 34 + i * 8], [0.92, 1], {
+                opacity: enter(frame, 20 + i * 7),
+                scale: interpolate(frame, [20 + i * 7, 28 + i * 7], [0.92, 1], {
                   extrapolateLeft: "clamp",
                   extrapolateRight: "clamp",
                   easing: SNAP,
@@ -165,8 +232,8 @@ export const Problem: React.FC = () => {
               border: `2px dashed ${C.blockInk}`,
               padding: "30px 54px",
               minWidth: 520,
-              opacity: enter(frame, 92),
-              scale: interpolate(frame, [92, 101], [0.9, 1], {
+              opacity: enter(frame, 62),
+              scale: interpolate(frame, [62, 71], [0.9, 1], {
                 extrapolateLeft: "clamp",
                 extrapolateRight: "clamp",
                 easing: SNAP,
@@ -205,68 +272,13 @@ export const Problem: React.FC = () => {
             fontSize: 34,
             color: C.graphite,
             maxWidth: 1400,
-            opacity: enter(frame, 120),
+            opacity: enter(frame, 108),
           }}
         >
           The two probabilities are normalised to sum to one — no matter what you feed it.
         </div>
       </AbsoluteFill>
     </Sheet>
-  );
-};
-
-/** 03 · Title. */
-export const Title: React.FC = () => {
-  const frame = useCurrentFrame();
-  return (
-    <Dark>
-      <div style={{ textAlign: "center" }}>
-        <div
-          style={{
-            fontFamily: F.display,
-            fontSize: 168,
-            fontWeight: 700,
-            letterSpacing: "-0.045em",
-            color: "#ffffff",
-            opacity: enter(frame, 2, 6),
-            scale: interpolate(frame, [2, 12], [0.94, 1], {
-              extrapolateLeft: "clamp",
-              extrapolateRight: "clamp",
-              easing: SNAP,
-            }) as unknown as string,
-          }}
-        >
-          ScanProof
-        </div>
-        <div
-          style={{
-            marginTop: 20,
-            height: 3,
-            backgroundColor: "#ffffff",
-            opacity: 0.35,
-            width: interpolate(frame, [14, 32], [0, 760], {
-              extrapolateLeft: "clamp",
-              extrapolateRight: "clamp",
-              easing: EASE,
-            }),
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-        />
-        <div
-          style={{
-            marginTop: 26,
-            fontFamily: F.display,
-            fontSize: 42,
-            fontWeight: 500,
-            color: "rgba(255,255,255,0.8)",
-            opacity: enter(frame, 30),
-          }}
-        >
-          A deployment guardrail for medical imaging models
-        </div>
-      </div>
-    </Dark>
   );
 };
 

@@ -26,17 +26,17 @@ export const file = (id: string) => byId.get(id)!.file;
  * scenes, tight everywhere else so the thing keeps moving.
  */
 const PLAN: { key: string; lines: LineId[]; tail: number }[] = [
-  { key: "hook", lines: ["hook"], tail: 0.5 },
-  { key: "problem", lines: ["problem"], tail: 0.4 },
-  { key: "title", lines: ["title"], tail: 0.4 },
-  { key: "checks", lines: ["checks"], tail: 0.9 },
-  { key: "fragile", lines: ["fragileSetup", "fragilePayoff"], tail: 1.4 },
+  { key: "stake", lines: ["stake"], tail: 0.3 },
+  { key: "hook", lines: ["proof"], tail: 0.4 },
+  { key: "problem", lines: ["blind"], tail: 0.35 },
+  { key: "checks", lines: ["checks"], tail: 0.6 },
+  { key: "fragile", lines: ["fragileSetup", "fragilePayoff"], tail: 1.1 },
   { key: "deployment", lines: ["deploySetup", "deployConfidence", "deployGuardrail"], tail: 1.1 },
   { key: "labelFree", lines: ["labelFree"], tail: 0.5 },
-  { key: "control", lines: ["control"], tail: 0.7 },
-  { key: "whyFour", lines: ["whyFour", "wires"], tail: 1.2 },
-  { key: "rigor", lines: ["rigor"], tail: 0.7 },
-  { key: "close", lines: ["close"], tail: 1.6 },
+  { key: "control", lines: ["control"], tail: 0.5 },
+  { key: "whyFour", lines: ["whyFour", "wires"], tail: 0.9 },
+  { key: "rigor", lines: ["rigor"], tail: 0.5 },
+  { key: "close", lines: ["close"], tail: 1.4 },
 ];
 
 export type Scene = {

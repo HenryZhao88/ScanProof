@@ -4,16 +4,16 @@ import { Audio } from "@remotion/media";
 import { staticFile } from "remotion";
 import { C } from "./theme";
 import { FPS, SCENES, TOTAL_FRAMES, type Scene } from "./timeline";
-import { Hook, LabelFree, Problem, Title } from "./scenes/Beats";
+import { Hook, LabelFree, Problem, Stake } from "./scenes/Beats";
 import { Checks } from "./scenes/Checks";
 import { Fragile } from "./scenes/Fragile";
 import { Deployment } from "./scenes/Deployment";
 import { Close, Control, FourChecks, Rigor } from "./scenes/Rest";
 
 const BODY: Record<string, React.FC> = {
+  stake: Stake,
   hook: Hook,
   problem: Problem,
-  title: Title,
   checks: Checks,
   fragile: Fragile,
   deployment: Deployment,

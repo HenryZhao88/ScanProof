@@ -1,51 +1,51 @@
 [
  {
-  "id": "hook",
-  "text": "Ninety-nine point nine percent confident. On a patient it has never seen."
+  "id": "stake",
+  "text": "A chest X-ray model trained at one hospital, deployed at another. Accuracy drops. Confidence doesn't."
  },
  {
-  "id": "problem",
-  "text": "A softmax has two outputs. Pneumonia. Normal. There is no third option that says, I don't recognise this input."
+  "id": "proof",
+  "text": "Ninety-nine point nine percent confident. On an adult film, from a model trained only on children."
  },
  {
-  "id": "title",
-  "text": "ScanProof. A deployment guardrail for medical imaging models."
+  "id": "blind",
+  "text": "It can't warn you. A softmax has two outputs. There's no third that says, I don't recognise this."
  },
  {
   "id": "checks",
-  "text": "Four independent checks on every prediction. Typicality. Stability. Agreement. Confidence. Pass, review, or block, with the measurement behind it."
+  "text": "ScanProof runs four checks on every prediction. Typicality. Stability. Agreement. Confidence. Then pass, review, or block."
  },
  {
   "id": "fragileSetup",
-  "text": "Here is why one number is not enough. This film is normal, at ninety percent confidence."
+  "text": "Here's why one number isn't enough. This film is normal, at ninety percent confidence."
  },
  {
   "id": "fragilePayoff",
-  "text": "Change the gamma. A windowing difference no radiologist would report differently. The model changes its answer. Five of twenty-one perturbations flip the label."
+  "text": "Change the gamma. A windowing difference no radiologist would report. The model flips. Five of twenty-one perturbations change the label."
  },
  {
   "id": "deploySetup",
-  "text": "Now the failure that ends deployments. Trained on pediatric films in Guangzhou. Run on adults at the N I H."
+  "text": "Now the real failure. Trained on children in Guangzhou. Run on adults at the N I H."
  },
  {
   "id": "deployConfidence",
-  "text": "Watch the model first. Ninety-three point six, down to eighty-six. It barely moves. On breast ultrasound, not even a chest X-ray, it climbs back up."
+  "text": "Confidence goes from ninety-three point six to eighty-six. It barely moves. On breast ultrasound it climbs back up."
  },
  {
   "id": "deployGuardrail",
-  "text": "Now watch the guardrail. Typicality goes from the fiftieth percentile to the ninety-eighth. The pass rate falls from sixty-two percent to four point eight."
+  "text": "Typicality goes from the fiftieth percentile to the ninety-eighth. The pass rate falls from sixty-two percent to four point eight."
  },
  {
   "id": "labelFree",
-  "text": "Neither number needs a label. Both are properties of the input."
+  "text": "Neither number needs a label."
  },
  {
   "id": "control",
-  "text": "Is it just resolution? A control arm puts the pediatric films through the adult set's exact resampling path. One point. One point. It is the population, not the pixels."
+  "text": "Just resolution? A control arm runs the pediatric films through the adult set's exact resampling path. One point. It's the population, not the pixels."
  },
  {
   "id": "whyFour",
-  "text": "Confidence is the best in-distribution error ranker. Embedding distance is the best shift detector. Neither is good at both, and we publish the regime where our own composite loses."
+  "text": "Confidence is the best in-distribution error ranker. Embedding distance is the best shift detector. Neither is good at both, and we publish where ours loses."
  },
  {
   "id": "wires",
@@ -53,7 +53,7 @@
  },
  {
   "id": "rigor",
-  "text": "Thresholds frozen before the test split was scored. Public benchmark data throughout. Ninety tests, and thirty-two preflight checks that re-run every case and diff the result."
+  "text": "Thresholds frozen before the test split was scored. Public benchmark data. Ninety tests, thirty-two preflight checks."
  },
  {
   "id": "close",
