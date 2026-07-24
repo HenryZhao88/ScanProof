@@ -1,97 +1,97 @@
 {
- "voice": "Samantha",
+ "voice": "af_heart",
  "rate": 190,
- "total": 107.028564,
+ "total": 116.61041800000001,
  "lines": [
   {
    "id": "hook",
    "text": "Ninety-nine point nine percent confident. On a patient it has never seen.",
    "file": "vo/hook.wav",
-   "duration": 4.308354
+   "duration": 4.64225
   },
   {
    "id": "problem",
    "text": "A softmax has two outputs. Pneumonia. Normal. There is no third option that says, I don't recognise this input.",
    "file": "vo/problem.wav",
-   "duration": 6.959021
+   "duration": 7.300354
   },
   {
    "id": "title",
    "text": "ScanProof. A deployment guardrail for medical imaging models.",
    "file": "vo/title.wav",
-   "duration": 3.876521
+   "duration": 3.628646
   },
   {
    "id": "checks",
    "text": "Four independent checks on every prediction. Typicality. Stability. Agreement. Confidence. Pass, review, or block, with the measurement behind it.",
    "file": "vo/checks.wav",
-   "duration": 9.49475
+   "duration": 10.154396
   },
   {
    "id": "fragileSetup",
    "text": "Here is why one number is not enough. This film is normal, at ninety percent confidence.",
    "file": "vo/fragileSetup.wav",
-   "duration": 5.182688
+   "duration": 5.777292
   },
   {
    "id": "fragilePayoff",
    "text": "Change the gamma. A windowing difference no radiologist would report differently. The model changes its answer. Five of twenty-one perturbations flip the label.",
    "file": "vo/fragilePayoff.wav",
-   "duration": 8.632083
+   "duration": 10.010667
   },
   {
    "id": "deploySetup",
    "text": "Now the failure that ends deployments. Trained on pediatric films in Guangzhou. Run on adults at the N I H.",
    "file": "vo/deploySetup.wav",
-   "duration": 6.330438
+   "duration": 7.140271
   },
   {
    "id": "deployConfidence",
    "text": "Watch the model first. Ninety-three point six, down to eighty-six. It barely moves. On breast ultrasound, not even a chest X-ray, it climbs back up.",
    "file": "vo/deployConfidence.wav",
-   "duration": 9.658104
+   "duration": 9.608292
   },
   {
    "id": "deployGuardrail",
    "text": "Now watch the guardrail. Typicality goes from the fiftieth percentile to the ninety-eighth. The pass rate falls from sixty-two percent to four point eight.",
    "file": "vo/deployGuardrail.wav",
-   "duration": 8.513125
+   "duration": 9.391729
   },
   {
    "id": "labelFree",
    "text": "Neither number needs a label. Both are properties of the input.",
    "file": "vo/labelFree.wav",
-   "duration": 3.381458
+   "duration": 3.770667
   },
   {
    "id": "control",
    "text": "Is it just resolution? A control arm puts the pediatric films through the adult set's exact resampling path. One point. One point. It is the population, not the pixels.",
    "file": "vo/control.wav",
-   "duration": 10.395563
+   "duration": 11.819208
   },
   {
    "id": "whyFour",
    "text": "Confidence is the best in-distribution error ranker. Embedding distance is the best shift detector. Neither is good at both, and we publish the regime where our own composite loses.",
    "file": "vo/whyFour.wav",
-   "duration": 9.529125
+   "duration": 11.224375
   },
   {
    "id": "wires",
    "text": "Different failures trip different wires. Here, typicality caught it alone. On the fragile film, stability did.",
    "file": "vo/wires.wav",
-   "duration": 6.733938
+   "duration": 6.94725
   },
   {
    "id": "rigor",
    "text": "Thresholds frozen before the test split was scored. Public benchmark data throughout. Ninety tests, and thirty-two preflight checks that re-run every case and diff the result.",
    "file": "vo/rigor.wav",
-   "duration": 9.495104
+   "duration": 10.762667
   },
   {
    "id": "close",
    "text": "ScanProof. Four checks. One decision. And the evidence behind it.",
    "file": "vo/close.wav",
-   "duration": 4.538292
+   "duration": 4.432354
   }
  ]
 }
