@@ -1,6 +1,6 @@
 # ScanProof — demo video
 
-2:12.0 at 1920×1080 with narration, built with Remotion. Every figure on screen is read from
+2:06.3 at 1920×1080 with narration, built with Remotion. Every figure on screen is read from
 `src/data.json`, which is exported from the repo's committed artifacts — the
 video cannot drift from the audit.
 
@@ -15,7 +15,7 @@ The voiceover is synthesised locally by Kokoro-82M (`narration/synth.py`) and me
 scene automatically. `SCRIPT.md` has the lines and the swap instructions.
 
 ```sh
-python narration/synth.py --voice af_heart   # regenerate audio
+python narration/synth.py                    # af_heart at 1.08×, regenerates audio
 node narration/build.mjs --measure-only      # re-measure and re-time the edit
 ```
 

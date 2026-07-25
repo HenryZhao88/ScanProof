@@ -38,7 +38,7 @@ TAIL = 0.30
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--voice", default="af_heart")
-    ap.add_argument("--speed", type=float, default=1.0)
+    ap.add_argument("--speed", type=float, default=1.08)
     ap.add_argument("--lang", default="a", help="'a' American, 'b' British")
     args = ap.parse_args()
 
