@@ -217,9 +217,9 @@ export const Fragile: React.FC = () => {
                 opacity: interpolate(frame, [10, 22], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
               }}
             >
-              Twenty-one label-preserving perturbations. The dashed rule is the 0.50 decision
-              boundary — a trace that crosses it is the model contradicting itself about an
-              unchanged finding.
+              Twenty-one small changes that leave the finding intact — brightness, contrast,
+              blur, a few degrees of rotation. Below the dashed line the model has switched its
+              answer about an X-ray that did not change.
             </div>
 
             <div style={{ marginTop: 40 }}>
@@ -244,7 +244,7 @@ export const Fragile: React.FC = () => {
             {s.n_flips} of {s.n_variants}
           </span>
           <span style={{ fontFamily: F.display, fontSize: 34, color: C.graphite }}>
-            perturbations flipped the label
+            changes flipped the answer
           </span>
         </div>
       </AbsoluteFill>

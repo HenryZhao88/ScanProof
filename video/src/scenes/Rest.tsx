@@ -25,7 +25,7 @@ export const Control: React.FC = () => {
     <Sheet slug="Confound control">
       <AbsoluteFill style={{ padding: "170px 120px 170px", justifyContent: "center" }}>
         <Headline size={64} style={{ maxWidth: 1400 }}>
-          Is it just a resolution artifact?
+          Or do adult scans just look different?
         </Headline>
         <div
           style={{
@@ -132,7 +132,7 @@ export const FourChecks: React.FC = () => {
     <Sheet slug="Why four checks, not one">
       <AbsoluteFill style={{ padding: "140px 120px 120px" }}>
         <Headline size={62} style={{ maxWidth: 1450 }}>
-          No single signal is good at both failure modes.
+          No single check is good at both problems.
         </Headline>
 
         <div style={{ display: "flex", gap: 70, marginTop: 40, alignItems: "flex-start" }}>
@@ -245,8 +245,9 @@ export const FourChecks: React.FC = () => {
                 opacity: interpolate(frame, [14, 30], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
               }}
             >
-              Confidence is the best in-distribution error ranker we measured. Embedding distance
-              is the best shift detector. Neither is good at both.
+              On ordinary cases the model was trained for, plain confidence spots mistakes best —
+              better than ours. On patients it was never trained for, it is close to useless.
+              Neither one covers both.
             </div>
 
             <div

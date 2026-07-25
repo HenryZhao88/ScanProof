@@ -186,10 +186,10 @@ export const Problem: React.FC = () => {
   ];
 
   return (
-    <Sheet slug="Why confidence cannot help">
+    <Sheet slug="Why it can’t warn you">
       <AbsoluteFill style={{ padding: "150px 120px", justifyContent: "center" }}>
         <Headline size={72} style={{ maxWidth: 1500, opacity: enter(frame, 0) }}>
-          A softmax has two outputs.
+          It only has two answers.
         </Headline>
 
         <div style={{ display: "flex", gap: 28, marginTop: 54 }}>
@@ -275,7 +275,8 @@ export const Problem: React.FC = () => {
             opacity: enter(frame, 108),
           }}
         >
-          The two probabilities are normalised to sum to one — no matter what you feed it.
+          They always add up to one, whatever you feed it. That is what a softmax does — and it is
+          why there is no third box.
         </div>
       </AbsoluteFill>
     </Sheet>

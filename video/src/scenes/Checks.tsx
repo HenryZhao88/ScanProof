@@ -4,11 +4,16 @@ import { C, F } from "../theme";
 import { EASE, enter, FieldLabel, Sheet, Stamp } from "../parts";
 import data from "../data.json";
 
+/**
+ * The plain question leads; the technical name sits beside it as a label. A
+ * judge who has never heard "typicality" follows the question, and one who has
+ * still sees the right term.
+ */
 const CHECKS = [
-  { n: "01", name: "Typicality", asks: "Has the model seen inputs like this?" },
-  { n: "02", name: "Stability", asks: "Does the answer survive harmless changes?" },
-  { n: "03", name: "Agreement", asks: "Do independently trained models concur?" },
-  { n: "04", name: "Confidence", asks: "How far from the decision boundary?" },
+  { n: "01", name: "Typicality", asks: "Has it seen images like this before?" },
+  { n: "02", name: "Stability", asks: "Nudge the picture — does it change its mind?" },
+  { n: "03", name: "Agreement", asks: "Do three separate models agree?" },
+  { n: "04", name: "Confidence", asks: "Or is this close to a coin flip?" },
 ];
 
 /**
@@ -43,7 +48,7 @@ export const Checks: React.FC = () => {
               color: C.graphite,
             }}
           >
-            {" "}— four independent checks on every prediction.
+            {" "}asks its own four questions.
           </span>
         </div>
 

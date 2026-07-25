@@ -1,62 +1,62 @@
 [
  {
   "id": "stake",
-  "text": "A chest X-ray model trained at one hospital, deployed at another. Accuracy drops. Confidence doesn't."
+  "text": "This happens a lot. A hospital trains an A I on its own X-rays, someone runs it somewhere else, and it quietly gets worse. It never sounds any less sure."
  },
  {
   "id": "proof",
-  "text": "Ninety-nine point nine percent confident. On an adult film, from a model trained only on children."
+  "text": "Here's one. Ninety-nine point nine percent confident. It's an adult chest X-ray, and this model has only ever seen children."
  },
  {
   "id": "blind",
-  "text": "It can't warn you. A softmax has two outputs. There's no third that says, I don't recognise this."
+  "text": "And it can't warn you. It has two answers, pneumonia or normal, and they always add up to one. There's no box for, I've never seen this."
  },
  {
   "id": "checks",
-  "text": "ScanProof runs four checks on every prediction. Typicality. Stability. Agreement. Confidence. Then pass, review, or block."
+  "text": "So ScanProof asks its own four questions. Has it seen images like this before? Nudge the picture, does it change its mind? Do three separate models agree? And is this close to a coin flip?"
  },
  {
   "id": "fragileSetup",
-  "text": "Here's why one number isn't enough. This film is normal, at ninety percent confidence."
+  "text": "Here's why one number isn't enough. The model calls this one normal, ninety percent confident."
  },
  {
   "id": "fragilePayoff",
-  "text": "Change the gamma. A windowing difference no radiologist would report. The model flips. Five of twenty-one perturbations change the label."
+  "text": "I change the brightness curve. Nothing a radiologist would mention. It flips. Five of our twenty-one small tweaks changed its answer. The X-ray didn't change. Only its mind did."
  },
  {
   "id": "deploySetup",
-  "text": "Now the real failure. Trained on children in Guangzhou. Run on adults at the N I H."
+  "text": "But this is the failure that matters. Trained on children in Guangzhou. Run on adults at the N I H."
  },
  {
   "id": "deployConfidence",
-  "text": "Confidence goes from ninety-three point six to eighty-six. It barely moves. On breast ultrasound it climbs back up."
+  "text": "Watch the model. Ninety-three point six, down to eighty-six. Barely moves. On a breast ultrasound, not even a chest X-ray, it climbs back up."
  },
  {
   "id": "deployGuardrail",
-  "text": "Typicality goes from the fiftieth percentile to the ninety-eighth. The pass rate falls from sixty-two percent to four point eight."
+  "text": "Now watch ours. The, have I seen this before, check jumps to the ninety-eighth percentile. Our pass rate falls from sixty-two percent to under five."
  },
  {
   "id": "labelFree",
-  "text": "Neither number needs a label."
+  "text": "And we never needed the right answer to see that."
  },
  {
   "id": "control",
-  "text": "Just resolution? A control arm runs the pediatric films through the adult set's exact resampling path. One point. It's the population, not the pixels."
+  "text": "Maybe adult scans just look different? We ran our own children's films through identical processing. Everything moved about a point. It's the patients, not the pixels."
  },
  {
   "id": "whyFour",
-  "text": "Confidence is the best in-distribution error ranker. Embedding distance is the best shift detector. Neither is good at both, and we publish where ours loses."
+  "text": "Here's the honest part. For ordinary mistakes, plain confidence beat our combined score. For spotting the wrong patient, it's nearly useless. Neither covers both, and we published that."
  },
  {
   "id": "wires",
-  "text": "Different failures trip different wires. Here, typicality caught it alone. On the fragile film, stability did."
+  "text": "So we run four. Different problems trip different alarms. Here, one caught it. On that earlier film, a different one did."
  },
  {
   "id": "rigor",
-  "text": "Thresholds frozen before the test split was scored. Public benchmark data. Ninety tests, thirty-two preflight checks."
+  "text": "All of it came from two scripts, on data the model never saw. Thresholds locked before we touched the test set. It's all in the repo."
  },
  {
   "id": "close",
-  "text": "ScanProof. Four checks. One decision. And the evidence behind it."
+  "text": "ScanProof. Four checks, one decision, and the evidence behind it."
  }
 ]

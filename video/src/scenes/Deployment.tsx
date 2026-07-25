@@ -57,7 +57,7 @@ export const Deployment: React.FC = () => {
     <Sheet slug="The deployment test">
       <AbsoluteFill style={{ padding: "140px 120px 120px" }}>
         <Headline size={64} style={{ maxWidth: 1500 }}>
-          Trained on pediatric films. Run on adults from another hospital.
+          Trained on children. Run on adults.
         </Headline>
         <div
           style={{
@@ -69,8 +69,8 @@ export const Deployment: React.FC = () => {
             opacity: interpolate(frame, [10, 24], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE }),
           }}
         >
-          Same modality, same projection, completely different patients. Neither number below
-          needs a ground-truth label.
+          Same kind of scan, completely different patients. Neither number below needs to know
+          the right answer.
         </div>
 
         <div style={{ display: "flex", gap: 60, marginTop: 34, alignItems: "flex-start" }}>
