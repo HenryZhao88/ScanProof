@@ -1,97 +1,112 @@
 {
  "voice": "af_heart",
- "rate": 190,
- "total": 118.64975000000001,
+ "speed": 1.08,
+ "total": 122.634103,
  "lines": [
   {
    "id": "stake",
+   "scene": "stake",
    "text": "This happens a lot. A hospital trains an A I on its own X-rays, someone runs it somewhere else, and it quietly gets worse. It never sounds any less sure.",
    "file": "vo/stake.wav",
    "duration": 9.638958
   },
   {
    "id": "proof",
+   "scene": "hook",
    "text": "Here's one. Ninety-nine point nine percent confident. It's an adult chest X-ray, and this model has only ever seen children.",
    "file": "vo/proof.wav",
-   "duration": 7.802854
+   "duration": 7.902854
   },
   {
    "id": "blind",
+   "scene": "problem",
    "text": "And it can't warn you. It has two answers, pneumonia or normal, and they always add up to one. There's no box for, I've never seen this.",
    "file": "vo/blind.wav",
-   "duration": 7.863396
+   "duration": 7.913396
   },
   {
    "id": "checks",
+   "scene": "checks",
    "text": "So ScanProof asks its own four questions. Has it seen images like this before? Nudge the picture, does it change its mind? Do three separate models agree? And is this close to a coin flip?",
    "file": "vo/checks.wav",
-   "duration": 11.152458
+   "duration": 11.452458
   },
   {
    "id": "fragileSetup",
+   "scene": "fragile",
    "text": "Here's why one number isn't enough. The model calls this one normal, ninety percent confident.",
    "file": "vo/fragileSetup.wav",
-   "duration": 5.570896
+   "duration": 5.520792
   },
   {
    "id": "fragilePayoff",
+   "scene": "fragile",
    "text": "I change the brightness curve. Nothing a radiologist would mention. It flips. Five of our twenty-one small tweaks changed its answer. The X-ray didn't change. Only its mind did.",
    "file": "vo/fragilePayoff.wav",
-   "duration": 10.929167
+   "duration": 11.734479
   },
   {
    "id": "deploySetup",
-   "text": "But this is the failure that matters. Trained on children in Guangzhou. Run on adults at the N I H.",
+   "scene": "deployment",
+   "text": "But this is the failure that matters. Trained on children in China. Run on adults at the N I H.",
    "file": "vo/deploySetup.wav",
-   "duration": 6.089313
+   "duration": 5.867875
   },
   {
    "id": "deployConfidence",
+   "scene": "deployment",
    "text": "Watch the model. Ninety-three point six, down to eighty-six. Barely moves. On a breast ultrasound, not even a chest X-ray, it climbs back up.",
    "file": "vo/deployConfidence.wav",
-   "duration": 8.688604
+   "duration": 8.638521
   },
   {
    "id": "deployGuardrail",
+   "scene": "deployment",
    "text": "Now watch ours. The, have I seen this before, check jumps to the ninety-eighth percentile. Our pass rate falls from sixty-two percent to under five.",
    "file": "vo/deployGuardrail.wav",
-   "duration": 8.638333
+   "duration": 9.438229
   },
   {
    "id": "labelFree",
+   "scene": "labelFree",
    "text": "And we never needed the right answer to see that.",
    "file": "vo/labelFree.wav",
-   "duration": 2.446563
+   "duration": 2.646604
   },
   {
    "id": "control",
+   "scene": "control",
    "text": "Maybe adult scans just look different? We ran our own children's films through identical processing. Everything moved about a point. It's the patients, not the pixels.",
    "file": "vo/control.wav",
-   "duration": 10.073208
+   "duration": 10.273229
   },
   {
    "id": "whyFour",
+   "scene": "whyFour",
    "text": "Here's the honest part. For ordinary mistakes, plain confidence beat our combined score. For spotting the wrong patient, it's nearly useless. Neither covers both, and we published that.",
    "file": "vo/whyFour.wav",
-   "duration": 10.997854
+   "duration": 10.947875
   },
   {
    "id": "wires",
+   "scene": "whyFour",
    "text": "So we run four. Different problems trip different alarms. Here, one caught it. On that earlier film, a different one did.",
    "file": "vo/wires.wav",
-   "duration": 7.115896
+   "duration": 7.716833
   },
   {
    "id": "rigor",
+   "scene": "rigor",
    "text": "All of it came from two scripts, on data the model never saw. Thresholds locked before we touched the test set. It's all in the repo.",
    "file": "vo/rigor.wav",
-   "duration": 7.793896
+   "duration": 7.993896
   },
   {
    "id": "close",
+   "scene": "close",
    "text": "ScanProof. Four checks, one decision, and the evidence behind it.",
    "file": "vo/close.wav",
-   "duration": 3.848354
+   "duration": 4.948104
   }
  ]
 }

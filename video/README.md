@@ -1,6 +1,6 @@
 # ScanProof — demo video
 
-2:06.3 at 1920×1080 with narration, built with Remotion. Every figure on screen is read from
+2:02.6 at 1920×1080 with narration, built with Remotion. Every figure on screen is read from
 `src/data.json`, which is exported from the repo's committed artifacts — the
 video cannot drift from the audit.
 
@@ -15,7 +15,8 @@ The voiceover is synthesised locally by Kokoro-82M (`narration/synth.py`) and me
 scene automatically. `SCRIPT.md` has the lines and the swap instructions.
 
 ```sh
-python narration/synth.py                    # af_heart at 1.08×, regenerates audio
+python narration/synth.py --only stake --play  # fast loop: one line, hear it
+python narration/synth.py                     # regenerate all audio
 node narration/build.mjs --measure-only      # re-measure and re-time the edit
 ```
 
@@ -32,7 +33,8 @@ node narration/build.mjs --measure-only      # re-measure and re-time the edit
 |---|---|
 | `src/theme.ts` | Design tokens shared with the product |
 | `src/timeline.ts` | Scene boundaries, derived from the measured narration |
-| `narration/lines.json` | The script, shared by synthesiser and measurer |
+| `narration/script.json` | **The script — words, pauses, speed, voice.** Edit this. |
+| `narration/README.md` | How to edit it |
 | `narration/synth.py` | Kokoro-82M voiceover, trimmed and loudness-normalised |
 | `narration/build.mjs` | Measures the audio, writes `src/vo.json` |
 | `src/parts.tsx` | Sheet, stamp, counter, plate — the reusable pieces |

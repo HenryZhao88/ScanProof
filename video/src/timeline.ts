@@ -10,35 +10,11 @@ import vo from "./vo.json";
 
 export const FPS = 30;
 
-type LineId = (typeof vo.lines)[number]["id"];
-
-const byId = new Map(vo.lines.map((l) => [l.id, l]));
-const dur = (id: string) => {
-  const l = byId.get(id);
-  if (!l) throw new Error(`no narration line "${id}"`);
-  return l.duration;
-};
-export const file = (id: string) => byId.get(id)!.file;
-
 /**
- * A scene is one or more narration lines plus a tail. The tail is where a
- * visual finishes landing after the voice stops — generous on the two chart
- * scenes, tight everywhere else so the thing keeps moving.
+ * Scene boundaries come straight from the script: lines are grouped by their
+ * `scene`, and each line's length already includes its `pauseAfter`. So every
+ * timing knob lives in narration/script.json and nothing is duplicated here.
  */
-const PLAN: { key: string; lines: LineId[]; tail: number }[] = [
-  { key: "stake", lines: ["stake"], tail: 0.3 },
-  { key: "hook", lines: ["proof"], tail: 0.4 },
-  { key: "problem", lines: ["blind"], tail: 0.35 },
-  { key: "checks", lines: ["checks"], tail: 0.6 },
-  { key: "fragile", lines: ["fragileSetup", "fragilePayoff"], tail: 1.1 },
-  { key: "deployment", lines: ["deploySetup", "deployConfidence", "deployGuardrail"], tail: 1.1 },
-  { key: "labelFree", lines: ["labelFree"], tail: 0.5 },
-  { key: "control", lines: ["control"], tail: 0.5 },
-  { key: "whyFour", lines: ["whyFour", "wires"], tail: 0.9 },
-  { key: "rigor", lines: ["rigor"], tail: 0.5 },
-  { key: "close", lines: ["close"], tail: 1.4 },
-];
-
 export type Scene = {
   key: string;
   /** absolute start, in frames */
@@ -52,23 +28,27 @@ export type Scene = {
 
 const f = (seconds: number) => Math.round(seconds * FPS);
 
+const order: string[] = [];
+const grouped = new Map<string, typeof vo.lines>();
+for (const line of vo.lines) {
+  if (!grouped.has(line.scene)) {
+    grouped.set(line.scene, []);
+    order.push(line.scene);
+  }
+  grouped.get(line.scene)!.push(line);
+}
+
 let cursor = 0;
-export const SCENES: Scene[] = PLAN.map(({ key, lines, tail }) => {
+export const SCENES: Scene[] = order.map((key) => {
   const audio: Scene["audio"] = [];
   const cue: Record<string, number> = {};
   let local = 0;
-  for (const id of lines) {
-    cue[id] = f(local);
-    audio.push({ file: file(id), at: f(local), durationInFrames: f(dur(id)) });
-    local += dur(id);
+  for (const line of grouped.get(key)!) {
+    cue[line.id] = f(local);
+    audio.push({ file: line.file, at: f(local), durationInFrames: f(line.duration) });
+    local += line.duration;
   }
-  const scene: Scene = {
-    key,
-    from: cursor,
-    durationInFrames: f(local + tail),
-    audio,
-    cue,
-  };
+  const scene: Scene = { key, from: cursor, durationInFrames: f(local), audio, cue };
   cursor += scene.durationInFrames;
   return scene;
 });
