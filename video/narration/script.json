@@ -8,7 +8,7 @@
    "lines": [
     {
      "id": "stake",
-     "text": "This happens a lot. A hospital trains an A I on its own X-rays, someone runs it somewhere else, and it quietly gets worse. It never sounds any less sure.",
+     "text": "This happens a lot. A hospital trains an AI on its own X-rays, someone runs it somewhere else, and it quietly gets worse. It never sounds any less sure.",
      "pauseAfter": 0.3
     }
    ]
@@ -53,7 +53,7 @@
     },
     {
      "id": "fragilePayoff",
-     "text": "I change the brightness curve. Nothing a radiologist would mention. It flips. Five of our twenty-one small tweaks changed its answer. The X-ray didn't change. Only its mind did.",
+     "text": "If I change the brightness curve, it flips. Five of our twenty-one small tweaks changed its answer. The X-ray didn't change. Only its mind did.",
      "pauseAfter": 1.1
     }
    ]
@@ -63,7 +63,7 @@
    "lines": [
     {
      "id": "deploySetup",
-     "text": "But this is the failure that matters. Trained on children in China. Run on adults at the N I H.",
+     "text": "But this is the failure that matters. This model trained on children in China. Run on adults at the N I H.",
      "pauseAfter": 0.25
     },
     {
@@ -73,7 +73,7 @@
     },
     {
      "id": "deployGuardrail",
-     "text": "Now watch ours. The, have I seen this before, check jumps to the ninety-eighth percentile. Our pass rate falls from sixty-two percent to under five.",
+     "text": "Now watch ours. The check jumps to the ninety-eighth percentile. Our pass rate falls from sixty-two percent to under five.",
      "pauseAfter": 1.1
     }
    ]
@@ -118,7 +118,7 @@
    "lines": [
     {
      "id": "rigor",
-     "text": "All of it came from two scripts, on data the model never saw. Thresholds locked before we touched the test set. It's all in the repo.",
+     "text": "All of it came from two scripts on data the model never saw. Thresholds locked before we touched the test set. It's all in the repo.",
      "pauseAfter": 0.5
     }
    ]

@@ -1,6 +1,6 @@
 # ScanProof — demo video
 
-2:02.6 at 1920×1080 with narration, built with Remotion. Every figure on screen is read from
+1:59.4 at 1920×1080 with narration, built with Remotion. Every figure on screen is read from
 `src/data.json`, which is exported from the repo's committed artifacts — the
 video cannot drift from the audit.
 
