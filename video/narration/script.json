@@ -18,7 +18,7 @@
    "lines": [
     {
      "id": "proof",
-     "text": "Here's one. Ninety-nine point nine percent confident. It's an adult chest X-ray, and this model has only ever seen children.",
+     "text": "Here's one. It's ninety-nine point nine percent confident. It's an adult chest X-ray, and this model has only ever seen children.",
      "pauseAfter": 0.4
     }
    ]
@@ -63,7 +63,7 @@
    "lines": [
     {
      "id": "deploySetup",
-     "text": "But this is the failure that matters. This model trained on children in China. Run on adults at the N I H.",
+     "text": "But this is the failure that matters. This model trained on children in China. It was run on adults at the N I H.",
      "pauseAfter": 0.25
     },
     {
@@ -93,7 +93,7 @@
    "lines": [
     {
      "id": "control",
-     "text": "Maybe adult scans just look different? We ran our own children's films through identical processing. Everything moved about a point. It's the patients, not the pixels.",
+     "text": "Maybe adult scans just look different. We ran our own children's films through identical processing. Everything moved about a point. It's the patients, not the pixels.",
      "pauseAfter": 0.5
     }
    ]

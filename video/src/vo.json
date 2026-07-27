@@ -1,7 +1,7 @@
 {
  "voice": "af_heart",
  "speed": 1.08,
- "total": 119.435376,
+ "total": 120.090294,
  "lines": [
   {
    "id": "stake",
@@ -13,9 +13,9 @@
   {
    "id": "proof",
    "scene": "hook",
-   "text": "Here's one. Ninety-nine point nine percent confident. It's an adult chest X-ray, and this model has only ever seen children.",
+   "text": "Here's one. It's ninety-nine point nine percent confident. It's an adult chest X-ray, and this model has only ever seen children.",
    "file": "vo/proof.wav",
-   "duration": 7.902854
+   "duration": 8.202875
   },
   {
    "id": "blind",
@@ -29,7 +29,7 @@
    "scene": "checks",
    "text": "So ScanProof asks its own four questions. Has it seen images like this before? Nudge the picture, does it change its mind? Do three separate models agree? And is this close to a coin flip?",
    "file": "vo/checks.wav",
-   "duration": 11.448333
+   "duration": 11.452417
   },
   {
    "id": "fragileSetup",
@@ -43,70 +43,70 @@
    "scene": "fragile",
    "text": "If I change the brightness curve, it flips. Five of our twenty-one small tweaks changed its answer. The X-ray didn't change. Only its mind did.",
    "file": "vo/fragilePayoff.wav",
-   "duration": 9.489375
+   "duration": 9.48925
   },
   {
    "id": "deploySetup",
    "scene": "deployment",
-   "text": "But this is the failure that matters. This model trained on children in China. Run on adults at the N I H.",
+   "text": "But this is the failure that matters. This model trained on children in China. It was run on adults at the N I H.",
    "file": "vo/deploySetup.wav",
-   "duration": 6.594188
+   "duration": 6.947313
   },
   {
    "id": "deployConfidence",
    "scene": "deployment",
    "text": "Watch the model. Ninety-three point six, down to eighty-six. Barely moves. On a breast ultrasound, not even a chest X-ray, it climbs back up.",
    "file": "vo/deployConfidence.wav",
-   "duration": 8.638563
+   "duration": 8.638417
   },
   {
    "id": "deployGuardrail",
    "scene": "deployment",
    "text": "Now watch ours. The check jumps to the ninety-eighth percentile. Our pass rate falls from sixty-two percent to under five.",
    "file": "vo/deployGuardrail.wav",
-   "duration": 7.961938
+   "duration": 7.961875
   },
   {
    "id": "labelFree",
    "scene": "labelFree",
    "text": "And we never needed the right answer to see that.",
    "file": "vo/labelFree.wav",
-   "duration": 2.646583
+   "duration": 2.646563
   },
   {
    "id": "control",
    "scene": "control",
-   "text": "Maybe adult scans just look different? We ran our own children's films through identical processing. Everything moved about a point. It's the patients, not the pixels.",
+   "text": "Maybe adult scans just look different. We ran our own children's films through identical processing. Everything moved about a point. It's the patients, not the pixels.",
    "file": "vo/control.wav",
-   "duration": 10.273229
+   "duration": 10.270979
   },
   {
    "id": "whyFour",
    "scene": "whyFour",
    "text": "Here's the honest part. For ordinary mistakes, plain confidence beat our combined score. For spotting the wrong patient, it's nearly useless. Neither covers both, and we published that.",
    "file": "vo/whyFour.wav",
-   "duration": 10.947875
+   "duration": 10.947896
   },
   {
    "id": "wires",
    "scene": "whyFour",
    "text": "So we run four. Different problems trip different alarms. Here, one caught it. On that earlier film, a different one did.",
    "file": "vo/wires.wav",
-   "duration": 7.715938
+   "duration": 7.715917
   },
   {
    "id": "rigor",
    "scene": "rigor",
    "text": "All of it came from two scripts on data the model never saw. Thresholds locked before we touched the test set. It's all in the repo.",
    "file": "vo/rigor.wav",
-   "duration": 7.840875
+   "duration": 7.839354
   },
   {
    "id": "close",
    "scene": "close",
    "text": "ScanProof. Four checks, one decision, and the evidence behind it.",
    "file": "vo/close.wav",
-   "duration": 4.946229
+   "duration": 4.948042
   }
  ]
 }
