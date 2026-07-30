@@ -18,7 +18,7 @@ A two-class softmax has to spread its probability across the two classes it know
 something it has never seen and it doesn't get quieter — it just picks a side. There's no output
 slot that means *"I don't recognise this."*
 
-So our model, fine-tuned on pediatric chest films from one hospital, reports 86.0% mean
+So my model, fine-tuned on pediatric chest films from one hospital, reports 86.0% mean
 confidence on adult films from a different one. On breast ultrasound it reports 95.8%. Higher on
 the ultrasound than on the chest X-rays. It has no way to tell you it's out of its depth, because
 nothing in the architecture can represent that.
@@ -36,7 +36,7 @@ different reasons:
 Two hard gates sit on top, and there's a weighted 0–100 score for ranking. But the thing you act
 on is *which check failed*, not the number.
 
-## What we found
+## What I found
 
 Every figure below comes out of `make audit` and `make shift` and is committed under
 `artifacts/`. Nothing is typed in by hand, and `pytest tests/test_claims.py` fails if this file
@@ -71,7 +71,7 @@ more than it sounds: the whole point is catching the problem *before* the accura
 Mean sub-scores, pediatric → adult: typicality 0.878 → 0.116, agreement 0.801 → 0.619, confidence
 0.892 → 0.759, stability 0.853 → 0.747.
 
-The embedding check carried this one almost single-handed. We're not going to dress that up as a
+The embedding check carried this one almost single-handed. I'm not going to dress that up as a
 team effort. The other three exist because they catch things this arm doesn't contain — see
 *Confident but fragile* and *Checkpoints disagree* in the demo deck, where typicality is perfectly
 happy and the prediction is still not safe to use.
@@ -79,7 +79,7 @@ happy and the prediction is still not safe to use.
 ### The confound is controlled
 
 The adult set is only available at 128 px unless you download 3.7 GB, so it gets resampled to
-224. That's a real confound: maybe we're just detecting resampling.
+224. That's a real confound: maybe I'm just detecting resampling.
 
 So there's a control arm that puts the *pediatric* films through the identical path. PASS rate
 moves by **+0.96 points**, accuracy by **−1.1 points**. Resolution isn't what the study is
@@ -87,8 +87,8 @@ measuring.
 
 ### The negative result
 
-On in-distribution data, plain confidence is a **better** error ranker than our composite score:
-AURC **0.0126** against **0.0175**, lower is better. We're reporting that because it's true.
+On in-distribution data, plain confidence is a **better** error ranker than my composite score:
+AURC **0.0126** against **0.0175**, lower is better. I'm reporting that because it's true.
 
 | Signal | In-dist AURC ↓ | Shift AUROC ↑ | Worst case ↑ |
 |---|---:|---:|---:|
@@ -98,9 +98,9 @@ AURC **0.0126** against **0.0175**, lower is better. We're reporting that becaus
 | Ensemble disagreement | 0.0188 | 0.7113 | 0.065 |
 | Embedding percentile | 0.0385 | **0.9592** | 0.000 |
 
-We fixed margins for "acceptable in both regimes" before running the study (within 0.01 AURC and
-0.05 AUROC of the best signal in each). As measured, **no signal clears both — ours included.**
-We didn't go back and loosen the margins afterwards, and the failure is printed on the audit page
+I fixed margins for "acceptable in both regimes" before running the study (within 0.01 AURC and
+0.05 AUROC of the best signal in each). As measured, **no signal clears both — mine included.**
+I didn't go back and loosen the margins afterwards, and the failure is printed on the audit page
 rather than buried here.
 
 What the evidence does support is narrower. Rescale each regime so the best signal scores 1 and
@@ -342,7 +342,7 @@ al. (NeurIPS 2018). Both are re-implemented here from the published descriptions
 **One thing worth knowing about the splits.** MedMNIST builds PneumoniaMNIST's train and val
 splits from the source *training* collection, and uses the source *validation* collection as the
 test split. So test is genuinely shifted: the ensemble scores ~98% on validation and materially
-lower on test. That's not a defect for our purposes. It's what makes this a useful reliability
+lower on test. That's not a defect for these purposes. It's what makes this a useful reliability
 benchmark, because there are real errors left for the signals to catch.
 
 ## Testing
@@ -370,7 +370,7 @@ copy.
 4. **Naturalistic corruption only.** The battery covers benign acquisition variation. It says
    nothing about adversarial robustness, which is a different and much more expensive question.
 5. **Single-layer Mahalanobis.** Weaker than multi-layer or ensembled OOD detectors, and it
-   inherits whatever biases live in `m0-resnet18`'s feature space. We chose it because it needs no
+   inherits whatever biases live in `m0-resnet18`'s feature space. I chose it because it needs no
    OOD data at fit time and runs in one forward pass.
 6. **The weights are a judgement call, and the shift study shows what it costs.** The
    0.20/0.40/0.25/0.15 split was fixed a priori. Averaging four signals dilutes the one that
@@ -396,19 +396,19 @@ Because confidence is a distance to a decision boundary, and a two-class softmax
 which to say "this input is unlike my training data" — the two probabilities sum to 1 no matter
 what you feed it. Measured: mean confidence is 86.0% on adult films and 95.8% on breast
 ultrasound, *higher* on the modality it has no business seeing. Confidence is a good
-in-distribution error ranker, the best of the five signals we tested (AURC 0.0126), and blind to
+in-distribution error ranker, the best of the five signals I tested (AURC 0.0126), and blind to
 this failure mode.
 
 **Then why not use only the embedding detector?**
-It's the best shift detector we measured (AUROC 0.9592) and the *worst* in-distribution error
+It's the best shift detector I measured (AUROC 0.9592) and the *worst* in-distribution error
 ranker (AURC 0.0385, against 0.0126 for confidence). A guardrail built only from embedding
 distance would wave through the genuinely hard cases that come from the population it was trained
 on. See *Confident but fragile* in the demo deck: typicality is perfectly fine, and the label
 flips under a gamma change.
 
 **Why combine signals if the composite is weaker on some metrics?**
-It is weaker, and we say so on the audit page. Under margins fixed before the study ran, no signal
-clears both regimes, ours included. The claim we'll defend is threshold-free: rescale each regime
+It is weaker, and I say so on the audit page. Under margins fixed before the study ran, no signal
+clears both regimes, mine included. The claim I'll defend is threshold-free: rescale each regime
 so the best signal scores 1 and the worst 0, then take the lower of a signal's two scores. The
 composite has the best worst case, 0.383 against 0.203 for confidence, and nothing beats it on
 both axes at once. In practice you don't ship a scalar anyway. You ship four checks and two gates,
@@ -450,7 +450,7 @@ only, and the 624-image test split is scored once, afterwards. `scanproof.shift`
 `reliability_config.json` and re-tunes nothing, so the study can't move a threshold even if it
 wanted to. And the Mahalanobis statistics are fit on **training** features only. The margins for
 "acceptable in both regimes" were also fixed in `config.py` before the shift study ran — and when
-the answer came back negative, we left them alone and published the negative result.
+the answer came back negative, I left them alone and published the negative result.
 
 ## Repository layout
 
