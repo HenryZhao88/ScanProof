@@ -3,10 +3,6 @@
 A guardrail for chest X-ray classifiers. It runs four checks on every prediction and returns
 `PASS`, `REVIEW` or `BLOCK` along with the measurement that drove the verdict.
 
-> **Research prototype, not for diagnosis.** No clinical validation, no regulatory claim, not a
-> medical device. `PASS` means no check found a reason to withhold the prediction. It is not
-> evidence that the prediction is correct.
-
 ## The problem
 
 A two-class softmax splits its probability between the two classes it knows. Feed it something it
