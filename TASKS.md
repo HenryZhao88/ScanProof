@@ -72,8 +72,6 @@ Status legend: `[ ]` todo · `[~]` in progress · `[x]` done
 - [x] Reviewed at 1920×1080; removed redundant copy, fixed two label collisions
 - [x] `tests/test_claims.py` — 10 tests asserting every documented figure matches the
       artifacts, plus bans on equivalence claims and clinical-safety language
-- [x] `DEVPOST.md`, `VIDEO.md` (4:35–4:45 script + 9-shot list), `docs/screenshots/`
-- [x] Deleted `DEMO.md` (superseded by VIDEO.md; had stale panel titles)
 - [x] 90 tests · 32 preflight checks · zero external network calls verified in-browser
 
 ## Possible next steps (not done)
