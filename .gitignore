@@ -53,3 +53,7 @@ scratch/
 video/node_modules/
 video/out/
 video/public/vo/
+
+# Local docs and harness state
+.claude/
+docs/
