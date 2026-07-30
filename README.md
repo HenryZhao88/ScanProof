@@ -198,7 +198,6 @@ model's own confidence and needs no labels.
 ```
 scanproof/      Python package: inference, reliability, evaluation, API
 frontend/       Vite + React + TypeScript + Tailwind v4
-video/          Remotion demo video
 tests/          pytest suite
 artifacts/      generated JSON, committed
 demo_cases/     PNGs + manifest with cached results, committed
