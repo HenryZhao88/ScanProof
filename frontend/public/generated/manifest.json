@@ -1,0 +1,5136 @@
+{
+  "generated_by": "python -m scanproof.demo",
+  "note": "Cached results are produced by the same Analyzer the live API uses. The pipeline is deterministic, so a live re-analysis reproduces these values.",
+  "cases": [
+    {
+      "id": "stable-pneumonia",
+      "title": "Stable pneumonia call",
+      "why_included": "Confident, and the confidence is earned: nothing in the battery moves it.",
+      "image": "stable-pneumonia.png",
+      "source": "PneumoniaMNIST test split, index 272",
+      "true_class": "PNEUMONIA",
+      "license": "CC BY 4.0 \u2014 MedMNIST v2 (Yang et al., Sci Data 2023); source images Kermany et al., Cell 2018",
+      "cached_result": {
+        "predicted_class": "PNEUMONIA",
+        "predicted_index": 1,
+        "confidence": 0.9994,
+        "prob_pneumonia": 0.9994,
+        "reliability_score": 100.0,
+        "verdict": "PASS",
+        "subscores": [
+          {
+            "key": "confidence",
+            "label": "Calibrated confidence",
+            "value": 1.0,
+            "weight": 0.2,
+            "points": 20.0,
+            "max_points": 20.0,
+            "detail": "Temperature-scaled ensemble confidence 0.999 for PNEUMONIA (margin 0.999)."
+          },
+          {
+            "key": "stability",
+            "label": "Perturbation stability",
+            "value": 0.9998,
+            "weight": 0.4,
+            "points": 39.99,
+            "max_points": 40.0,
+            "detail": "0 of 21 perturbed variants changed the predicted class; mean |\u0394 P(PNEUMONIA)| = 0.000."
+          },
+          {
+            "key": "agreement",
+            "label": "Checkpoint agreement",
+            "value": 0.9983,
+            "weight": 0.25,
+            "points": 24.96,
+            "max_points": 25.0,
+            "detail": "P(PNEUMONIA) across 3 independently-trained checkpoints \u2014 m0-resnet18: 1.000, m1-resnet18s: 0.999, m2-densenet121: 1.000 (\u03c3 = 0.000)."
+          },
+          {
+            "key": "typicality",
+            "label": "Embedding typicality",
+            "value": 1.0,
+            "weight": 0.15,
+            "points": 15.0,
+            "max_points": 15.0,
+            "detail": "Mahalanobis distance 15.7 sits at the 11.5th percentile of the training distribution."
+          }
+        ],
+        "evidence": [
+          {
+            "level": "ok",
+            "source": "stability",
+            "title": "Prediction held across all 21 perturbation variants",
+            "detail": "Largest shift was Brightness +36% at \u0394 = -0.001; no variant changed the label."
+          },
+          {
+            "level": "ok",
+            "source": "agreement",
+            "title": "All checkpoints agree",
+            "detail": "\u03c3 = 0.000 across members (m0-resnet18: 1.000, m1-resnet18s: 0.999, m2-densenet121: 1.000)."
+          },
+          {
+            "level": "ok",
+            "source": "typicality",
+            "title": "Image is typical of the training data (11.5th percentile)",
+            "detail": "Mahalanobis distance 15.7, well inside the training manifold."
+          }
+        ],
+        "gates": [],
+        "perturbation_table": [
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 1,
+            "magnitude": "+12%",
+            "prob_pneumonia": 0.9994,
+            "prob_predicted": 0.9994,
+            "delta": 0.0,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 2,
+            "magnitude": "+24%",
+            "prob_pneumonia": 0.9993,
+            "prob_predicted": 0.9993,
+            "delta": -0.0001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 3,
+            "magnitude": "+36%",
+            "prob_pneumonia": 0.9986,
+            "prob_predicted": 0.9986,
+            "delta": -0.0007,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 1,
+            "magnitude": "-15%",
+            "prob_pneumonia": 0.9994,
+            "prob_predicted": 0.9994,
+            "delta": 0.0001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 2,
+            "magnitude": "-28%",
+            "prob_pneumonia": 0.9995,
+            "prob_predicted": 0.9995,
+            "delta": 0.0001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 3,
+            "magnitude": "-40%",
+            "prob_pneumonia": 0.9995,
+            "prob_predicted": 0.9995,
+            "delta": 0.0001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 1,
+            "magnitude": "\u03b3 1.25",
+            "prob_pneumonia": 0.9993,
+            "prob_predicted": 0.9993,
+            "delta": -0.0,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 2,
+            "magnitude": "\u03b3 1.55",
+            "prob_pneumonia": 0.9993,
+            "prob_predicted": 0.9993,
+            "delta": -0.0001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 3,
+            "magnitude": "\u03b3 1.90",
+            "prob_pneumonia": 0.9992,
+            "prob_predicted": 0.9992,
+            "delta": -0.0002,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 1,
+            "magnitude": "\u03c3 0.02",
+            "prob_pneumonia": 0.9994,
+            "prob_predicted": 0.9994,
+            "delta": 0.0,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 2,
+            "magnitude": "\u03c3 0.045",
+            "prob_pneumonia": 0.9994,
+            "prob_predicted": 0.9994,
+            "delta": 0.0,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 3,
+            "magnitude": "\u03c3 0.08",
+            "prob_pneumonia": 0.999,
+            "prob_predicted": 0.999,
+            "delta": -0.0004,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 1,
+            "magnitude": "\u03c3 0.8px",
+            "prob_pneumonia": 0.9993,
+            "prob_predicted": 0.9993,
+            "delta": -0.0,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 2,
+            "magnitude": "\u03c3 1.6px",
+            "prob_pneumonia": 0.9993,
+            "prob_predicted": 0.9993,
+            "delta": -0.0001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 3,
+            "magnitude": "\u03c3 2.6px",
+            "prob_pneumonia": 0.9991,
+            "prob_predicted": 0.9991,
+            "delta": -0.0003,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 1,
+            "magnitude": "3\u00b0",
+            "prob_pneumonia": 0.9995,
+            "prob_predicted": 0.9995,
+            "delta": 0.0001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 2,
+            "magnitude": "6\u00b0",
+            "prob_pneumonia": 0.9995,
+            "prob_predicted": 0.9995,
+            "delta": 0.0002,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 3,
+            "magnitude": "10\u00b0",
+            "prob_pneumonia": 0.9995,
+            "prob_predicted": 0.9995,
+            "delta": 0.0002,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 1,
+            "magnitude": "0.70x",
+            "prob_pneumonia": 0.9993,
+            "prob_predicted": 0.9993,
+            "delta": -0.0,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 2,
+            "magnitude": "0.50x",
+            "prob_pneumonia": 0.9993,
+            "prob_predicted": 0.9993,
+            "delta": -0.0001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 3,
+            "magnitude": "0.35x",
+            "prob_pneumonia": 0.9993,
+            "prob_predicted": 0.9993,
+            "delta": -0.0001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          }
+        ],
+        "perturbation_summary": {
+          "n_variants": 21,
+          "n_flips": 0,
+          "flip_rate": 0.0,
+          "mean_abs_delta": 0.0001,
+          "max_abs_delta": 0.0007,
+          "by_family": [
+            {
+              "family": "brightness",
+              "family_label": "Brightness",
+              "flips": 0,
+              "max_abs_delta": 0.0007
+            },
+            {
+              "family": "noise",
+              "family_label": "Detector noise",
+              "flips": 0,
+              "max_abs_delta": 0.0004
+            },
+            {
+              "family": "blur",
+              "family_label": "Blur",
+              "flips": 0,
+              "max_abs_delta": 0.0003
+            },
+            {
+              "family": "gamma",
+              "family_label": "Gamma / windowing",
+              "flips": 0,
+              "max_abs_delta": 0.0002
+            },
+            {
+              "family": "rotation",
+              "family_label": "Rotation",
+              "flips": 0,
+              "max_abs_delta": 0.0002
+            },
+            {
+              "family": "resample",
+              "family_label": "Resolution loss",
+              "flips": 0,
+              "max_abs_delta": 0.0001
+            },
+            {
+              "family": "contrast",
+              "family_label": "Contrast",
+              "flips": 0,
+              "max_abs_delta": 0.0001
+            }
+          ]
+        },
+        "ensemble": {
+          "members": [
+            {
+              "name": "m0-resnet18",
+              "prob_pneumonia": 0.9995,
+              "predicted_class": "PNEUMONIA"
+            },
+            {
+              "name": "m1-resnet18s",
+              "prob_pneumonia": 0.9988,
+              "predicted_class": "PNEUMONIA"
+            },
+            {
+              "name": "m2-densenet121",
+              "prob_pneumonia": 0.9998,
+              "predicted_class": "PNEUMONIA"
+            }
+          ],
+          "std": 0.0004,
+          "unanimous": true
+        },
+        "ood": {
+          "distance": 15.656,
+          "percentile": 0.1145,
+          "hard_gate_percentile": 0.995,
+          "soft_gate_percentile": 0.9
+        },
+        "thresholds": {
+          "pass": 97.09,
+          "review": 84.04,
+          "source": "selected on the validation split by python -m scanproof.evaluate"
+        }
+      }
+    },
+    {
+      "id": "confident-but-fragile",
+      "title": "Confident but fragile",
+      "why_included": "High confidence, yet the label collapses under a benign exposure change. This is the case confidence alone cannot catch.",
+      "image": "confident-but-fragile.png",
+      "source": "PneumoniaMNIST test split, index 457",
+      "true_class": "NORMAL",
+      "license": "CC BY 4.0 \u2014 MedMNIST v2 (Yang et al., Sci Data 2023); source images Kermany et al., Cell 2018",
+      "cached_result": {
+        "predicted_class": "NORMAL",
+        "predicted_index": 0,
+        "confidence": 0.9015,
+        "prob_pneumonia": 0.0985,
+        "reliability_score": 46.5,
+        "verdict": "BLOCK",
+        "subscores": [
+          {
+            "key": "confidence",
+            "label": "Calibrated confidence",
+            "value": 0.8923,
+            "weight": 0.2,
+            "points": 17.85,
+            "max_points": 20.0,
+            "detail": "Temperature-scaled ensemble confidence 0.902 for NORMAL (margin 0.803)."
+          },
+          {
+            "key": "stability",
+            "label": "Perturbation stability",
+            "value": 0.0817,
+            "weight": 0.4,
+            "points": 3.27,
+            "max_points": 40.0,
+            "detail": "5 of 21 perturbed variants changed the predicted class; mean |\u0394 P(NORMAL)| = 0.214."
+          },
+          {
+            "key": "agreement",
+            "label": "Checkpoint agreement",
+            "value": 0.7874,
+            "weight": 0.25,
+            "points": 19.69,
+            "max_points": 25.0,
+            "detail": "P(PNEUMONIA) across 3 independently-trained checkpoints \u2014 m0-resnet18: 0.153, m1-resnet18s: 0.026, m2-densenet121: 0.116 (\u03c3 = 0.053)."
+          },
+          {
+            "key": "typicality",
+            "label": "Embedding typicality",
+            "value": 0.38,
+            "weight": 0.15,
+            "points": 5.7,
+            "max_points": 15.0,
+            "detail": "Mahalanobis distance 30.8 sits at the 96.2th percentile of the training distribution."
+          }
+        ],
+        "evidence": [
+          {
+            "level": "critical",
+            "source": "stability",
+            "title": "Prediction flips under Gamma / windowing \u03b3 1.90",
+            "detail": "P(NORMAL) falls 0.902 \u2192 0.174, changing the label to PNEUMONIA (+4 other variants). This perturbation does not change the underlying finding."
+          },
+          {
+            "level": "warning",
+            "source": "typicality",
+            "title": "Atypical image for this model (96.2th percentile)",
+            "detail": "The embedding is further from the training manifold than 96.2% of training images."
+          },
+          {
+            "level": "warning",
+            "source": "confidence",
+            "title": "High confidence is not supported by the stability tests",
+            "detail": "The model reports 90.2% confidence, but the checks above show the prediction is not stable. This is exactly the case confidence alone misses."
+          },
+          {
+            "level": "ok",
+            "source": "agreement",
+            "title": "All checkpoints agree",
+            "detail": "\u03c3 = 0.053 across members (m0-resnet18: 0.153, m1-resnet18s: 0.026, m2-densenet121: 0.116)."
+          }
+        ],
+        "gates": [],
+        "perturbation_table": [
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 1,
+            "magnitude": "+12%",
+            "prob_pneumonia": 0.0325,
+            "prob_predicted": 0.9675,
+            "delta": 0.066,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 2,
+            "magnitude": "+24%",
+            "prob_pneumonia": 0.0397,
+            "prob_predicted": 0.9603,
+            "delta": 0.0588,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 3,
+            "magnitude": "+36%",
+            "prob_pneumonia": 0.0714,
+            "prob_predicted": 0.9286,
+            "delta": 0.0271,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 1,
+            "magnitude": "-15%",
+            "prob_pneumonia": 0.1994,
+            "prob_predicted": 0.8006,
+            "delta": -0.1009,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 2,
+            "magnitude": "-28%",
+            "prob_pneumonia": 0.3657,
+            "prob_predicted": 0.6343,
+            "delta": -0.2672,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 3,
+            "magnitude": "-40%",
+            "prob_pneumonia": 0.5388,
+            "prob_predicted": 0.4612,
+            "delta": -0.4403,
+            "flipped": true,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 1,
+            "magnitude": "\u03b3 1.25",
+            "prob_pneumonia": 0.3324,
+            "prob_predicted": 0.6676,
+            "delta": -0.2339,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 2,
+            "magnitude": "\u03b3 1.55",
+            "prob_pneumonia": 0.6141,
+            "prob_predicted": 0.3859,
+            "delta": -0.5156,
+            "flipped": true,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 3,
+            "magnitude": "\u03b3 1.90",
+            "prob_pneumonia": 0.8261,
+            "prob_predicted": 0.1739,
+            "delta": -0.7276,
+            "flipped": true,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 1,
+            "magnitude": "\u03c3 0.02",
+            "prob_pneumonia": 0.198,
+            "prob_predicted": 0.802,
+            "delta": -0.0995,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 2,
+            "magnitude": "\u03c3 0.045",
+            "prob_pneumonia": 0.2326,
+            "prob_predicted": 0.7674,
+            "delta": -0.1341,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 3,
+            "magnitude": "\u03c3 0.08",
+            "prob_pneumonia": 0.6746,
+            "prob_predicted": 0.3254,
+            "delta": -0.5761,
+            "flipped": true,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 1,
+            "magnitude": "\u03c3 0.8px",
+            "prob_pneumonia": 0.1328,
+            "prob_predicted": 0.8672,
+            "delta": -0.0344,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 2,
+            "magnitude": "\u03c3 1.6px",
+            "prob_pneumonia": 0.2303,
+            "prob_predicted": 0.7697,
+            "delta": -0.1318,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 3,
+            "magnitude": "\u03c3 2.6px",
+            "prob_pneumonia": 0.7012,
+            "prob_predicted": 0.2988,
+            "delta": -0.6027,
+            "flipped": true,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 1,
+            "magnitude": "3\u00b0",
+            "prob_pneumonia": 0.0551,
+            "prob_predicted": 0.9449,
+            "delta": 0.0434,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 2,
+            "magnitude": "6\u00b0",
+            "prob_pneumonia": 0.0173,
+            "prob_predicted": 0.9827,
+            "delta": 0.0812,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 3,
+            "magnitude": "10\u00b0",
+            "prob_pneumonia": 0.0238,
+            "prob_predicted": 0.9762,
+            "delta": 0.0746,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 1,
+            "magnitude": "0.70x",
+            "prob_pneumonia": 0.1294,
+            "prob_predicted": 0.8706,
+            "delta": -0.0309,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 2,
+            "magnitude": "0.50x",
+            "prob_pneumonia": 0.1654,
+            "prob_predicted": 0.8346,
+            "delta": -0.0669,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 3,
+            "magnitude": "0.35x",
+            "prob_pneumonia": 0.2742,
+            "prob_predicted": 0.7258,
+            "delta": -0.1757,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          }
+        ],
+        "perturbation_summary": {
+          "n_variants": 21,
+          "n_flips": 5,
+          "flip_rate": 0.2381,
+          "mean_abs_delta": 0.2137,
+          "max_abs_delta": 0.7276,
+          "by_family": [
+            {
+              "family": "gamma",
+              "family_label": "Gamma / windowing",
+              "flips": 2,
+              "max_abs_delta": 0.7276
+            },
+            {
+              "family": "blur",
+              "family_label": "Blur",
+              "flips": 1,
+              "max_abs_delta": 0.6027
+            },
+            {
+              "family": "noise",
+              "family_label": "Detector noise",
+              "flips": 1,
+              "max_abs_delta": 0.5761
+            },
+            {
+              "family": "contrast",
+              "family_label": "Contrast",
+              "flips": 1,
+              "max_abs_delta": 0.4403
+            },
+            {
+              "family": "resample",
+              "family_label": "Resolution loss",
+              "flips": 0,
+              "max_abs_delta": 0.1757
+            },
+            {
+              "family": "rotation",
+              "family_label": "Rotation",
+              "flips": 0,
+              "max_abs_delta": 0.0812
+            },
+            {
+              "family": "brightness",
+              "family_label": "Brightness",
+              "flips": 0,
+              "max_abs_delta": 0.066
+            }
+          ]
+        },
+        "ensemble": {
+          "members": [
+            {
+              "name": "m0-resnet18",
+              "prob_pneumonia": 0.153,
+              "predicted_class": "NORMAL"
+            },
+            {
+              "name": "m1-resnet18s",
+              "prob_pneumonia": 0.0264,
+              "predicted_class": "NORMAL"
+            },
+            {
+              "name": "m2-densenet121",
+              "prob_pneumonia": 0.116,
+              "predicted_class": "NORMAL"
+            }
+          ],
+          "std": 0.0531,
+          "unanimous": true
+        },
+        "ood": {
+          "distance": 30.816,
+          "percentile": 0.962,
+          "hard_gate_percentile": 0.995,
+          "soft_gate_percentile": 0.9
+        },
+        "thresholds": {
+          "pass": 97.09,
+          "review": 84.04,
+          "source": "selected on the validation split by python -m scanproof.evaluate"
+        }
+      }
+    },
+    {
+      "id": "shift-adult-confident",
+      "title": "Adult film \u2014 confident, and off-distribution",
+      "why_included": "An adult chest X-ray from a different hospital. The model gives it a confident answer because a two-class softmax has no way to abstain. The embedding distance is what notices the patient population changed.",
+      "image": "shift-adult-confident.png",
+      "source": "ChestMNIST test split (NIH ChestX-ray14), CC BY 4.0, balanced subset position 443",
+      "true_class": "PNEUMONIA",
+      "license": "CC BY 4.0 \u2014 MedMNIST v2 (Yang et al., Sci Data 2023); source images NIH ChestX-ray14 (Wang et al., CVPR 2017)",
+      "cached_result": {
+        "predicted_class": "PNEUMONIA",
+        "predicted_index": 1,
+        "confidence": 0.9992,
+        "prob_pneumonia": 0.9992,
+        "reliability_score": 86.7,
+        "verdict": "REVIEW",
+        "subscores": [
+          {
+            "key": "confidence",
+            "label": "Calibrated confidence",
+            "value": 1.0,
+            "weight": 0.2,
+            "points": 20.0,
+            "max_points": 20.0,
+            "detail": "Temperature-scaled ensemble confidence 0.999 for PNEUMONIA (margin 0.998)."
+          },
+          {
+            "key": "stability",
+            "label": "Perturbation stability",
+            "value": 0.999,
+            "weight": 0.4,
+            "points": 39.96,
+            "max_points": 40.0,
+            "detail": "0 of 21 perturbed variants changed the predicted class; mean |\u0394 P(PNEUMONIA)| = 0.001."
+          },
+          {
+            "key": "agreement",
+            "label": "Checkpoint agreement",
+            "value": 0.9965,
+            "weight": 0.25,
+            "points": 24.91,
+            "max_points": 25.0,
+            "detail": "P(PNEUMONIA) across 3 independently-trained checkpoints \u2014 m0-resnet18: 1.000, m1-resnet18s: 0.998, m2-densenet121: 1.000 (\u03c3 = 0.001)."
+          },
+          {
+            "key": "typicality",
+            "label": "Embedding typicality",
+            "value": 0.125,
+            "weight": 0.15,
+            "points": 1.87,
+            "max_points": 15.0,
+            "detail": "Mahalanobis distance 33.7 sits at the 98.8th percentile of the training distribution."
+          }
+        ],
+        "evidence": [
+          {
+            "level": "warning",
+            "source": "typicality",
+            "title": "Atypical image for this model (98.8th percentile)",
+            "detail": "The embedding is further from the training manifold than 98.8% of training images."
+          },
+          {
+            "level": "ok",
+            "source": "stability",
+            "title": "Prediction held across all 21 perturbation variants",
+            "detail": "Largest shift was Brightness +36% at \u0394 = -0.006; no variant changed the label."
+          },
+          {
+            "level": "ok",
+            "source": "agreement",
+            "title": "All checkpoints agree",
+            "detail": "\u03c3 = 0.001 across members (m0-resnet18: 1.000, m1-resnet18s: 0.998, m2-densenet121: 1.000)."
+          }
+        ],
+        "gates": [],
+        "perturbation_table": [
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 1,
+            "magnitude": "+12%",
+            "prob_pneumonia": 0.9989,
+            "prob_predicted": 0.9989,
+            "delta": -0.0002,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 2,
+            "magnitude": "+24%",
+            "prob_pneumonia": 0.9979,
+            "prob_predicted": 0.9979,
+            "delta": -0.0012,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 3,
+            "magnitude": "+36%",
+            "prob_pneumonia": 0.9929,
+            "prob_predicted": 0.9929,
+            "delta": -0.0063,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 1,
+            "magnitude": "-15%",
+            "prob_pneumonia": 0.9992,
+            "prob_predicted": 0.9992,
+            "delta": 0.0,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 2,
+            "magnitude": "-28%",
+            "prob_pneumonia": 0.9991,
+            "prob_predicted": 0.9991,
+            "delta": -0.0001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 3,
+            "magnitude": "-40%",
+            "prob_pneumonia": 0.9989,
+            "prob_predicted": 0.9989,
+            "delta": -0.0002,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 1,
+            "magnitude": "\u03b3 1.25",
+            "prob_pneumonia": 0.9992,
+            "prob_predicted": 0.9992,
+            "delta": 0.0,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 2,
+            "magnitude": "\u03b3 1.55",
+            "prob_pneumonia": 0.9991,
+            "prob_predicted": 0.9991,
+            "delta": -0.0001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 3,
+            "magnitude": "\u03b3 1.90",
+            "prob_pneumonia": 0.9987,
+            "prob_predicted": 0.9987,
+            "delta": -0.0005,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 1,
+            "magnitude": "\u03c3 0.02",
+            "prob_pneumonia": 0.9991,
+            "prob_predicted": 0.9991,
+            "delta": -0.0001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 2,
+            "magnitude": "\u03c3 0.045",
+            "prob_pneumonia": 0.9985,
+            "prob_predicted": 0.9985,
+            "delta": -0.0007,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 3,
+            "magnitude": "\u03c3 0.08",
+            "prob_pneumonia": 0.9963,
+            "prob_predicted": 0.9963,
+            "delta": -0.0028,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 1,
+            "magnitude": "\u03c3 0.8px",
+            "prob_pneumonia": 0.9992,
+            "prob_predicted": 0.9992,
+            "delta": -0.0,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 2,
+            "magnitude": "\u03c3 1.6px",
+            "prob_pneumonia": 0.999,
+            "prob_predicted": 0.999,
+            "delta": -0.0001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 3,
+            "magnitude": "\u03c3 2.6px",
+            "prob_pneumonia": 0.9985,
+            "prob_predicted": 0.9985,
+            "delta": -0.0007,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 1,
+            "magnitude": "3\u00b0",
+            "prob_pneumonia": 0.9989,
+            "prob_predicted": 0.9989,
+            "delta": -0.0003,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 2,
+            "magnitude": "6\u00b0",
+            "prob_pneumonia": 0.9988,
+            "prob_predicted": 0.9988,
+            "delta": -0.0004,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 3,
+            "magnitude": "10\u00b0",
+            "prob_pneumonia": 0.9987,
+            "prob_predicted": 0.9987,
+            "delta": -0.0005,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 1,
+            "magnitude": "0.70x",
+            "prob_pneumonia": 0.9992,
+            "prob_predicted": 0.9992,
+            "delta": -0.0,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 2,
+            "magnitude": "0.50x",
+            "prob_pneumonia": 0.9991,
+            "prob_predicted": 0.9991,
+            "delta": -0.0001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 3,
+            "magnitude": "0.35x",
+            "prob_pneumonia": 0.999,
+            "prob_predicted": 0.999,
+            "delta": -0.0002,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          }
+        ],
+        "perturbation_summary": {
+          "n_variants": 21,
+          "n_flips": 0,
+          "flip_rate": 0.0,
+          "mean_abs_delta": 0.0007,
+          "max_abs_delta": 0.0063,
+          "by_family": [
+            {
+              "family": "brightness",
+              "family_label": "Brightness",
+              "flips": 0,
+              "max_abs_delta": 0.0063
+            },
+            {
+              "family": "noise",
+              "family_label": "Detector noise",
+              "flips": 0,
+              "max_abs_delta": 0.0028
+            },
+            {
+              "family": "blur",
+              "family_label": "Blur",
+              "flips": 0,
+              "max_abs_delta": 0.0007
+            },
+            {
+              "family": "gamma",
+              "family_label": "Gamma / windowing",
+              "flips": 0,
+              "max_abs_delta": 0.0005
+            },
+            {
+              "family": "rotation",
+              "family_label": "Rotation",
+              "flips": 0,
+              "max_abs_delta": 0.0005
+            },
+            {
+              "family": "resample",
+              "family_label": "Resolution loss",
+              "flips": 0,
+              "max_abs_delta": 0.0002
+            },
+            {
+              "family": "contrast",
+              "family_label": "Contrast",
+              "flips": 0,
+              "max_abs_delta": 0.0002
+            }
+          ]
+        },
+        "ensemble": {
+          "members": [
+            {
+              "name": "m0-resnet18",
+              "prob_pneumonia": 0.9998,
+              "predicted_class": "PNEUMONIA"
+            },
+            {
+              "name": "m1-resnet18s",
+              "prob_pneumonia": 0.9979,
+              "predicted_class": "PNEUMONIA"
+            },
+            {
+              "name": "m2-densenet121",
+              "prob_pneumonia": 0.9998,
+              "predicted_class": "PNEUMONIA"
+            }
+          ],
+          "std": 0.0009,
+          "unanimous": true
+        },
+        "ood": {
+          "distance": 33.665,
+          "percentile": 0.9875,
+          "hard_gate_percentile": 0.995,
+          "soft_gate_percentile": 0.9
+        },
+        "thresholds": {
+          "pass": 97.09,
+          "review": 84.04,
+          "source": "selected on the validation split by python -m scanproof.evaluate"
+        }
+      }
+    },
+    {
+      "id": "ood-ultrasound-1",
+      "title": "Wrong modality (breast ultrasound)",
+      "why_included": "Not a chest X-ray at all. The classifier still produces a two-class output; the embedding-distance gate is what refuses it.",
+      "image": "ood-ultrasound-1.png",
+      "source": "BreastMNIST test split, index 3",
+      "true_class": "n/a \u2014 not a chest film",
+      "license": "CC BY 4.0 \u2014 MedMNIST v2 (Yang et al., Sci Data 2023)",
+      "cached_result": {
+        "predicted_class": "PNEUMONIA",
+        "predicted_index": 1,
+        "confidence": 0.8789,
+        "prob_pneumonia": 0.8789,
+        "reliability_score": 70.7,
+        "verdict": "BLOCK",
+        "subscores": [
+          {
+            "key": "confidence",
+            "label": "Calibrated confidence",
+            "value": 0.8419,
+            "weight": 0.2,
+            "points": 16.84,
+            "max_points": 20.0,
+            "detail": "Temperature-scaled ensemble confidence 0.879 for PNEUMONIA (margin 0.758)."
+          },
+          {
+            "key": "stability",
+            "label": "Perturbation stability",
+            "value": 0.764,
+            "weight": 0.4,
+            "points": 30.56,
+            "max_points": 40.0,
+            "detail": "1 of 21 perturbed variants changed the predicted class; mean |\u0394 P(PNEUMONIA)| = 0.080."
+          },
+          {
+            "key": "agreement",
+            "label": "Checkpoint agreement",
+            "value": 0.931,
+            "weight": 0.25,
+            "points": 23.27,
+            "max_points": 25.0,
+            "detail": "P(PNEUMONIA) across 3 independently-trained checkpoints \u2014 m0-resnet18: 0.878, m1-resnet18s: 0.901, m2-densenet121: 0.858 (\u03c3 = 0.017)."
+          },
+          {
+            "key": "typicality",
+            "label": "Embedding typicality",
+            "value": 0.0,
+            "weight": 0.15,
+            "points": 0.0,
+            "max_points": 15.0,
+            "detail": "Mahalanobis distance 86.8 sits at the 100.0th percentile of the training distribution."
+          }
+        ],
+        "evidence": [
+          {
+            "level": "critical",
+            "source": "stability",
+            "title": "Prediction flips under Brightness +24%",
+            "detail": "P(PNEUMONIA) falls 0.879 \u2192 0.495, changing the label to NORMAL. This perturbation does not change the underlying finding."
+          },
+          {
+            "level": "critical",
+            "source": "typicality",
+            "title": "Input is outside the training distribution (100.0th percentile)",
+            "detail": "Only 0.00% of training chest films are this far from every class centre. The classifier has no comparable examples to reason from, so its output is not interpretable regardless of confidence."
+          },
+          {
+            "level": "ok",
+            "source": "agreement",
+            "title": "All checkpoints agree",
+            "detail": "\u03c3 = 0.017 across members (m0-resnet18: 0.878, m1-resnet18s: 0.901, m2-densenet121: 0.858)."
+          }
+        ],
+        "gates": [
+          "OOD gate: embedding percentile 100.0 \u2265 99.5 \u2192 BLOCK"
+        ],
+        "perturbation_table": [
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 1,
+            "magnitude": "+12%",
+            "prob_pneumonia": 0.6532,
+            "prob_predicted": 0.6532,
+            "delta": -0.2257,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 2,
+            "magnitude": "+24%",
+            "prob_pneumonia": 0.4948,
+            "prob_predicted": 0.4948,
+            "delta": -0.3841,
+            "flipped": true,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 3,
+            "magnitude": "+36%",
+            "prob_pneumonia": 0.5528,
+            "prob_predicted": 0.5528,
+            "delta": -0.326,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 1,
+            "magnitude": "-15%",
+            "prob_pneumonia": 0.9223,
+            "prob_predicted": 0.9223,
+            "delta": 0.0434,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 2,
+            "magnitude": "-28%",
+            "prob_pneumonia": 0.9488,
+            "prob_predicted": 0.9488,
+            "delta": 0.07,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 3,
+            "magnitude": "-40%",
+            "prob_pneumonia": 0.965,
+            "prob_predicted": 0.965,
+            "delta": 0.0861,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 1,
+            "magnitude": "\u03b3 1.25",
+            "prob_pneumonia": 0.9058,
+            "prob_predicted": 0.9058,
+            "delta": 0.0269,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 2,
+            "magnitude": "\u03b3 1.55",
+            "prob_pneumonia": 0.9289,
+            "prob_predicted": 0.9289,
+            "delta": 0.05,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 3,
+            "magnitude": "\u03b3 1.90",
+            "prob_pneumonia": 0.9421,
+            "prob_predicted": 0.9421,
+            "delta": 0.0633,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 1,
+            "magnitude": "\u03c3 0.02",
+            "prob_pneumonia": 0.87,
+            "prob_predicted": 0.87,
+            "delta": -0.0089,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 2,
+            "magnitude": "\u03c3 0.045",
+            "prob_pneumonia": 0.8716,
+            "prob_predicted": 0.8716,
+            "delta": -0.0072,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 3,
+            "magnitude": "\u03c3 0.08",
+            "prob_pneumonia": 0.8421,
+            "prob_predicted": 0.8421,
+            "delta": -0.0368,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 1,
+            "magnitude": "\u03c3 0.8px",
+            "prob_pneumonia": 0.9018,
+            "prob_predicted": 0.9018,
+            "delta": 0.0229,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 2,
+            "magnitude": "\u03c3 1.6px",
+            "prob_pneumonia": 0.9407,
+            "prob_predicted": 0.9407,
+            "delta": 0.0618,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 3,
+            "magnitude": "\u03c3 2.6px",
+            "prob_pneumonia": 0.9566,
+            "prob_predicted": 0.9566,
+            "delta": 0.0777,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 1,
+            "magnitude": "3\u00b0",
+            "prob_pneumonia": 0.8865,
+            "prob_predicted": 0.8865,
+            "delta": 0.0077,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 2,
+            "magnitude": "6\u00b0",
+            "prob_pneumonia": 0.8899,
+            "prob_predicted": 0.8899,
+            "delta": 0.011,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 3,
+            "magnitude": "10\u00b0",
+            "prob_pneumonia": 0.9184,
+            "prob_predicted": 0.9184,
+            "delta": 0.0396,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 1,
+            "magnitude": "0.70x",
+            "prob_pneumonia": 0.9038,
+            "prob_predicted": 0.9038,
+            "delta": 0.0249,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 2,
+            "magnitude": "0.50x",
+            "prob_pneumonia": 0.9305,
+            "prob_predicted": 0.9305,
+            "delta": 0.0517,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 3,
+            "magnitude": "0.35x",
+            "prob_pneumonia": 0.9369,
+            "prob_predicted": 0.9369,
+            "delta": 0.058,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          }
+        ],
+        "perturbation_summary": {
+          "n_variants": 21,
+          "n_flips": 1,
+          "flip_rate": 0.0476,
+          "mean_abs_delta": 0.0802,
+          "max_abs_delta": 0.3841,
+          "by_family": [
+            {
+              "family": "brightness",
+              "family_label": "Brightness",
+              "flips": 1,
+              "max_abs_delta": 0.3841
+            },
+            {
+              "family": "contrast",
+              "family_label": "Contrast",
+              "flips": 0,
+              "max_abs_delta": 0.0861
+            },
+            {
+              "family": "blur",
+              "family_label": "Blur",
+              "flips": 0,
+              "max_abs_delta": 0.0777
+            },
+            {
+              "family": "gamma",
+              "family_label": "Gamma / windowing",
+              "flips": 0,
+              "max_abs_delta": 0.0633
+            },
+            {
+              "family": "resample",
+              "family_label": "Resolution loss",
+              "flips": 0,
+              "max_abs_delta": 0.058
+            },
+            {
+              "family": "rotation",
+              "family_label": "Rotation",
+              "flips": 0,
+              "max_abs_delta": 0.0396
+            },
+            {
+              "family": "noise",
+              "family_label": "Detector noise",
+              "flips": 0,
+              "max_abs_delta": 0.0368
+            }
+          ]
+        },
+        "ensemble": {
+          "members": [
+            {
+              "name": "m0-resnet18",
+              "prob_pneumonia": 0.8775,
+              "predicted_class": "PNEUMONIA"
+            },
+            {
+              "name": "m1-resnet18s",
+              "prob_pneumonia": 0.9006,
+              "predicted_class": "PNEUMONIA"
+            },
+            {
+              "name": "m2-densenet121",
+              "prob_pneumonia": 0.8584,
+              "predicted_class": "PNEUMONIA"
+            }
+          ],
+          "std": 0.0173,
+          "unanimous": true
+        },
+        "ood": {
+          "distance": 86.814,
+          "percentile": 1.0,
+          "hard_gate_percentile": 0.995,
+          "soft_gate_percentile": 0.9
+        },
+        "thresholds": {
+          "pass": 97.09,
+          "review": 84.04,
+          "source": "selected on the validation split by python -m scanproof.evaluate"
+        }
+      }
+    },
+    {
+      "id": "stable-normal",
+      "title": "Stable normal call",
+      "why_included": "The negative case that also holds up \u2014 PASS is not just a high-confidence rubber stamp.",
+      "image": "stable-normal.png",
+      "source": "PneumoniaMNIST test split, index 511",
+      "true_class": "NORMAL",
+      "license": "CC BY 4.0 \u2014 MedMNIST v2 (Yang et al., Sci Data 2023); source images Kermany et al., Cell 2018",
+      "cached_result": {
+        "predicted_class": "NORMAL",
+        "predicted_index": 0,
+        "confidence": 1.0,
+        "prob_pneumonia": 0.0,
+        "reliability_score": 99.2,
+        "verdict": "PASS",
+        "subscores": [
+          {
+            "key": "confidence",
+            "label": "Calibrated confidence",
+            "value": 1.0,
+            "weight": 0.2,
+            "points": 20.0,
+            "max_points": 20.0,
+            "detail": "Temperature-scaled ensemble confidence 1.000 for NORMAL (margin 1.000)."
+          },
+          {
+            "key": "stability",
+            "label": "Perturbation stability",
+            "value": 0.9961,
+            "weight": 0.4,
+            "points": 39.85,
+            "max_points": 40.0,
+            "detail": "0 of 21 perturbed variants changed the predicted class; mean |\u0394 P(NORMAL)| = 0.003."
+          },
+          {
+            "key": "agreement",
+            "label": "Checkpoint agreement",
+            "value": 1.0,
+            "weight": 0.25,
+            "points": 25.0,
+            "max_points": 25.0,
+            "detail": "P(PNEUMONIA) across 3 independently-trained checkpoints \u2014 m0-resnet18: 0.000, m1-resnet18s: 0.000, m2-densenet121: 0.000 (\u03c3 = 0.000)."
+          },
+          {
+            "key": "typicality",
+            "label": "Embedding typicality",
+            "value": 0.955,
+            "weight": 0.15,
+            "points": 14.33,
+            "max_points": 15.0,
+            "detail": "Mahalanobis distance 27.9 sits at the 90.5th percentile of the training distribution."
+          }
+        ],
+        "evidence": [
+          {
+            "level": "warning",
+            "source": "typicality",
+            "title": "Atypical image for this model (90.5th percentile)",
+            "detail": "The embedding is further from the training manifold than 90.5% of training images."
+          },
+          {
+            "level": "ok",
+            "source": "stability",
+            "title": "Prediction held across all 21 perturbation variants",
+            "detail": "Largest shift was Brightness +36% at \u0394 = -0.047; no variant changed the label."
+          },
+          {
+            "level": "ok",
+            "source": "agreement",
+            "title": "All checkpoints agree",
+            "detail": "\u03c3 = 0.000 across members (m0-resnet18: 0.000, m1-resnet18s: 0.000, m2-densenet121: 0.000)."
+          }
+        ],
+        "gates": [],
+        "perturbation_table": [
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 1,
+            "magnitude": "+12%",
+            "prob_pneumonia": 0.0,
+            "prob_predicted": 1.0,
+            "delta": 0.0,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 2,
+            "magnitude": "+24%",
+            "prob_pneumonia": 0.0001,
+            "prob_predicted": 0.9999,
+            "delta": -0.0001,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 3,
+            "magnitude": "+36%",
+            "prob_pneumonia": 0.0466,
+            "prob_predicted": 0.9534,
+            "delta": -0.0466,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 1,
+            "magnitude": "-15%",
+            "prob_pneumonia": 0.0,
+            "prob_predicted": 1.0,
+            "delta": -0.0,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 2,
+            "magnitude": "-28%",
+            "prob_pneumonia": 0.0,
+            "prob_predicted": 1.0,
+            "delta": -0.0,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 3,
+            "magnitude": "-40%",
+            "prob_pneumonia": 0.0,
+            "prob_predicted": 1.0,
+            "delta": -0.0,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 1,
+            "magnitude": "\u03b3 1.25",
+            "prob_pneumonia": 0.0,
+            "prob_predicted": 1.0,
+            "delta": 0.0,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 2,
+            "magnitude": "\u03b3 1.55",
+            "prob_pneumonia": 0.0,
+            "prob_predicted": 1.0,
+            "delta": 0.0,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 3,
+            "magnitude": "\u03b3 1.90",
+            "prob_pneumonia": 0.0,
+            "prob_predicted": 1.0,
+            "delta": 0.0,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 1,
+            "magnitude": "\u03c3 0.02",
+            "prob_pneumonia": 0.0,
+            "prob_predicted": 1.0,
+            "delta": 0.0,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 2,
+            "magnitude": "\u03c3 0.045",
+            "prob_pneumonia": 0.0,
+            "prob_predicted": 1.0,
+            "delta": -0.0,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 3,
+            "magnitude": "\u03c3 0.08",
+            "prob_pneumonia": 0.0001,
+            "prob_predicted": 0.9999,
+            "delta": -0.0001,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 1,
+            "magnitude": "\u03c3 0.8px",
+            "prob_pneumonia": 0.0,
+            "prob_predicted": 1.0,
+            "delta": -0.0,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 2,
+            "magnitude": "\u03c3 1.6px",
+            "prob_pneumonia": 0.0001,
+            "prob_predicted": 0.9999,
+            "delta": -0.0001,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 3,
+            "magnitude": "\u03c3 2.6px",
+            "prob_pneumonia": 0.0108,
+            "prob_predicted": 0.9892,
+            "delta": -0.0108,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 1,
+            "magnitude": "3\u00b0",
+            "prob_pneumonia": 0.0,
+            "prob_predicted": 1.0,
+            "delta": -0.0,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 2,
+            "magnitude": "6\u00b0",
+            "prob_pneumonia": 0.0,
+            "prob_predicted": 1.0,
+            "delta": 0.0,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 3,
+            "magnitude": "10\u00b0",
+            "prob_pneumonia": 0.0,
+            "prob_predicted": 1.0,
+            "delta": 0.0,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 1,
+            "magnitude": "0.70x",
+            "prob_pneumonia": 0.0,
+            "prob_predicted": 1.0,
+            "delta": -0.0,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 2,
+            "magnitude": "0.50x",
+            "prob_pneumonia": 0.0,
+            "prob_predicted": 1.0,
+            "delta": -0.0,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 3,
+            "magnitude": "0.35x",
+            "prob_pneumonia": 0.0002,
+            "prob_predicted": 0.9998,
+            "delta": -0.0002,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          }
+        ],
+        "perturbation_summary": {
+          "n_variants": 21,
+          "n_flips": 0,
+          "flip_rate": 0.0,
+          "mean_abs_delta": 0.0028,
+          "max_abs_delta": 0.0466,
+          "by_family": [
+            {
+              "family": "brightness",
+              "family_label": "Brightness",
+              "flips": 0,
+              "max_abs_delta": 0.0466
+            },
+            {
+              "family": "blur",
+              "family_label": "Blur",
+              "flips": 0,
+              "max_abs_delta": 0.0108
+            },
+            {
+              "family": "resample",
+              "family_label": "Resolution loss",
+              "flips": 0,
+              "max_abs_delta": 0.0002
+            },
+            {
+              "family": "noise",
+              "family_label": "Detector noise",
+              "flips": 0,
+              "max_abs_delta": 0.0001
+            },
+            {
+              "family": "gamma",
+              "family_label": "Gamma / windowing",
+              "flips": 0,
+              "max_abs_delta": 0.0
+            },
+            {
+              "family": "rotation",
+              "family_label": "Rotation",
+              "flips": 0,
+              "max_abs_delta": 0.0
+            },
+            {
+              "family": "contrast",
+              "family_label": "Contrast",
+              "flips": 0,
+              "max_abs_delta": 0.0
+            }
+          ]
+        },
+        "ensemble": {
+          "members": [
+            {
+              "name": "m0-resnet18",
+              "prob_pneumonia": 0.0,
+              "predicted_class": "NORMAL"
+            },
+            {
+              "name": "m1-resnet18s",
+              "prob_pneumonia": 0.0,
+              "predicted_class": "NORMAL"
+            },
+            {
+              "name": "m2-densenet121",
+              "prob_pneumonia": 0.0,
+              "predicted_class": "NORMAL"
+            }
+          ],
+          "std": 0.0,
+          "unanimous": true
+        },
+        "ood": {
+          "distance": 27.88,
+          "percentile": 0.9045,
+          "hard_gate_percentile": 0.995,
+          "soft_gate_percentile": 0.9
+        },
+        "thresholds": {
+          "pass": 97.09,
+          "review": 84.04,
+          "source": "selected on the validation split by python -m scanproof.evaluate"
+        }
+      }
+    },
+    {
+      "id": "split-checkpoints",
+      "title": "Checkpoints disagree",
+      "why_included": "Three independently trained models, three different answers about the same film.",
+      "image": "split-checkpoints.png",
+      "source": "PneumoniaMNIST test split, index 139",
+      "true_class": "NORMAL",
+      "license": "CC BY 4.0 \u2014 MedMNIST v2 (Yang et al., Sci Data 2023); source images Kermany et al., Cell 2018",
+      "cached_result": {
+        "predicted_class": "NORMAL",
+        "predicted_index": 0,
+        "confidence": 0.6558,
+        "prob_pneumonia": 0.3442,
+        "reliability_score": 45.7,
+        "verdict": "BLOCK",
+        "subscores": [
+          {
+            "key": "confidence",
+            "label": "Calibrated confidence",
+            "value": 0.3462,
+            "weight": 0.2,
+            "points": 6.92,
+            "max_points": 20.0,
+            "detail": "Temperature-scaled ensemble confidence 0.656 for NORMAL (margin 0.312)."
+          },
+          {
+            "key": "stability",
+            "label": "Perturbation stability",
+            "value": 0.6472,
+            "weight": 0.4,
+            "points": 25.89,
+            "max_points": 40.0,
+            "detail": "2 of 21 perturbed variants changed the predicted class; mean |\u0394 P(NORMAL)| = 0.075."
+          },
+          {
+            "key": "agreement",
+            "label": "Checkpoint agreement",
+            "value": 0.0,
+            "weight": 0.25,
+            "points": 0.0,
+            "max_points": 25.0,
+            "detail": "P(PNEUMONIA) across 3 independently-trained checkpoints \u2014 m0-resnet18: 0.052, m1-resnet18s: 0.974, m2-densenet121: 0.006 (\u03c3 = 0.446); the vote is split."
+          },
+          {
+            "key": "typicality",
+            "label": "Embedding typicality",
+            "value": 0.86,
+            "weight": 0.15,
+            "points": 12.9,
+            "max_points": 15.0,
+            "detail": "Mahalanobis distance 28.4 sits at the 91.4th percentile of the training distribution."
+          }
+        ],
+        "evidence": [
+          {
+            "level": "critical",
+            "source": "stability",
+            "title": "Prediction flips under Brightness +36%",
+            "detail": "P(NORMAL) falls 0.656 \u2192 0.072, changing the label to PNEUMONIA (+1 other variant). This perturbation does not change the underlying finding."
+          },
+          {
+            "level": "critical",
+            "source": "agreement",
+            "title": "Checkpoints disagree on the label (1/3 dissenting)",
+            "detail": "m1-resnet18s predicts the opposite class. Member probabilities \u2014 m0-resnet18: 0.052, m1-resnet18s: 0.974, m2-densenet121: 0.006."
+          },
+          {
+            "level": "warning",
+            "source": "typicality",
+            "title": "Atypical image for this model (91.4th percentile)",
+            "detail": "The embedding is further from the training manifold than 91.4% of training images."
+          },
+          {
+            "level": "warning",
+            "source": "confidence",
+            "title": "Low calibrated confidence (65.6%)",
+            "detail": "The decision margin is 0.312; the model is close to the decision boundary before any perturbation is applied."
+          }
+        ],
+        "gates": [],
+        "perturbation_table": [
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 1,
+            "magnitude": "+12%",
+            "prob_pneumonia": 0.3367,
+            "prob_predicted": 0.6633,
+            "delta": 0.0075,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 2,
+            "magnitude": "+24%",
+            "prob_pneumonia": 0.4217,
+            "prob_predicted": 0.5783,
+            "delta": -0.0774,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 3,
+            "magnitude": "+36%",
+            "prob_pneumonia": 0.9275,
+            "prob_predicted": 0.0725,
+            "delta": -0.5833,
+            "flipped": true,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 1,
+            "magnitude": "-15%",
+            "prob_pneumonia": 0.3344,
+            "prob_predicted": 0.6656,
+            "delta": 0.0098,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 2,
+            "magnitude": "-28%",
+            "prob_pneumonia": 0.3311,
+            "prob_predicted": 0.6689,
+            "delta": 0.0131,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 3,
+            "magnitude": "-40%",
+            "prob_pneumonia": 0.3324,
+            "prob_predicted": 0.6676,
+            "delta": 0.0118,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 1,
+            "magnitude": "\u03b3 1.25",
+            "prob_pneumonia": 0.3214,
+            "prob_predicted": 0.6786,
+            "delta": 0.0228,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 2,
+            "magnitude": "\u03b3 1.55",
+            "prob_pneumonia": 0.3012,
+            "prob_predicted": 0.6988,
+            "delta": 0.043,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 3,
+            "magnitude": "\u03b3 1.90",
+            "prob_pneumonia": 0.2695,
+            "prob_predicted": 0.7305,
+            "delta": 0.0747,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 1,
+            "magnitude": "\u03c3 0.02",
+            "prob_pneumonia": 0.339,
+            "prob_predicted": 0.661,
+            "delta": 0.0052,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 2,
+            "magnitude": "\u03c3 0.045",
+            "prob_pneumonia": 0.3875,
+            "prob_predicted": 0.6125,
+            "delta": -0.0433,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 3,
+            "magnitude": "\u03c3 0.08",
+            "prob_pneumonia": 0.4691,
+            "prob_predicted": 0.5309,
+            "delta": -0.1248,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 1,
+            "magnitude": "\u03c3 0.8px",
+            "prob_pneumonia": 0.3585,
+            "prob_predicted": 0.6415,
+            "delta": -0.0142,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 2,
+            "magnitude": "\u03c3 1.6px",
+            "prob_pneumonia": 0.4085,
+            "prob_predicted": 0.5915,
+            "delta": -0.0643,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 3,
+            "magnitude": "\u03c3 2.6px",
+            "prob_pneumonia": 0.6739,
+            "prob_predicted": 0.3261,
+            "delta": -0.3297,
+            "flipped": true,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 1,
+            "magnitude": "3\u00b0",
+            "prob_pneumonia": 0.3593,
+            "prob_predicted": 0.6407,
+            "delta": -0.0151,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 2,
+            "magnitude": "6\u00b0",
+            "prob_pneumonia": 0.353,
+            "prob_predicted": 0.647,
+            "delta": -0.0088,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 3,
+            "magnitude": "10\u00b0",
+            "prob_pneumonia": 0.343,
+            "prob_predicted": 0.657,
+            "delta": 0.0012,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 1,
+            "magnitude": "0.70x",
+            "prob_pneumonia": 0.3604,
+            "prob_predicted": 0.6396,
+            "delta": -0.0162,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 2,
+            "magnitude": "0.50x",
+            "prob_pneumonia": 0.3756,
+            "prob_predicted": 0.6244,
+            "delta": -0.0314,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 3,
+            "magnitude": "0.35x",
+            "prob_pneumonia": 0.4249,
+            "prob_predicted": 0.5751,
+            "delta": -0.0806,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          }
+        ],
+        "perturbation_summary": {
+          "n_variants": 21,
+          "n_flips": 2,
+          "flip_rate": 0.0952,
+          "mean_abs_delta": 0.0752,
+          "max_abs_delta": 0.5833,
+          "by_family": [
+            {
+              "family": "brightness",
+              "family_label": "Brightness",
+              "flips": 1,
+              "max_abs_delta": 0.5833
+            },
+            {
+              "family": "blur",
+              "family_label": "Blur",
+              "flips": 1,
+              "max_abs_delta": 0.3297
+            },
+            {
+              "family": "noise",
+              "family_label": "Detector noise",
+              "flips": 0,
+              "max_abs_delta": 0.1248
+            },
+            {
+              "family": "resample",
+              "family_label": "Resolution loss",
+              "flips": 0,
+              "max_abs_delta": 0.0806
+            },
+            {
+              "family": "gamma",
+              "family_label": "Gamma / windowing",
+              "flips": 0,
+              "max_abs_delta": 0.0747
+            },
+            {
+              "family": "rotation",
+              "family_label": "Rotation",
+              "flips": 0,
+              "max_abs_delta": 0.0151
+            },
+            {
+              "family": "contrast",
+              "family_label": "Contrast",
+              "flips": 0,
+              "max_abs_delta": 0.0131
+            }
+          ]
+        },
+        "ensemble": {
+          "members": [
+            {
+              "name": "m0-resnet18",
+              "prob_pneumonia": 0.0523,
+              "predicted_class": "NORMAL"
+            },
+            {
+              "name": "m1-resnet18s",
+              "prob_pneumonia": 0.9741,
+              "predicted_class": "PNEUMONIA"
+            },
+            {
+              "name": "m2-densenet121",
+              "prob_pneumonia": 0.0062,
+              "predicted_class": "NORMAL"
+            }
+          ],
+          "std": 0.4458,
+          "unanimous": false
+        },
+        "ood": {
+          "distance": 28.357,
+          "percentile": 0.914,
+          "hard_gate_percentile": 0.995,
+          "soft_gate_percentile": 0.9
+        },
+        "thresholds": {
+          "pass": 97.09,
+          "review": 84.04,
+          "source": "selected on the validation split by python -m scanproof.evaluate"
+        }
+      }
+    },
+    {
+      "id": "confidently-wrong",
+      "title": "Confidently wrong \u2014 caught",
+      "why_included": "The model is wrong and sure of it. ScanProof withholds PASS on evidence, without ever seeing the ground-truth label.",
+      "image": "confidently-wrong.png",
+      "source": "PneumoniaMNIST test split, index 165",
+      "true_class": "NORMAL",
+      "license": "CC BY 4.0 \u2014 MedMNIST v2 (Yang et al., Sci Data 2023); source images Kermany et al., Cell 2018",
+      "cached_result": {
+        "predicted_class": "PNEUMONIA",
+        "predicted_index": 1,
+        "confidence": 0.9886,
+        "prob_pneumonia": 0.9886,
+        "reliability_score": 84.2,
+        "verdict": "BLOCK",
+        "subscores": [
+          {
+            "key": "confidence",
+            "label": "Calibrated confidence",
+            "value": 1.0,
+            "weight": 0.2,
+            "points": 20.0,
+            "max_points": 20.0,
+            "detail": "Temperature-scaled ensemble confidence 0.989 for PNEUMONIA (margin 0.977)."
+          },
+          {
+            "key": "stability",
+            "label": "Perturbation stability",
+            "value": 0.9949,
+            "weight": 0.4,
+            "points": 39.8,
+            "max_points": 40.0,
+            "detail": "0 of 21 perturbed variants changed the predicted class; mean |\u0394 P(PNEUMONIA)| = 0.004."
+          },
+          {
+            "key": "agreement",
+            "label": "Checkpoint agreement",
+            "value": 0.9534,
+            "weight": 0.25,
+            "points": 23.83,
+            "max_points": 25.0,
+            "detail": "P(PNEUMONIA) across 3 independently-trained checkpoints \u2014 m0-resnet18: 0.972, m1-resnet18s: 0.996, m2-densenet121: 0.998 (\u03c3 = 0.012)."
+          },
+          {
+            "key": "typicality",
+            "label": "Embedding typicality",
+            "value": 0.035,
+            "weight": 0.15,
+            "points": 0.52,
+            "max_points": 15.0,
+            "detail": "Mahalanobis distance 36.1 sits at the 99.7th percentile of the training distribution."
+          }
+        ],
+        "evidence": [
+          {
+            "level": "critical",
+            "source": "typicality",
+            "title": "Input is outside the training distribution (99.7th percentile)",
+            "detail": "Only 0.35% of training chest films are this far from every class centre. The classifier has no comparable examples to reason from, so its output is not interpretable regardless of confidence."
+          },
+          {
+            "level": "ok",
+            "source": "stability",
+            "title": "Prediction held across all 21 perturbation variants",
+            "detail": "Largest shift was Brightness +36% at \u0394 = -0.014; no variant changed the label."
+          },
+          {
+            "level": "ok",
+            "source": "agreement",
+            "title": "All checkpoints agree",
+            "detail": "\u03c3 = 0.012 across members (m0-resnet18: 0.972, m1-resnet18s: 0.996, m2-densenet121: 0.998)."
+          }
+        ],
+        "gates": [
+          "OOD gate: embedding percentile 99.7 \u2265 99.5 \u2192 BLOCK"
+        ],
+        "perturbation_table": [
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 1,
+            "magnitude": "+12%",
+            "prob_pneumonia": 0.98,
+            "prob_predicted": 0.98,
+            "delta": -0.0086,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 2,
+            "magnitude": "+24%",
+            "prob_pneumonia": 0.9852,
+            "prob_predicted": 0.9852,
+            "delta": -0.0034,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 3,
+            "magnitude": "+36%",
+            "prob_pneumonia": 0.9745,
+            "prob_predicted": 0.9745,
+            "delta": -0.0141,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 1,
+            "magnitude": "-15%",
+            "prob_pneumonia": 0.9912,
+            "prob_predicted": 0.9912,
+            "delta": 0.0026,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 2,
+            "magnitude": "-28%",
+            "prob_pneumonia": 0.9922,
+            "prob_predicted": 0.9922,
+            "delta": 0.0037,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 3,
+            "magnitude": "-40%",
+            "prob_pneumonia": 0.9937,
+            "prob_predicted": 0.9937,
+            "delta": 0.0051,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 1,
+            "magnitude": "\u03b3 1.25",
+            "prob_pneumonia": 0.9875,
+            "prob_predicted": 0.9875,
+            "delta": -0.001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 2,
+            "magnitude": "\u03b3 1.55",
+            "prob_pneumonia": 0.9859,
+            "prob_predicted": 0.9859,
+            "delta": -0.0027,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 3,
+            "magnitude": "\u03b3 1.90",
+            "prob_pneumonia": 0.9844,
+            "prob_predicted": 0.9844,
+            "delta": -0.0041,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 1,
+            "magnitude": "\u03c3 0.02",
+            "prob_pneumonia": 0.9893,
+            "prob_predicted": 0.9893,
+            "delta": 0.0007,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 2,
+            "magnitude": "\u03c3 0.045",
+            "prob_pneumonia": 0.9912,
+            "prob_predicted": 0.9912,
+            "delta": 0.0026,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 3,
+            "magnitude": "\u03c3 0.08",
+            "prob_pneumonia": 0.9902,
+            "prob_predicted": 0.9902,
+            "delta": 0.0016,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 1,
+            "magnitude": "\u03c3 0.8px",
+            "prob_pneumonia": 0.9891,
+            "prob_predicted": 0.9891,
+            "delta": 0.0005,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 2,
+            "magnitude": "\u03c3 1.6px",
+            "prob_pneumonia": 0.9892,
+            "prob_predicted": 0.9892,
+            "delta": 0.0007,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 3,
+            "magnitude": "\u03c3 2.6px",
+            "prob_pneumonia": 0.9896,
+            "prob_predicted": 0.9896,
+            "delta": 0.001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 1,
+            "magnitude": "3\u00b0",
+            "prob_pneumonia": 0.9864,
+            "prob_predicted": 0.9864,
+            "delta": -0.0022,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 2,
+            "magnitude": "6\u00b0",
+            "prob_pneumonia": 0.9796,
+            "prob_predicted": 0.9796,
+            "delta": -0.0089,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 3,
+            "magnitude": "10\u00b0",
+            "prob_pneumonia": 0.978,
+            "prob_predicted": 0.978,
+            "delta": -0.0106,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 1,
+            "magnitude": "0.70x",
+            "prob_pneumonia": 0.9891,
+            "prob_predicted": 0.9891,
+            "delta": 0.0005,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 2,
+            "magnitude": "0.50x",
+            "prob_pneumonia": 0.9895,
+            "prob_predicted": 0.9895,
+            "delta": 0.0009,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 3,
+            "magnitude": "0.35x",
+            "prob_pneumonia": 0.9889,
+            "prob_predicted": 0.9889,
+            "delta": 0.0003,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          }
+        ],
+        "perturbation_summary": {
+          "n_variants": 21,
+          "n_flips": 0,
+          "flip_rate": 0.0,
+          "mean_abs_delta": 0.0036,
+          "max_abs_delta": 0.0141,
+          "by_family": [
+            {
+              "family": "brightness",
+              "family_label": "Brightness",
+              "flips": 0,
+              "max_abs_delta": 0.0141
+            },
+            {
+              "family": "rotation",
+              "family_label": "Rotation",
+              "flips": 0,
+              "max_abs_delta": 0.0106
+            },
+            {
+              "family": "contrast",
+              "family_label": "Contrast",
+              "flips": 0,
+              "max_abs_delta": 0.0051
+            },
+            {
+              "family": "gamma",
+              "family_label": "Gamma / windowing",
+              "flips": 0,
+              "max_abs_delta": 0.0041
+            },
+            {
+              "family": "noise",
+              "family_label": "Detector noise",
+              "flips": 0,
+              "max_abs_delta": 0.0026
+            },
+            {
+              "family": "blur",
+              "family_label": "Blur",
+              "flips": 0,
+              "max_abs_delta": 0.001
+            },
+            {
+              "family": "resample",
+              "family_label": "Resolution loss",
+              "flips": 0,
+              "max_abs_delta": 0.0009
+            }
+          ]
+        },
+        "ensemble": {
+          "members": [
+            {
+              "name": "m0-resnet18",
+              "prob_pneumonia": 0.9722,
+              "predicted_class": "PNEUMONIA"
+            },
+            {
+              "name": "m1-resnet18s",
+              "prob_pneumonia": 0.9957,
+              "predicted_class": "PNEUMONIA"
+            },
+            {
+              "name": "m2-densenet121",
+              "prob_pneumonia": 0.9979,
+              "predicted_class": "PNEUMONIA"
+            }
+          ],
+          "std": 0.0117,
+          "unanimous": true
+        },
+        "ood": {
+          "distance": 36.081,
+          "percentile": 0.9965,
+          "hard_gate_percentile": 0.995,
+          "soft_gate_percentile": 0.9
+        },
+        "thresholds": {
+          "pass": 97.09,
+          "review": 84.04,
+          "source": "selected on the validation split by python -m scanproof.evaluate"
+        }
+      }
+    },
+    {
+      "id": "borderline",
+      "title": "Borderline evidence",
+      "why_included": "Low margin before any perturbation is applied \u2014 the model is sitting on the decision boundary.",
+      "image": "borderline.png",
+      "source": "PneumoniaMNIST test split, index 114",
+      "true_class": "NORMAL",
+      "license": "CC BY 4.0 \u2014 MedMNIST v2 (Yang et al., Sci Data 2023); source images Kermany et al., Cell 2018",
+      "cached_result": {
+        "predicted_class": "PNEUMONIA",
+        "predicted_index": 1,
+        "confidence": 0.5049,
+        "prob_pneumonia": 0.5049,
+        "reliability_score": 10.2,
+        "verdict": "BLOCK",
+        "subscores": [
+          {
+            "key": "confidence",
+            "label": "Calibrated confidence",
+            "value": 0.0108,
+            "weight": 0.2,
+            "points": 0.22,
+            "max_points": 20.0,
+            "detail": "Temperature-scaled ensemble confidence 0.505 for PNEUMONIA (margin 0.010)."
+          },
+          {
+            "key": "stability",
+            "label": "Perturbation stability",
+            "value": 0.0814,
+            "weight": 0.4,
+            "points": 3.25,
+            "max_points": 40.0,
+            "detail": "6 of 21 perturbed variants changed the predicted class; mean |\u0394 P(PNEUMONIA)| = 0.192."
+          },
+          {
+            "key": "agreement",
+            "label": "Checkpoint agreement",
+            "value": 0.0,
+            "weight": 0.25,
+            "points": 0.0,
+            "max_points": 25.0,
+            "detail": "P(PNEUMONIA) across 3 independently-trained checkpoints \u2014 m0-resnet18: 0.350, m1-resnet18s: 0.983, m2-densenet121: 0.181 (\u03c3 = 0.345); the vote is split."
+          },
+          {
+            "key": "typicality",
+            "label": "Embedding typicality",
+            "value": 0.45,
+            "weight": 0.15,
+            "points": 6.75,
+            "max_points": 15.0,
+            "detail": "Mahalanobis distance 30.2 sits at the 95.5th percentile of the training distribution."
+          }
+        ],
+        "evidence": [
+          {
+            "level": "critical",
+            "source": "stability",
+            "title": "Prediction flips under Gamma / windowing \u03b3 1.90",
+            "detail": "P(PNEUMONIA) falls 0.505 \u2192 0.346, changing the label to NORMAL (+5 other variants). This perturbation does not change the underlying finding."
+          },
+          {
+            "level": "critical",
+            "source": "agreement",
+            "title": "Checkpoints disagree on the label (2/3 dissenting)",
+            "detail": "m0-resnet18, m2-densenet121 predict the opposite class. Member probabilities \u2014 m0-resnet18: 0.350, m1-resnet18s: 0.983, m2-densenet121: 0.181."
+          },
+          {
+            "level": "warning",
+            "source": "typicality",
+            "title": "Atypical image for this model (95.5th percentile)",
+            "detail": "The embedding is further from the training manifold than 95.5% of training images."
+          },
+          {
+            "level": "warning",
+            "source": "confidence",
+            "title": "Low calibrated confidence (50.5%)",
+            "detail": "The decision margin is 0.010; the model is close to the decision boundary before any perturbation is applied."
+          }
+        ],
+        "gates": [],
+        "perturbation_table": [
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 1,
+            "magnitude": "+12%",
+            "prob_pneumonia": 0.5463,
+            "prob_predicted": 0.5463,
+            "delta": 0.0415,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 2,
+            "magnitude": "+24%",
+            "prob_pneumonia": 0.9057,
+            "prob_predicted": 0.9057,
+            "delta": 0.4008,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 3,
+            "magnitude": "+36%",
+            "prob_pneumonia": 0.9823,
+            "prob_predicted": 0.9823,
+            "delta": 0.4774,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 1,
+            "magnitude": "-15%",
+            "prob_pneumonia": 0.4854,
+            "prob_predicted": 0.4854,
+            "delta": -0.0195,
+            "flipped": true,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 2,
+            "magnitude": "-28%",
+            "prob_pneumonia": 0.4782,
+            "prob_predicted": 0.4782,
+            "delta": -0.0266,
+            "flipped": true,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 3,
+            "magnitude": "-40%",
+            "prob_pneumonia": 0.4922,
+            "prob_predicted": 0.4922,
+            "delta": -0.0127,
+            "flipped": true,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 1,
+            "magnitude": "\u03b3 1.25",
+            "prob_pneumonia": 0.4396,
+            "prob_predicted": 0.4396,
+            "delta": -0.0653,
+            "flipped": true,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 2,
+            "magnitude": "\u03b3 1.55",
+            "prob_pneumonia": 0.3992,
+            "prob_predicted": 0.3992,
+            "delta": -0.1056,
+            "flipped": true,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 3,
+            "magnitude": "\u03b3 1.90",
+            "prob_pneumonia": 0.3457,
+            "prob_predicted": 0.3457,
+            "delta": -0.1591,
+            "flipped": true,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 1,
+            "magnitude": "\u03c3 0.02",
+            "prob_pneumonia": 0.5176,
+            "prob_predicted": 0.5176,
+            "delta": 0.0127,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 2,
+            "magnitude": "\u03c3 0.045",
+            "prob_pneumonia": 0.778,
+            "prob_predicted": 0.778,
+            "delta": 0.2731,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 3,
+            "magnitude": "\u03c3 0.08",
+            "prob_pneumonia": 0.9103,
+            "prob_predicted": 0.9103,
+            "delta": 0.4054,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 1,
+            "magnitude": "\u03c3 0.8px",
+            "prob_pneumonia": 0.5851,
+            "prob_predicted": 0.5851,
+            "delta": 0.0802,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 2,
+            "magnitude": "\u03c3 1.6px",
+            "prob_pneumonia": 0.8491,
+            "prob_predicted": 0.8491,
+            "delta": 0.3442,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 3,
+            "magnitude": "\u03c3 2.6px",
+            "prob_pneumonia": 0.9484,
+            "prob_predicted": 0.9484,
+            "delta": 0.4436,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 1,
+            "magnitude": "3\u00b0",
+            "prob_pneumonia": 0.6659,
+            "prob_predicted": 0.6659,
+            "delta": 0.161,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 2,
+            "magnitude": "6\u00b0",
+            "prob_pneumonia": 0.6762,
+            "prob_predicted": 0.6762,
+            "delta": 0.1713,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 3,
+            "magnitude": "10\u00b0",
+            "prob_pneumonia": 0.6428,
+            "prob_predicted": 0.6428,
+            "delta": 0.138,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 1,
+            "magnitude": "0.70x",
+            "prob_pneumonia": 0.5967,
+            "prob_predicted": 0.5967,
+            "delta": 0.0918,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 2,
+            "magnitude": "0.50x",
+            "prob_pneumonia": 0.7425,
+            "prob_predicted": 0.7425,
+            "delta": 0.2376,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 3,
+            "magnitude": "0.35x",
+            "prob_pneumonia": 0.8668,
+            "prob_predicted": 0.8668,
+            "delta": 0.362,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          }
+        ],
+        "perturbation_summary": {
+          "n_variants": 21,
+          "n_flips": 6,
+          "flip_rate": 0.2857,
+          "mean_abs_delta": 0.1919,
+          "max_abs_delta": 0.4774,
+          "by_family": [
+            {
+              "family": "gamma",
+              "family_label": "Gamma / windowing",
+              "flips": 3,
+              "max_abs_delta": 0.1591
+            },
+            {
+              "family": "contrast",
+              "family_label": "Contrast",
+              "flips": 3,
+              "max_abs_delta": 0.0266
+            },
+            {
+              "family": "brightness",
+              "family_label": "Brightness",
+              "flips": 0,
+              "max_abs_delta": 0.4774
+            },
+            {
+              "family": "blur",
+              "family_label": "Blur",
+              "flips": 0,
+              "max_abs_delta": 0.4436
+            },
+            {
+              "family": "noise",
+              "family_label": "Detector noise",
+              "flips": 0,
+              "max_abs_delta": 0.4054
+            },
+            {
+              "family": "resample",
+              "family_label": "Resolution loss",
+              "flips": 0,
+              "max_abs_delta": 0.362
+            },
+            {
+              "family": "rotation",
+              "family_label": "Rotation",
+              "flips": 0,
+              "max_abs_delta": 0.1713
+            }
+          ]
+        },
+        "ensemble": {
+          "members": [
+            {
+              "name": "m0-resnet18",
+              "prob_pneumonia": 0.35,
+              "predicted_class": "NORMAL"
+            },
+            {
+              "name": "m1-resnet18s",
+              "prob_pneumonia": 0.9834,
+              "predicted_class": "PNEUMONIA"
+            },
+            {
+              "name": "m2-densenet121",
+              "prob_pneumonia": 0.1813,
+              "predicted_class": "NORMAL"
+            }
+          ],
+          "std": 0.3453,
+          "unanimous": false
+        },
+        "ood": {
+          "distance": 30.242,
+          "percentile": 0.955,
+          "hard_gate_percentile": 0.995,
+          "soft_gate_percentile": 0.9
+        },
+        "thresholds": {
+          "pass": 97.09,
+          "review": 84.04,
+          "source": "selected on the validation split by python -m scanproof.evaluate"
+        }
+      }
+    },
+    {
+      "id": "blocked",
+      "title": "Blocked on instability",
+      "why_included": "Lowest reliability score in the split: the prediction barely survives contact with the test battery.",
+      "image": "blocked.png",
+      "source": "PneumoniaMNIST test split, index 293",
+      "true_class": "NORMAL",
+      "license": "CC BY 4.0 \u2014 MedMNIST v2 (Yang et al., Sci Data 2023); source images Kermany et al., Cell 2018",
+      "cached_result": {
+        "predicted_class": "NORMAL",
+        "predicted_index": 0,
+        "confidence": 0.514,
+        "prob_pneumonia": 0.486,
+        "reliability_score": 9.1,
+        "verdict": "BLOCK",
+        "subscores": [
+          {
+            "key": "confidence",
+            "label": "Calibrated confidence",
+            "value": 0.0311,
+            "weight": 0.2,
+            "points": 0.62,
+            "max_points": 20.0,
+            "detail": "Temperature-scaled ensemble confidence 0.514 for NORMAL (margin 0.028)."
+          },
+          {
+            "key": "stability",
+            "label": "Perturbation stability",
+            "value": 0.212,
+            "weight": 0.4,
+            "points": 8.48,
+            "max_points": 40.0,
+            "detail": "6 of 21 perturbed variants changed the predicted class; mean |\u0394 P(NORMAL)| = 0.099."
+          },
+          {
+            "key": "agreement",
+            "label": "Checkpoint agreement",
+            "value": 0.0,
+            "weight": 0.25,
+            "points": 0.0,
+            "max_points": 25.0,
+            "detail": "P(PNEUMONIA) across 3 independently-trained checkpoints \u2014 m0-resnet18: 0.488, m1-resnet18s: 0.949, m2-densenet121: 0.021 (\u03c3 = 0.379); the vote is split."
+          },
+          {
+            "key": "typicality",
+            "label": "Embedding typicality",
+            "value": 0.0,
+            "weight": 0.15,
+            "points": 0.0,
+            "max_points": 15.0,
+            "detail": "Mahalanobis distance 42.7 sits at the 100.0th percentile of the training distribution."
+          }
+        ],
+        "evidence": [
+          {
+            "level": "critical",
+            "source": "stability",
+            "title": "Prediction flips under Brightness +36%",
+            "detail": "P(NORMAL) falls 0.514 \u2192 0.137, changing the label to PNEUMONIA (+5 other variants). This perturbation does not change the underlying finding."
+          },
+          {
+            "level": "critical",
+            "source": "agreement",
+            "title": "Checkpoints disagree on the label (1/3 dissenting)",
+            "detail": "m1-resnet18s predicts the opposite class. Member probabilities \u2014 m0-resnet18: 0.488, m1-resnet18s: 0.949, m2-densenet121: 0.021."
+          },
+          {
+            "level": "critical",
+            "source": "typicality",
+            "title": "Input is outside the training distribution (100.0th percentile)",
+            "detail": "Only 0.00% of training chest films are this far from every class centre. The classifier has no comparable examples to reason from, so its output is not interpretable regardless of confidence."
+          },
+          {
+            "level": "warning",
+            "source": "confidence",
+            "title": "Low calibrated confidence (51.4%)",
+            "detail": "The decision margin is 0.028; the model is close to the decision boundary before any perturbation is applied."
+          }
+        ],
+        "gates": [
+          "OOD gate: embedding percentile 100.0 \u2265 99.5 \u2192 BLOCK"
+        ],
+        "perturbation_table": [
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 1,
+            "magnitude": "+12%",
+            "prob_pneumonia": 0.3105,
+            "prob_predicted": 0.6895,
+            "delta": 0.1755,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 2,
+            "magnitude": "+24%",
+            "prob_pneumonia": 0.286,
+            "prob_predicted": 0.714,
+            "delta": 0.2,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 3,
+            "magnitude": "+36%",
+            "prob_pneumonia": 0.8631,
+            "prob_predicted": 0.1369,
+            "delta": -0.3771,
+            "flipped": true,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 1,
+            "magnitude": "-15%",
+            "prob_pneumonia": 0.4079,
+            "prob_predicted": 0.5921,
+            "delta": 0.0781,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 2,
+            "magnitude": "-28%",
+            "prob_pneumonia": 0.3875,
+            "prob_predicted": 0.6125,
+            "delta": 0.0985,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 3,
+            "magnitude": "-40%",
+            "prob_pneumonia": 0.3989,
+            "prob_predicted": 0.6011,
+            "delta": 0.0871,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 1,
+            "magnitude": "\u03b3 1.25",
+            "prob_pneumonia": 0.5107,
+            "prob_predicted": 0.4893,
+            "delta": -0.0247,
+            "flipped": true,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 2,
+            "magnitude": "\u03b3 1.55",
+            "prob_pneumonia": 0.5562,
+            "prob_predicted": 0.4438,
+            "delta": -0.0702,
+            "flipped": true,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 3,
+            "magnitude": "\u03b3 1.90",
+            "prob_pneumonia": 0.6421,
+            "prob_predicted": 0.3579,
+            "delta": -0.1561,
+            "flipped": true,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 1,
+            "magnitude": "\u03c3 0.02",
+            "prob_pneumonia": 0.4673,
+            "prob_predicted": 0.5327,
+            "delta": 0.0187,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 2,
+            "magnitude": "\u03c3 0.045",
+            "prob_pneumonia": 0.3639,
+            "prob_predicted": 0.6361,
+            "delta": 0.1221,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 3,
+            "magnitude": "\u03c3 0.08",
+            "prob_pneumonia": 0.7734,
+            "prob_predicted": 0.2266,
+            "delta": -0.2874,
+            "flipped": true,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 1,
+            "magnitude": "\u03c3 0.8px",
+            "prob_pneumonia": 0.4614,
+            "prob_predicted": 0.5386,
+            "delta": 0.0247,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 2,
+            "magnitude": "\u03c3 1.6px",
+            "prob_pneumonia": 0.421,
+            "prob_predicted": 0.579,
+            "delta": 0.065,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 3,
+            "magnitude": "\u03c3 2.6px",
+            "prob_pneumonia": 0.5653,
+            "prob_predicted": 0.4347,
+            "delta": -0.0793,
+            "flipped": true,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 1,
+            "magnitude": "3\u00b0",
+            "prob_pneumonia": 0.4631,
+            "prob_predicted": 0.5369,
+            "delta": 0.0229,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 2,
+            "magnitude": "6\u00b0",
+            "prob_pneumonia": 0.4745,
+            "prob_predicted": 0.5255,
+            "delta": 0.0115,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 3,
+            "magnitude": "10\u00b0",
+            "prob_pneumonia": 0.4723,
+            "prob_predicted": 0.5277,
+            "delta": 0.0137,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 1,
+            "magnitude": "0.70x",
+            "prob_pneumonia": 0.4547,
+            "prob_predicted": 0.5453,
+            "delta": 0.0313,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 2,
+            "magnitude": "0.50x",
+            "prob_pneumonia": 0.4253,
+            "prob_predicted": 0.5747,
+            "delta": 0.0607,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 3,
+            "magnitude": "0.35x",
+            "prob_pneumonia": 0.4215,
+            "prob_predicted": 0.5785,
+            "delta": 0.0646,
+            "flipped": false,
+            "predicted_class": "NORMAL"
+          }
+        ],
+        "perturbation_summary": {
+          "n_variants": 21,
+          "n_flips": 6,
+          "flip_rate": 0.2857,
+          "mean_abs_delta": 0.0985,
+          "max_abs_delta": 0.3771,
+          "by_family": [
+            {
+              "family": "gamma",
+              "family_label": "Gamma / windowing",
+              "flips": 3,
+              "max_abs_delta": 0.1561
+            },
+            {
+              "family": "brightness",
+              "family_label": "Brightness",
+              "flips": 1,
+              "max_abs_delta": 0.3771
+            },
+            {
+              "family": "noise",
+              "family_label": "Detector noise",
+              "flips": 1,
+              "max_abs_delta": 0.2874
+            },
+            {
+              "family": "blur",
+              "family_label": "Blur",
+              "flips": 1,
+              "max_abs_delta": 0.0793
+            },
+            {
+              "family": "contrast",
+              "family_label": "Contrast",
+              "flips": 0,
+              "max_abs_delta": 0.0985
+            },
+            {
+              "family": "resample",
+              "family_label": "Resolution loss",
+              "flips": 0,
+              "max_abs_delta": 0.0646
+            },
+            {
+              "family": "rotation",
+              "family_label": "Rotation",
+              "flips": 0,
+              "max_abs_delta": 0.0229
+            }
+          ]
+        },
+        "ensemble": {
+          "members": [
+            {
+              "name": "m0-resnet18",
+              "prob_pneumonia": 0.4878,
+              "predicted_class": "NORMAL"
+            },
+            {
+              "name": "m1-resnet18s",
+              "prob_pneumonia": 0.9488,
+              "predicted_class": "PNEUMONIA"
+            },
+            {
+              "name": "m2-densenet121",
+              "prob_pneumonia": 0.0214,
+              "predicted_class": "NORMAL"
+            }
+          ],
+          "std": 0.3786,
+          "unanimous": false
+        },
+        "ood": {
+          "distance": 42.742,
+          "percentile": 1.0,
+          "hard_gate_percentile": 0.995,
+          "soft_gate_percentile": 0.9
+        },
+        "thresholds": {
+          "pass": 97.09,
+          "review": 84.04,
+          "source": "selected on the validation split by python -m scanproof.evaluate"
+        }
+      }
+    },
+    {
+      "id": "ood-ultrasound-2",
+      "title": "Wrong modality (breast ultrasound)",
+      "why_included": "Not a chest X-ray at all. The classifier still produces a two-class output; the embedding-distance gate is what refuses it.",
+      "image": "ood-ultrasound-2.png",
+      "source": "BreastMNIST test split, index 41",
+      "true_class": "n/a \u2014 not a chest film",
+      "license": "CC BY 4.0 \u2014 MedMNIST v2 (Yang et al., Sci Data 2023)",
+      "cached_result": {
+        "predicted_class": "PNEUMONIA",
+        "predicted_index": 1,
+        "confidence": 0.9863,
+        "prob_pneumonia": 0.9863,
+        "reliability_score": 83.5,
+        "verdict": "BLOCK",
+        "subscores": [
+          {
+            "key": "confidence",
+            "label": "Calibrated confidence",
+            "value": 1.0,
+            "weight": 0.2,
+            "points": 20.0,
+            "max_points": 20.0,
+            "detail": "Temperature-scaled ensemble confidence 0.986 for PNEUMONIA (margin 0.973)."
+          },
+          {
+            "key": "stability",
+            "label": "Perturbation stability",
+            "value": 0.9869,
+            "weight": 0.4,
+            "points": 39.47,
+            "max_points": 40.0,
+            "detail": "0 of 21 perturbed variants changed the predicted class; mean |\u0394 P(PNEUMONIA)| = 0.009."
+          },
+          {
+            "key": "agreement",
+            "label": "Checkpoint agreement",
+            "value": 0.9623,
+            "weight": 0.25,
+            "points": 24.06,
+            "max_points": 25.0,
+            "detail": "P(PNEUMONIA) across 3 independently-trained checkpoints \u2014 m0-resnet18: 0.987, m1-resnet18s: 0.975, m2-densenet121: 0.998 (\u03c3 = 0.009)."
+          },
+          {
+            "key": "typicality",
+            "label": "Embedding typicality",
+            "value": 0.0,
+            "weight": 0.15,
+            "points": 0.0,
+            "max_points": 15.0,
+            "detail": "Mahalanobis distance 42.2 sits at the 100.0th percentile of the training distribution."
+          }
+        ],
+        "evidence": [
+          {
+            "level": "critical",
+            "source": "typicality",
+            "title": "Input is outside the training distribution (100.0th percentile)",
+            "detail": "Only 0.00% of training chest films are this far from every class centre. The classifier has no comparable examples to reason from, so its output is not interpretable regardless of confidence."
+          },
+          {
+            "level": "ok",
+            "source": "stability",
+            "title": "Prediction held across all 21 perturbation variants",
+            "detail": "Largest shift was Brightness +24% at \u0394 = -0.077; no variant changed the label."
+          },
+          {
+            "level": "ok",
+            "source": "agreement",
+            "title": "All checkpoints agree",
+            "detail": "\u03c3 = 0.009 across members (m0-resnet18: 0.987, m1-resnet18s: 0.975, m2-densenet121: 0.998)."
+          }
+        ],
+        "gates": [
+          "OOD gate: embedding percentile 100.0 \u2265 99.5 \u2192 BLOCK"
+        ],
+        "perturbation_table": [
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 1,
+            "magnitude": "+12%",
+            "prob_pneumonia": 0.9657,
+            "prob_predicted": 0.9657,
+            "delta": -0.0206,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 2,
+            "magnitude": "+24%",
+            "prob_pneumonia": 0.9095,
+            "prob_predicted": 0.9095,
+            "delta": -0.0768,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 3,
+            "magnitude": "+36%",
+            "prob_pneumonia": 0.9371,
+            "prob_predicted": 0.9371,
+            "delta": -0.0492,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 1,
+            "magnitude": "-15%",
+            "prob_pneumonia": 0.9892,
+            "prob_predicted": 0.9892,
+            "delta": 0.0029,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 2,
+            "magnitude": "-28%",
+            "prob_pneumonia": 0.9909,
+            "prob_predicted": 0.9909,
+            "delta": 0.0046,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 3,
+            "magnitude": "-40%",
+            "prob_pneumonia": 0.9927,
+            "prob_predicted": 0.9927,
+            "delta": 0.0064,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 1,
+            "magnitude": "\u03b3 1.25",
+            "prob_pneumonia": 0.9849,
+            "prob_predicted": 0.9849,
+            "delta": -0.0014,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 2,
+            "magnitude": "\u03b3 1.55",
+            "prob_pneumonia": 0.9868,
+            "prob_predicted": 0.9868,
+            "delta": 0.0005,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 3,
+            "magnitude": "\u03b3 1.90",
+            "prob_pneumonia": 0.9876,
+            "prob_predicted": 0.9876,
+            "delta": 0.0013,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 1,
+            "magnitude": "\u03c3 0.02",
+            "prob_pneumonia": 0.9881,
+            "prob_predicted": 0.9881,
+            "delta": 0.0018,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 2,
+            "magnitude": "\u03c3 0.045",
+            "prob_pneumonia": 0.9888,
+            "prob_predicted": 0.9888,
+            "delta": 0.0025,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 3,
+            "magnitude": "\u03c3 0.08",
+            "prob_pneumonia": 0.9875,
+            "prob_predicted": 0.9875,
+            "delta": 0.0012,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 1,
+            "magnitude": "\u03c3 0.8px",
+            "prob_pneumonia": 0.9878,
+            "prob_predicted": 0.9878,
+            "delta": 0.0015,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 2,
+            "magnitude": "\u03c3 1.6px",
+            "prob_pneumonia": 0.9921,
+            "prob_predicted": 0.9921,
+            "delta": 0.0058,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 3,
+            "magnitude": "\u03c3 2.6px",
+            "prob_pneumonia": 0.9943,
+            "prob_predicted": 0.9943,
+            "delta": 0.008,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 1,
+            "magnitude": "3\u00b0",
+            "prob_pneumonia": 0.9862,
+            "prob_predicted": 0.9862,
+            "delta": -0.0001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 2,
+            "magnitude": "6\u00b0",
+            "prob_pneumonia": 0.9866,
+            "prob_predicted": 0.9866,
+            "delta": 0.0003,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 3,
+            "magnitude": "10\u00b0",
+            "prob_pneumonia": 0.9872,
+            "prob_predicted": 0.9872,
+            "delta": 0.0009,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 1,
+            "magnitude": "0.70x",
+            "prob_pneumonia": 0.9877,
+            "prob_predicted": 0.9877,
+            "delta": 0.0014,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 2,
+            "magnitude": "0.50x",
+            "prob_pneumonia": 0.9903,
+            "prob_predicted": 0.9903,
+            "delta": 0.004,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 3,
+            "magnitude": "0.35x",
+            "prob_pneumonia": 0.9923,
+            "prob_predicted": 0.9923,
+            "delta": 0.006,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          }
+        ],
+        "perturbation_summary": {
+          "n_variants": 21,
+          "n_flips": 0,
+          "flip_rate": 0.0,
+          "mean_abs_delta": 0.0094,
+          "max_abs_delta": 0.0768,
+          "by_family": [
+            {
+              "family": "brightness",
+              "family_label": "Brightness",
+              "flips": 0,
+              "max_abs_delta": 0.0768
+            },
+            {
+              "family": "blur",
+              "family_label": "Blur",
+              "flips": 0,
+              "max_abs_delta": 0.008
+            },
+            {
+              "family": "contrast",
+              "family_label": "Contrast",
+              "flips": 0,
+              "max_abs_delta": 0.0064
+            },
+            {
+              "family": "resample",
+              "family_label": "Resolution loss",
+              "flips": 0,
+              "max_abs_delta": 0.006
+            },
+            {
+              "family": "noise",
+              "family_label": "Detector noise",
+              "flips": 0,
+              "max_abs_delta": 0.0025
+            },
+            {
+              "family": "gamma",
+              "family_label": "Gamma / windowing",
+              "flips": 0,
+              "max_abs_delta": 0.0014
+            },
+            {
+              "family": "rotation",
+              "family_label": "Rotation",
+              "flips": 0,
+              "max_abs_delta": 0.0009
+            }
+          ]
+        },
+        "ensemble": {
+          "members": [
+            {
+              "name": "m0-resnet18",
+              "prob_pneumonia": 0.9865,
+              "predicted_class": "PNEUMONIA"
+            },
+            {
+              "name": "m1-resnet18s",
+              "prob_pneumonia": 0.9746,
+              "predicted_class": "PNEUMONIA"
+            },
+            {
+              "name": "m2-densenet121",
+              "prob_pneumonia": 0.9977,
+              "predicted_class": "PNEUMONIA"
+            }
+          ],
+          "std": 0.0094,
+          "unanimous": true
+        },
+        "ood": {
+          "distance": 42.189,
+          "percentile": 1.0,
+          "hard_gate_percentile": 0.995,
+          "soft_gate_percentile": 0.9
+        },
+        "thresholds": {
+          "pass": 97.09,
+          "review": 84.04,
+          "source": "selected on the validation split by python -m scanproof.evaluate"
+        }
+      }
+    },
+    {
+      "id": "ood-phantom",
+      "title": "Synthetic phantom",
+      "why_included": "Generated by scanproof/demo.py. Nothing anatomical is present, so any PNEUMONIA/NORMAL answer is meaningless \u2014 the OOD gate should fire.",
+      "image": "ood-phantom.png",
+      "source": "generated by scanproof.demo._phantom()",
+      "true_class": "n/a \u2014 synthetic",
+      "license": "generated by this repository",
+      "cached_result": {
+        "predicted_class": "PNEUMONIA",
+        "predicted_index": 1,
+        "confidence": 0.9533,
+        "prob_pneumonia": 0.9533,
+        "reliability_score": 81.6,
+        "verdict": "BLOCK",
+        "subscores": [
+          {
+            "key": "confidence",
+            "label": "Calibrated confidence",
+            "value": 1.0,
+            "weight": 0.2,
+            "points": 20.0,
+            "max_points": 20.0,
+            "detail": "Temperature-scaled ensemble confidence 0.953 for PNEUMONIA (margin 0.907)."
+          },
+          {
+            "key": "stability",
+            "label": "Perturbation stability",
+            "value": 0.9892,
+            "weight": 0.4,
+            "points": 39.57,
+            "max_points": 40.0,
+            "detail": "0 of 21 perturbed variants changed the predicted class; mean |\u0394 P(PNEUMONIA)| = 0.008."
+          },
+          {
+            "key": "agreement",
+            "label": "Checkpoint agreement",
+            "value": 0.8808,
+            "weight": 0.25,
+            "points": 22.02,
+            "max_points": 25.0,
+            "detail": "P(PNEUMONIA) across 3 independently-trained checkpoints \u2014 m0-resnet18: 0.970, m1-resnet18s: 0.911, m2-densenet121: 0.978 (\u03c3 = 0.030)."
+          },
+          {
+            "key": "typicality",
+            "label": "Embedding typicality",
+            "value": 0.0,
+            "weight": 0.15,
+            "points": 0.0,
+            "max_points": 15.0,
+            "detail": "Mahalanobis distance 89.8 sits at the 100.0th percentile of the training distribution."
+          }
+        ],
+        "evidence": [
+          {
+            "level": "critical",
+            "source": "typicality",
+            "title": "Input is outside the training distribution (100.0th percentile)",
+            "detail": "Only 0.00% of training chest films are this far from every class centre. The classifier has no comparable examples to reason from, so its output is not interpretable regardless of confidence."
+          },
+          {
+            "level": "ok",
+            "source": "stability",
+            "title": "Prediction held across all 21 perturbation variants",
+            "detail": "Largest shift was Detector noise \u03c3 0.08 at \u0394 = +0.015; no variant changed the label."
+          },
+          {
+            "level": "ok",
+            "source": "agreement",
+            "title": "All checkpoints agree",
+            "detail": "\u03c3 = 0.030 across members (m0-resnet18: 0.970, m1-resnet18s: 0.911, m2-densenet121: 0.978)."
+          }
+        ],
+        "gates": [
+          "OOD gate: embedding percentile 100.0 \u2265 99.5 \u2192 BLOCK"
+        ],
+        "perturbation_table": [
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 1,
+            "magnitude": "+12%",
+            "prob_pneumonia": 0.9463,
+            "prob_predicted": 0.9463,
+            "delta": -0.0071,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 2,
+            "magnitude": "+24%",
+            "prob_pneumonia": 0.9451,
+            "prob_predicted": 0.9451,
+            "delta": -0.0082,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 3,
+            "magnitude": "+36%",
+            "prob_pneumonia": 0.9493,
+            "prob_predicted": 0.9493,
+            "delta": -0.004,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 1,
+            "magnitude": "-15%",
+            "prob_pneumonia": 0.9543,
+            "prob_predicted": 0.9543,
+            "delta": 0.001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 2,
+            "magnitude": "-28%",
+            "prob_pneumonia": 0.9549,
+            "prob_predicted": 0.9549,
+            "delta": 0.0015,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 3,
+            "magnitude": "-40%",
+            "prob_pneumonia": 0.9561,
+            "prob_predicted": 0.9561,
+            "delta": 0.0028,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 1,
+            "magnitude": "\u03b3 1.25",
+            "prob_pneumonia": 0.95,
+            "prob_predicted": 0.95,
+            "delta": -0.0033,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 2,
+            "magnitude": "\u03b3 1.55",
+            "prob_pneumonia": 0.9455,
+            "prob_predicted": 0.9455,
+            "delta": -0.0078,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 3,
+            "magnitude": "\u03b3 1.90",
+            "prob_pneumonia": 0.9432,
+            "prob_predicted": 0.9432,
+            "delta": -0.0101,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 1,
+            "magnitude": "\u03c3 0.02",
+            "prob_pneumonia": 0.9523,
+            "prob_predicted": 0.9523,
+            "delta": -0.001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 2,
+            "magnitude": "\u03c3 0.045",
+            "prob_pneumonia": 0.964,
+            "prob_predicted": 0.964,
+            "delta": 0.0106,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 3,
+            "magnitude": "\u03c3 0.08",
+            "prob_pneumonia": 0.9687,
+            "prob_predicted": 0.9687,
+            "delta": 0.0154,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 1,
+            "magnitude": "\u03c3 0.8px",
+            "prob_pneumonia": 0.9442,
+            "prob_predicted": 0.9442,
+            "delta": -0.0091,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 2,
+            "magnitude": "\u03c3 1.6px",
+            "prob_pneumonia": 0.9431,
+            "prob_predicted": 0.9431,
+            "delta": -0.0103,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 3,
+            "magnitude": "\u03c3 2.6px",
+            "prob_pneumonia": 0.945,
+            "prob_predicted": 0.945,
+            "delta": -0.0083,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 1,
+            "magnitude": "3\u00b0",
+            "prob_pneumonia": 0.9394,
+            "prob_predicted": 0.9394,
+            "delta": -0.014,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 2,
+            "magnitude": "6\u00b0",
+            "prob_pneumonia": 0.941,
+            "prob_predicted": 0.941,
+            "delta": -0.0123,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 3,
+            "magnitude": "10\u00b0",
+            "prob_pneumonia": 0.9476,
+            "prob_predicted": 0.9476,
+            "delta": -0.0058,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 1,
+            "magnitude": "0.70x",
+            "prob_pneumonia": 0.9443,
+            "prob_predicted": 0.9443,
+            "delta": -0.009,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 2,
+            "magnitude": "0.50x",
+            "prob_pneumonia": 0.9423,
+            "prob_predicted": 0.9423,
+            "delta": -0.011,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 3,
+            "magnitude": "0.35x",
+            "prob_pneumonia": 0.9437,
+            "prob_predicted": 0.9437,
+            "delta": -0.0097,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          }
+        ],
+        "perturbation_summary": {
+          "n_variants": 21,
+          "n_flips": 0,
+          "flip_rate": 0.0,
+          "mean_abs_delta": 0.0077,
+          "max_abs_delta": 0.0154,
+          "by_family": [
+            {
+              "family": "noise",
+              "family_label": "Detector noise",
+              "flips": 0,
+              "max_abs_delta": 0.0154
+            },
+            {
+              "family": "rotation",
+              "family_label": "Rotation",
+              "flips": 0,
+              "max_abs_delta": 0.014
+            },
+            {
+              "family": "resample",
+              "family_label": "Resolution loss",
+              "flips": 0,
+              "max_abs_delta": 0.011
+            },
+            {
+              "family": "blur",
+              "family_label": "Blur",
+              "flips": 0,
+              "max_abs_delta": 0.0103
+            },
+            {
+              "family": "gamma",
+              "family_label": "Gamma / windowing",
+              "flips": 0,
+              "max_abs_delta": 0.0101
+            },
+            {
+              "family": "brightness",
+              "family_label": "Brightness",
+              "flips": 0,
+              "max_abs_delta": 0.0082
+            },
+            {
+              "family": "contrast",
+              "family_label": "Contrast",
+              "flips": 0,
+              "max_abs_delta": 0.0028
+            }
+          ]
+        },
+        "ensemble": {
+          "members": [
+            {
+              "name": "m0-resnet18",
+              "prob_pneumonia": 0.9702,
+              "predicted_class": "PNEUMONIA"
+            },
+            {
+              "name": "m1-resnet18s",
+              "prob_pneumonia": 0.9115,
+              "predicted_class": "PNEUMONIA"
+            },
+            {
+              "name": "m2-densenet121",
+              "prob_pneumonia": 0.9783,
+              "predicted_class": "PNEUMONIA"
+            }
+          ],
+          "std": 0.0298,
+          "unanimous": true
+        },
+        "ood": {
+          "distance": 89.776,
+          "percentile": 1.0,
+          "hard_gate_percentile": 0.995,
+          "soft_gate_percentile": 0.9
+        },
+        "thresholds": {
+          "pass": 97.09,
+          "review": 84.04,
+          "source": "selected on the validation split by python -m scanproof.evaluate"
+        }
+      }
+    },
+    {
+      "id": "confidently-wrong-missed",
+      "title": "Confidently wrong \u2014 missed",
+      "why_included": "An honest failure mode: this error still reaches PASS. Shown so the audit view's PASS-band accuracy is not mistaken for a guarantee.",
+      "image": "confidently-wrong-missed.png",
+      "source": "PneumoniaMNIST test split, index 103",
+      "true_class": "NORMAL",
+      "license": "CC BY 4.0 \u2014 MedMNIST v2 (Yang et al., Sci Data 2023); source images Kermany et al., Cell 2018",
+      "cached_result": {
+        "predicted_class": "PNEUMONIA",
+        "predicted_index": 1,
+        "confidence": 0.9988,
+        "prob_pneumonia": 0.9988,
+        "reliability_score": 99.9,
+        "verdict": "PASS",
+        "subscores": [
+          {
+            "key": "confidence",
+            "label": "Calibrated confidence",
+            "value": 1.0,
+            "weight": 0.2,
+            "points": 20.0,
+            "max_points": 20.0,
+            "detail": "Temperature-scaled ensemble confidence 0.999 for PNEUMONIA (margin 0.998)."
+          },
+          {
+            "key": "stability",
+            "label": "Perturbation stability",
+            "value": 0.9971,
+            "weight": 0.4,
+            "points": 39.88,
+            "max_points": 40.0,
+            "detail": "0 of 21 perturbed variants changed the predicted class; mean |\u0394 P(PNEUMONIA)| = 0.002."
+          },
+          {
+            "key": "agreement",
+            "label": "Checkpoint agreement",
+            "value": 0.9992,
+            "weight": 0.25,
+            "points": 24.98,
+            "max_points": 25.0,
+            "detail": "P(PNEUMONIA) across 3 independently-trained checkpoints \u2014 m0-resnet18: 0.999, m1-resnet18s: 0.999, m2-densenet121: 0.999 (\u03c3 = 0.000)."
+          },
+          {
+            "key": "typicality",
+            "label": "Embedding typicality",
+            "value": 1.0,
+            "weight": 0.15,
+            "points": 15.0,
+            "max_points": 15.0,
+            "detail": "Mahalanobis distance 16.0 sits at the 14.4th percentile of the training distribution."
+          }
+        ],
+        "evidence": [
+          {
+            "level": "ok",
+            "source": "stability",
+            "title": "Prediction held across all 21 perturbation variants",
+            "detail": "Largest shift was Brightness +36% at \u0394 = -0.018; no variant changed the label."
+          },
+          {
+            "level": "ok",
+            "source": "agreement",
+            "title": "All checkpoints agree",
+            "detail": "\u03c3 = 0.000 across members (m0-resnet18: 0.999, m1-resnet18s: 0.999, m2-densenet121: 0.999)."
+          },
+          {
+            "level": "ok",
+            "source": "typicality",
+            "title": "Image is typical of the training data (14.4th percentile)",
+            "detail": "Mahalanobis distance 16.0, well inside the training manifold."
+          }
+        ],
+        "gates": [],
+        "perturbation_table": [
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 1,
+            "magnitude": "+12%",
+            "prob_pneumonia": 0.9983,
+            "prob_predicted": 0.9983,
+            "delta": -0.0005,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 2,
+            "magnitude": "+24%",
+            "prob_pneumonia": 0.9952,
+            "prob_predicted": 0.9952,
+            "delta": -0.0036,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 3,
+            "magnitude": "+36%",
+            "prob_pneumonia": 0.9805,
+            "prob_predicted": 0.9805,
+            "delta": -0.0183,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 1,
+            "magnitude": "-15%",
+            "prob_pneumonia": 0.9985,
+            "prob_predicted": 0.9985,
+            "delta": -0.0003,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 2,
+            "magnitude": "-28%",
+            "prob_pneumonia": 0.9981,
+            "prob_predicted": 0.9981,
+            "delta": -0.0007,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 3,
+            "magnitude": "-40%",
+            "prob_pneumonia": 0.9972,
+            "prob_predicted": 0.9972,
+            "delta": -0.0016,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 1,
+            "magnitude": "\u03b3 1.25",
+            "prob_pneumonia": 0.9986,
+            "prob_predicted": 0.9986,
+            "delta": -0.0002,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 2,
+            "magnitude": "\u03b3 1.55",
+            "prob_pneumonia": 0.9976,
+            "prob_predicted": 0.9976,
+            "delta": -0.0012,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 3,
+            "magnitude": "\u03b3 1.90",
+            "prob_pneumonia": 0.9962,
+            "prob_predicted": 0.9962,
+            "delta": -0.0027,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 1,
+            "magnitude": "\u03c3 0.02",
+            "prob_pneumonia": 0.9982,
+            "prob_predicted": 0.9982,
+            "delta": -0.0006,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 2,
+            "magnitude": "\u03c3 0.045",
+            "prob_pneumonia": 0.997,
+            "prob_predicted": 0.997,
+            "delta": -0.0018,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 3,
+            "magnitude": "\u03c3 0.08",
+            "prob_pneumonia": 0.9943,
+            "prob_predicted": 0.9943,
+            "delta": -0.0045,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 1,
+            "magnitude": "\u03c3 0.8px",
+            "prob_pneumonia": 0.9989,
+            "prob_predicted": 0.9989,
+            "delta": 0.0,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 2,
+            "magnitude": "\u03c3 1.6px",
+            "prob_pneumonia": 0.9983,
+            "prob_predicted": 0.9983,
+            "delta": -0.0005,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 3,
+            "magnitude": "\u03c3 2.6px",
+            "prob_pneumonia": 0.9965,
+            "prob_predicted": 0.9965,
+            "delta": -0.0023,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 1,
+            "magnitude": "3\u00b0",
+            "prob_pneumonia": 0.9984,
+            "prob_predicted": 0.9984,
+            "delta": -0.0004,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 2,
+            "magnitude": "6\u00b0",
+            "prob_pneumonia": 0.9979,
+            "prob_predicted": 0.9979,
+            "delta": -0.0009,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 3,
+            "magnitude": "10\u00b0",
+            "prob_pneumonia": 0.9965,
+            "prob_predicted": 0.9965,
+            "delta": -0.0023,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 1,
+            "magnitude": "0.70x",
+            "prob_pneumonia": 0.9988,
+            "prob_predicted": 0.9988,
+            "delta": 0.0,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 2,
+            "magnitude": "0.50x",
+            "prob_pneumonia": 0.9986,
+            "prob_predicted": 0.9986,
+            "delta": -0.0002,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 3,
+            "magnitude": "0.35x",
+            "prob_pneumonia": 0.9983,
+            "prob_predicted": 0.9983,
+            "delta": -0.0006,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          }
+        ],
+        "perturbation_summary": {
+          "n_variants": 21,
+          "n_flips": 0,
+          "flip_rate": 0.0,
+          "mean_abs_delta": 0.0021,
+          "max_abs_delta": 0.0183,
+          "by_family": [
+            {
+              "family": "brightness",
+              "family_label": "Brightness",
+              "flips": 0,
+              "max_abs_delta": 0.0183
+            },
+            {
+              "family": "noise",
+              "family_label": "Detector noise",
+              "flips": 0,
+              "max_abs_delta": 0.0045
+            },
+            {
+              "family": "gamma",
+              "family_label": "Gamma / windowing",
+              "flips": 0,
+              "max_abs_delta": 0.0027
+            },
+            {
+              "family": "blur",
+              "family_label": "Blur",
+              "flips": 0,
+              "max_abs_delta": 0.0023
+            },
+            {
+              "family": "rotation",
+              "family_label": "Rotation",
+              "flips": 0,
+              "max_abs_delta": 0.0023
+            },
+            {
+              "family": "contrast",
+              "family_label": "Contrast",
+              "flips": 0,
+              "max_abs_delta": 0.0016
+            },
+            {
+              "family": "resample",
+              "family_label": "Resolution loss",
+              "flips": 0,
+              "max_abs_delta": 0.0006
+            }
+          ]
+        },
+        "ensemble": {
+          "members": [
+            {
+              "name": "m0-resnet18",
+              "prob_pneumonia": 0.9988,
+              "predicted_class": "PNEUMONIA"
+            },
+            {
+              "name": "m1-resnet18s",
+              "prob_pneumonia": 0.9986,
+              "predicted_class": "PNEUMONIA"
+            },
+            {
+              "name": "m2-densenet121",
+              "prob_pneumonia": 0.9991,
+              "predicted_class": "PNEUMONIA"
+            }
+          ],
+          "std": 0.0002,
+          "unanimous": true
+        },
+        "ood": {
+          "distance": 16.047,
+          "percentile": 0.144,
+          "hard_gate_percentile": 0.995,
+          "soft_gate_percentile": 0.9
+        },
+        "thresholds": {
+          "pass": 97.09,
+          "review": 84.04,
+          "source": "selected on the validation split by python -m scanproof.evaluate"
+        }
+      }
+    },
+    {
+      "id": "shift-adult-passed",
+      "title": "Adult film \u2014 passed anyway",
+      "why_included": "Not every shifted input is refused. This adult film sits close enough to the training manifold to clear every check, which is the honest limit of the method: ScanProof narrows exposure, it does not eliminate it.",
+      "image": "shift-adult-passed.png",
+      "source": "ChestMNIST test split (NIH ChestX-ray14), CC BY 4.0, balanced subset position 126",
+      "true_class": "PNEUMONIA",
+      "license": "CC BY 4.0 \u2014 MedMNIST v2 (Yang et al., Sci Data 2023); source images NIH ChestX-ray14 (Wang et al., CVPR 2017)",
+      "cached_result": {
+        "predicted_class": "PNEUMONIA",
+        "predicted_index": 1,
+        "confidence": 0.9984,
+        "prob_pneumonia": 0.9984,
+        "reliability_score": 99.9,
+        "verdict": "PASS",
+        "subscores": [
+          {
+            "key": "confidence",
+            "label": "Calibrated confidence",
+            "value": 1.0,
+            "weight": 0.2,
+            "points": 20.0,
+            "max_points": 20.0,
+            "detail": "Temperature-scaled ensemble confidence 0.998 for PNEUMONIA (margin 0.997)."
+          },
+          {
+            "key": "stability",
+            "label": "Perturbation stability",
+            "value": 0.9993,
+            "weight": 0.4,
+            "points": 39.97,
+            "max_points": 40.0,
+            "detail": "0 of 21 perturbed variants changed the predicted class; mean |\u0394 P(PNEUMONIA)| = 0.001."
+          },
+          {
+            "key": "agreement",
+            "label": "Checkpoint agreement",
+            "value": 0.9969,
+            "weight": 0.25,
+            "points": 24.92,
+            "max_points": 25.0,
+            "detail": "P(PNEUMONIA) across 3 independently-trained checkpoints \u2014 m0-resnet18: 0.999, m1-resnet18s: 0.997, m2-densenet121: 0.999 (\u03c3 = 0.001)."
+          },
+          {
+            "key": "typicality",
+            "label": "Embedding typicality",
+            "value": 1.0,
+            "weight": 0.15,
+            "points": 15.0,
+            "max_points": 15.0,
+            "detail": "Mahalanobis distance 25.8 sits at the 83.1th percentile of the training distribution."
+          }
+        ],
+        "evidence": [
+          {
+            "level": "ok",
+            "source": "stability",
+            "title": "Prediction held across all 21 perturbation variants",
+            "detail": "Largest shift was Detector noise \u03c3 0.08 at \u0394 = -0.003; no variant changed the label."
+          },
+          {
+            "level": "ok",
+            "source": "agreement",
+            "title": "All checkpoints agree",
+            "detail": "\u03c3 = 0.001 across members (m0-resnet18: 0.999, m1-resnet18s: 0.997, m2-densenet121: 0.999)."
+          },
+          {
+            "level": "ok",
+            "source": "typicality",
+            "title": "Image is typical of the training data (83.1th percentile)",
+            "detail": "Mahalanobis distance 25.8, well inside the training manifold."
+          }
+        ],
+        "gates": [],
+        "perturbation_table": [
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 1,
+            "magnitude": "+12%",
+            "prob_pneumonia": 0.9982,
+            "prob_predicted": 0.9982,
+            "delta": -0.0002,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 2,
+            "magnitude": "+24%",
+            "prob_pneumonia": 0.9979,
+            "prob_predicted": 0.9979,
+            "delta": -0.0005,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "brightness",
+            "family_label": "Brightness",
+            "severity": 3,
+            "magnitude": "+36%",
+            "prob_pneumonia": 0.9973,
+            "prob_predicted": 0.9973,
+            "delta": -0.0011,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 1,
+            "magnitude": "-15%",
+            "prob_pneumonia": 0.9985,
+            "prob_predicted": 0.9985,
+            "delta": 0.0,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 2,
+            "magnitude": "-28%",
+            "prob_pneumonia": 0.9985,
+            "prob_predicted": 0.9985,
+            "delta": 0.0001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "contrast",
+            "family_label": "Contrast",
+            "severity": 3,
+            "magnitude": "-40%",
+            "prob_pneumonia": 0.9984,
+            "prob_predicted": 0.9984,
+            "delta": 0.0,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 1,
+            "magnitude": "\u03b3 1.25",
+            "prob_pneumonia": 0.9983,
+            "prob_predicted": 0.9983,
+            "delta": -0.0001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 2,
+            "magnitude": "\u03b3 1.55",
+            "prob_pneumonia": 0.9983,
+            "prob_predicted": 0.9983,
+            "delta": -0.0002,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "gamma",
+            "family_label": "Gamma / windowing",
+            "severity": 3,
+            "magnitude": "\u03b3 1.90",
+            "prob_pneumonia": 0.9979,
+            "prob_predicted": 0.9979,
+            "delta": -0.0005,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 1,
+            "magnitude": "\u03c3 0.02",
+            "prob_pneumonia": 0.9984,
+            "prob_predicted": 0.9984,
+            "delta": -0.0,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 2,
+            "magnitude": "\u03c3 0.045",
+            "prob_pneumonia": 0.9976,
+            "prob_predicted": 0.9976,
+            "delta": -0.0008,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "noise",
+            "family_label": "Detector noise",
+            "severity": 3,
+            "magnitude": "\u03c3 0.08",
+            "prob_pneumonia": 0.9954,
+            "prob_predicted": 0.9954,
+            "delta": -0.003,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 1,
+            "magnitude": "\u03c3 0.8px",
+            "prob_pneumonia": 0.9983,
+            "prob_predicted": 0.9983,
+            "delta": -0.0001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 2,
+            "magnitude": "\u03c3 1.6px",
+            "prob_pneumonia": 0.9978,
+            "prob_predicted": 0.9978,
+            "delta": -0.0006,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "blur",
+            "family_label": "Blur",
+            "severity": 3,
+            "magnitude": "\u03c3 2.6px",
+            "prob_pneumonia": 0.9968,
+            "prob_predicted": 0.9968,
+            "delta": -0.0016,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 1,
+            "magnitude": "3\u00b0",
+            "prob_pneumonia": 0.9986,
+            "prob_predicted": 0.9986,
+            "delta": 0.0002,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 2,
+            "magnitude": "6\u00b0",
+            "prob_pneumonia": 0.9986,
+            "prob_predicted": 0.9986,
+            "delta": 0.0002,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "rotation",
+            "family_label": "Rotation",
+            "severity": 3,
+            "magnitude": "10\u00b0",
+            "prob_pneumonia": 0.9986,
+            "prob_predicted": 0.9986,
+            "delta": 0.0002,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 1,
+            "magnitude": "0.70x",
+            "prob_pneumonia": 0.9983,
+            "prob_predicted": 0.9983,
+            "delta": -0.0001,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 2,
+            "magnitude": "0.50x",
+            "prob_pneumonia": 0.998,
+            "prob_predicted": 0.998,
+            "delta": -0.0004,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          },
+          {
+            "family": "resample",
+            "family_label": "Resolution loss",
+            "severity": 3,
+            "magnitude": "0.35x",
+            "prob_pneumonia": 0.9978,
+            "prob_predicted": 0.9978,
+            "delta": -0.0006,
+            "flipped": false,
+            "predicted_class": "PNEUMONIA"
+          }
+        ],
+        "perturbation_summary": {
+          "n_variants": 21,
+          "n_flips": 0,
+          "flip_rate": 0.0,
+          "mean_abs_delta": 0.0005,
+          "max_abs_delta": 0.003,
+          "by_family": [
+            {
+              "family": "noise",
+              "family_label": "Detector noise",
+              "flips": 0,
+              "max_abs_delta": 0.003
+            },
+            {
+              "family": "blur",
+              "family_label": "Blur",
+              "flips": 0,
+              "max_abs_delta": 0.0016
+            },
+            {
+              "family": "brightness",
+              "family_label": "Brightness",
+              "flips": 0,
+              "max_abs_delta": 0.0011
+            },
+            {
+              "family": "resample",
+              "family_label": "Resolution loss",
+              "flips": 0,
+              "max_abs_delta": 0.0006
+            },
+            {
+              "family": "gamma",
+              "family_label": "Gamma / windowing",
+              "flips": 0,
+              "max_abs_delta": 0.0005
+            },
+            {
+              "family": "rotation",
+              "family_label": "Rotation",
+              "flips": 0,
+              "max_abs_delta": 0.0002
+            },
+            {
+              "family": "contrast",
+              "family_label": "Contrast",
+              "flips": 0,
+              "max_abs_delta": 0.0001
+            }
+          ]
+        },
+        "ensemble": {
+          "members": [
+            {
+              "name": "m0-resnet18",
+              "prob_pneumonia": 0.9988,
+              "predicted_class": "PNEUMONIA"
+            },
+            {
+              "name": "m1-resnet18s",
+              "prob_pneumonia": 0.9973,
+              "predicted_class": "PNEUMONIA"
+            },
+            {
+              "name": "m2-densenet121",
+              "prob_pneumonia": 0.9991,
+              "predicted_class": "PNEUMONIA"
+            }
+          ],
+          "std": 0.0008,
+          "unanimous": true
+        },
+        "ood": {
+          "distance": 25.762,
+          "percentile": 0.831,
+          "hard_gate_percentile": 0.995,
+          "soft_gate_percentile": 0.9
+        },
+        "thresholds": {
+          "pass": 97.09,
+          "review": 84.04,
+          "source": "selected on the validation split by python -m scanproof.evaluate"
+        }
+      }
+    }
+  ]
+}

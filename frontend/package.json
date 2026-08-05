@@ -4,7 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "sync-static-assets": "node ./scripts/sync-static-assets.mjs",
+    "dev": "npm run sync-static-assets && vite",
+    "prebuild": "npm run sync-static-assets",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview"
